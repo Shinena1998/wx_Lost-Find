@@ -32,7 +32,6 @@ Page({
   onLoad: function (options) {
   },
   onReady: function () {
-    console.log("sadasdas")
     var that = this
     wx.login({
       success: function (res) {
@@ -42,7 +41,6 @@ Page({
             url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc&js_code=' + res.code + '&grant_type=authorization_code',
             method: 'GET',
             success: function (res) {
-              console.log("F" + res)
               that.setData({
                 session_key: res.data.session_key
               })
@@ -123,7 +121,7 @@ Page({
     })
   },
   radioChange:function(e){
-    this.data.category = e.detail.value;
+    this.data.category = e.detail.name;
   },
   showDialogBtn: function () {
     this.setData({
@@ -156,7 +154,6 @@ Page({
     this.hideModal();
   },
   Cancel:function(){
-    console.log("qwe")
     this.setData({
       showModal1: false
     })

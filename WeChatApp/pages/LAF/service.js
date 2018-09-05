@@ -83,30 +83,6 @@ Page({
   },
   onPullDownRefresh: function () {
   },
-  comecar: function () {
-    var buycar = wx.getStorageSync("buyCC");
-    console.log(buycar)
-    console.log(this.data.buyInfo)
-    for (var i = 0; i < this.data.buyInfo.length; i++) {
-      for (var j = 0; j < buycar.length; j++) {
-        if (this.data.buyInfo[i].name == buycar[j].name) {
-          this.data.buyInfo[i].num = this.data.buyInfo[i].num + buycar[j].num;
-          this.data.buyInfo[i].money = this.data.buyInfo[i].money + buycar[j].money;
-          buycar.splice(j, 1);
-        }
-      }
-    }
-    console.log(buycar)
-
-    for (var i = 0; i < buycar.length; i++) {
-      this.data.buyInfo.push(buycar[i])
-    }
-    console.log(this.data.buyInfo)
-    wx.setStorageSync("buyc", this.data.buyInfo)
-    wx.redirectTo({
-      url: 'car',
-    })
-  },
   comeinadd: function () {
     wx.navigateTo({
       url: 'upload',

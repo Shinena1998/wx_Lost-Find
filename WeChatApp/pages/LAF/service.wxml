@@ -4,7 +4,7 @@
 <image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="addsize" bindtap='searcH'></image></view>
 </view>
 <view class="buttonstyle">
-<button size='mini' plain='true' id="0" type='{{type[0]}}' bindtap='category'>学生证</button>
+<button size='mini' plain='true' id="0" type='{{type[0]}}' bindtap='category'>证件</button>
 <button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button>
 <button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button>
 <button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button>
