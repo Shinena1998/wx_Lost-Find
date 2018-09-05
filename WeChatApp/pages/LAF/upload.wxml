@@ -20,31 +20,14 @@
 </form>
 
 
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal1}}"></view>
-<view class="modal-dialog" wx:if="{{showModal1}}">
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>声明与条款</text></view>
   <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,不同意您可以设置问题答案，您是否同意授权？</view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
-    <button class="btn-cancel" bindtap="Cancel" type="default" plain='true'>取消</button>
+    <button class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</button>
     <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
     <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="default" plain='true'>同意并继续</button>
   </view>
 </view>
-
-
-
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
-<view class="modal-dialog" wx:if="{{showModal}}">
-  <view class="modal-footer"><text>问题:</text>
-  <input class="border" type="text" maxlength="100" class="input" placeholder="请设置问题" focus='true' bindblur='bindquestion'></input>
-  </view>
-  <view class="modal-footer"><text>答案:</text>
-  <input class="border" type="text" maxlength="100" class="input" placeholder="请设置答案" bindblur='bindanwer'></input>
-  </view>
-  <view class="modal-footer">
-    <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
-    <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
-  </view>
-</view>
-<button open-type="getUserInfo">asdasd</button>

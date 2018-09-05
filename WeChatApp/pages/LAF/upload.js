@@ -17,7 +17,6 @@ Page({
     openId:"",
     aBoolean:false,
     showModal:false,
-    showModal1:false,
     items: [
       { name: '证件', value: 'card' },
       { name: '钱包', value: 'money' },
@@ -112,7 +111,7 @@ Page({
               icon: "none",
             })
       }else {
-        this.showDialogBtn1();
+        this.showDialogBtn();
       }
   },
   back:function(){
@@ -126,11 +125,6 @@ Page({
   showDialogBtn: function () {
     this.setData({
       showModal: true
-    })
-  },
-  showDialogBtn1: function () {
-    this.setData({
-      showModal1: true
     })
   },
 
@@ -153,68 +147,9 @@ Page({
   onCancel: function () {
     this.hideModal();
   },
-  Cancel:function(){
-    this.setData({
-      showModal1: false
-    })
-    this.showDialogBtn();
-  },
   /**
    * 对话框确认按钮点击事件
    */
-  onConfirm: function () {
-    var that = this;
-    wx.request({
-      url: 'http://127.0.0.1:8081/msg',
-      method: "POST",
-      header: {
-        'content-type': 'application/json'
-      },
-      data: {
-        category: this.data.category,
-        time: this.data.time,
-        picPath: this.data.picPath,
-        contactWay: this.data.contactWay,
-        place: this.data.place,
-        infomation: this.data.information,
-        aBoolean:false,
-        question: this.data.question,
-        anwer:this.data.anwer,
-      },
-      success: function (res) {
-        console.log(res)
-        if (res.statusCode == 200) {
-          if (res.data.code == 12) {
-            wx.showToast({
-              title: res.data.msg,
-              icon: "none",
-            })
-          } else if (res.data.code == 0) {
-            wx.showToast({
-              duration: 5000,
-              title: res.data.msg,             
-              success: function () {
-                that.hideModal();
-                wx.navigateBack({
-                  delta: 1
-                })
-              }
-            })
-          }
-        } 
-      }
-    })
-  },
-  bindquestion:function(e){
-    this.setData({
-      question: e.detail.value,
-    })
-  },
-  bindanwer: function (e) {
-    this.setData({
-      anwer: e.detail.value,
-    })
-  },
   onGotUserInfo: function (e) {
     console.log(e)
     var that = this
