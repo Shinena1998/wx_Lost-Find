@@ -1,0 +1,34 @@
+.flex{
+  display: flex;
+  flex-direction: column
+}
+.color{
+  color: green;
+}
+page{
+  background-color: rgb(233, 241, 235);
+}
+.title{
+  display: flex;
+  flex-direction: row;
+}
+.comeback{
+  width: 50rpx;
+  height: 50rpx;
+}
+.textstyle{
+ /* line-height: 500rpx; */
+ /* position: absolute;  */
+ /* left: 50%; */
+ margin: auto;
+ margin-left: 35%
+}
+.textareaa{
+  width:73%;
+  /* border: 1rpx solid;
+  border-color: #F5F5F5; */
+}
+.flexx{
+  display: flex
+  
+}

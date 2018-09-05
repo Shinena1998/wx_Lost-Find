@@ -1,0 +1,27 @@
+<view class="title">
+<view><image class="comeback" bindtap='back' src='/pages/img/timg.jpeg'></image></view>
+<view class='textstyle'><text>详细信息</text></view>
+</view>
+<view class="flex">
+<image class="imgsize inputborder"  src = "{{detailInfo.picPath}}"></image>
+<view>
+<text class="color">物品类型： </text>
+<text>{{detailInfo.category}}</text>
+</view>
+<view>
+<text class="color">拾取时间： </text>
+<text>{{detailInfo.time}}</text>
+</view>
+<view>
+<text class="color">拾取地点： </text>
+<text>{{detailInfo.place}}</text>
+</view>
+<view>
+<text class="color">联系方式： </text>
+<text>{{detailInfo.contactWay}}</text>
+</view>
+<view class="flexx">
+<text class="color">详细内容： </text>
+<textarea class='textareaa' name="info" disabled="true" auto-height='true'>{{detailInfo.infomation}}</textarea>
+</view>
+</view>

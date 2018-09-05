@@ -1,0 +1,70 @@
+/* pages/weishi/operate.wxss */
+/* pages/weishi/index.wxss */
+page{
+  background-color: rgb(220, 230, 223);
+}
+.imgsize{
+  height: 200rpx;
+   width: 300rpx;
+}
+.textsize{
+  height: 150rpx;
+   width: 450rpx;
+}
+.hover{
+  background-color: gray;
+}
+.containe{
+  display: flex;
+}
+.contain{
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-left: 15rpx;
+}
+.contai{
+
+  display: flex;
+  margin-left: 10rpx;
+  flex-direction: column;
+}
+.buttonr{
+  position: fixed; left: 50%; bottom: 0;
+}
+.buttonl{
+  position: fixed; right: 50%; bottom: 0;
+}
+.buttonsize{
+  width:50%;
+}
+.size{
+  height: 110rpx;
+}/* pages/LAF/service.wxss */
+.inputborder{
+  border: 1rpx solid;
+  border-color: #F5F5F5;
+}
+.imgsize{
+  height: 200rpx;
+   width: 300rpx;
+}
+.buttonstyle{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+} 
+.addsize{
+  width: 40rpx;
+  height: 40rpx;
+}
+.select{
+  border: 1rpx solid;
+  border-color:green;
+}
+.top{
+  display: flex;
+  justify-content: space-between
+}

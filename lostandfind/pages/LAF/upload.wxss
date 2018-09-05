@@ -1,0 +1,147 @@
+/* pages/weishi/operate.wxss */
+/* pages/weishi/index.wxss */
+page{
+  background-color: rgb(233, 241, 235);
+}
+.textsize{
+  height: 150rpx;
+   width: 450rpx;
+}
+.hover{
+  background-color: rgb(128, 128, 128);
+}
+.containe{
+  display: flex;
+}
+.contain{
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin-left: 15rpx;
+}
+.contai{
+
+  display: flex;
+  margin-left: 10rpx;
+  flex-direction: column;
+}
+.inputborder{
+  border: 1rpx solid;
+  border-color: #F5F5F5;
+}
+.imgsize{
+   width: 100%
+}
+.textstyle{
+ /* line-height: 500rpx; */
+ /* position: absolute;  */
+ /* left: 50%; */
+ margin: auto;
+ margin-left: 35%
+}
+.title{
+  display: flex;
+  flex-direction: row;
+}
+.comeback{
+  width: 50rpx;
+  height: 50rpx;
+}
+
+
+.show-btn {
+  margin-top: 100rpx;
+  color: #22cc22;
+}
+
+.modal-mask {
+
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+.modal-dialog {
+  width: 540rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0; 
+  z-index: 9999;
+  background: rgb(233, 241, 235);
+  margin: -180rpx 105rpx; 
+  border-radius: 16rpx;
+}
+
+.modal-title {
+  color: #030303;
+  text-align: center;
+}
+
+.modal-content {
+  padding: 50rpx 32rpx;
+  font-size: 80%
+}
+
+.modal-input {
+  display: flex;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+}
+
+
+.input {
+  width: 80%;
+  height: 82rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  color: #333;
+   border-radius: 16rpx;
+}
+
+input-holder {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  line-height: 86rpx;
+  font-size: 80%
+}
+
+.btn-cancel {
+  width: 50%;
+  color: #666;
+  text-align: center;
+  border-right: 1px solid #dedede;
+  font-size: 80%
+}
+
+.btn-confirm {
+  width: 50%;
+  color: #ec5300;
+  text-align: center;
+  font-size: 80%
+}
+
+.border{
+  border: 1rpx solid;
+  border-color: #F5F5F5;
+}
