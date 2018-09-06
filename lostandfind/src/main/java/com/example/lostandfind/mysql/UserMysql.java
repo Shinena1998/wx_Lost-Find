@@ -15,9 +15,8 @@ public class UserMysql {
     @GeneratedValue
     private Integer id;
 
-    @NotNull(message = "用户名必填")
-    private String NiceName;
-    @NotNull(message="密码必填")
+    private String nickName;
+
     private String avatarUrl;
 
     private String country;
@@ -42,12 +41,12 @@ public class UserMysql {
         this.id = id;
     }
 
-    public String getNiceName() {
-        return NiceName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setNiceName(String niceName) {
-        NiceName = niceName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getAvatarUrl() {

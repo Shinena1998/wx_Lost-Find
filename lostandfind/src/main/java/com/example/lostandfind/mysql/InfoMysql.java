@@ -14,22 +14,37 @@ public class InfoMysql {
     @GeneratedValue
     private Integer id;
 
-    @NotNull(message="时间必填")
-    private String time;
-    @NotNull(message="种类必填")
+    private String Time;
+
     private String category;
-    @NotNull(message="图片必填")
+
+    private String current;
+
+    public String getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(String current) {
+        this.current = current;
+    }
+
+    public String getTime() {
+        return Time;
+    }
+
+    public void setTime(String time) {
+        Time = time;
+    }
+
     private String picPath;
 
     private String contactWay;
-    @NotNull(message="地点必填")
+
     private String place;
-    @NotNull(message="信息必填")
+
     private String infomation;
 
     private boolean aBoolean;
-
-    private String question;
 
     public boolean isaBoolean() {
         return aBoolean;
@@ -37,22 +52,6 @@ public class InfoMysql {
 
     public void setaBoolean(boolean aBoolean) {
         this.aBoolean = aBoolean;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getAnwer() {
-        return anwer;
-    }
-
-    public void setAnwer(String anwer) {
-        this.anwer = anwer;
     }
 
     public String getIdentity() {
@@ -63,8 +62,6 @@ public class InfoMysql {
         this.identity = identity;
     }
 
-    private String anwer;
-
     private String identity;
 
     public Integer getId() {
@@ -73,14 +70,6 @@ public class InfoMysql {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public String getCategory() {

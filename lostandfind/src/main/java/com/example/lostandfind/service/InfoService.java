@@ -7,8 +7,7 @@ public class InfoService {
         if(infoMysql.isaBoolean() == false){
             if(infoMysql.getTime()== "" || infoMysql.getCategory() == ""
                     || infoMysql.getInfomation() == ""
-                    || infoMysql.getPicPath() == "" || infoMysql.getPlace()== ""
-                    || infoMysql.getQuestion() == "" || infoMysql.getAnwer() == ""){
+                    || infoMysql.getPicPath() == "" || infoMysql.getPlace()== ""){
                 return true;
             }else {
                 return false;

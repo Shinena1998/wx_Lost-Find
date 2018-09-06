@@ -1,9 +1,10 @@
-Page({
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
+    decode:true,
     msg: [],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
     category:"",
@@ -18,10 +19,10 @@ Page({
     aBoolean:false,
     showModal:false,
     items: [
-      { name: '证件', value: 'card' },
-      { name: '钱包', value: 'money' },
-      { name: '书本', value: 'book' },
-      { name: '其他', value: 'else' },
+      { name: '证件', value: '证件' },
+      { name: '钱包', value: '钱包' },
+      { name: '书本', value: '书本' },
+      { name: '其他', value: '其他' },
     ]
   },
 
@@ -40,8 +41,20 @@ Page({
             url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc&js_code=' + res.code + '&grant_type=authorization_code',
             method: 'GET',
             success: function (res) {
+              console.log(res)
               that.setData({
-                session_key: res.data.session_key
+                session_key: res.data.session_key,
+                openId:res.data.openid
+              })
+              wx.request({
+                url: 'http://127.0.0.1:8081/openid/'+res.data.openid,
+                method:"GET",
+                complete:function(res){
+                  console.log(res.data)
+                  that.setData({
+                    decode:res.data
+                  })
+                }
               })
             },
             fail: function (res) {
@@ -64,30 +77,23 @@ Page({
     wx.chooseImage({
       count: 1,
       success: function (res) {
-        console.log(res)
+        console.log("a"+res)
         that.setData({
           tempFilePath: res.tempFilePaths[0]
         })
         wx.saveFile({
             tempFilePath: that.data.tempFilePath,
             success: function (res) {
-            //  console.log(this.tempFilePath+"asd")
+             console.log(res+"asd")
               that.setData({
                 savedFilePath: res.savedFilePath,
                 picPath: res.savedFilePath
               })
               console.log(res.savedFilePath)
-              // wx.getFileInfo({
-              //   filePath: res.savedFilePath,
-              //   success(res) {
-              //     console.log(res.size)
-              //     console.log(res.digest)
-              //   },
-              //   fail(res) {
-              //     console.log(res)
-              //   }
-              // })
             },
+          fail: function (res) {
+            console.log(res);
+          }
           })
       }
     })
@@ -120,7 +126,7 @@ Page({
     })
   },
   radioChange:function(e){
-    this.data.category = e.detail.name;
+    this.data.category = e.detail.value;
   },
   showDialogBtn: function () {
     this.setData({
@@ -151,65 +157,100 @@ Page({
    * 对话框确认按钮点击事件
    */
   onGotUserInfo: function (e) {
-    console.log(e)
+    console.log(this.data.decode)
     var that = this
     var res = e
+
+    if(this.data.decode){
+      wx.request({
+        url: 'http://localhost:8081/identity?encryptedData=' + res.detail.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + res.detail.iv,
+        header: {
+          'content-type': 'application/json'
+        },
+        method: 'GET',
+        success: function (res) {
+          that.setData({
+            openId: res.data.openId,
+          })
+          wx.request({
+            url: 'http://127.0.0.1:8081/user',
+            method: "POST",
+            header: {
+              'content_type': "applocation/json"
+            },
+            data: {
+              nickName: res.data.nickName,
+              avatarUrl: res.data.avatarUrl,
+              country: res.data.country,
+              gender: res.data.gender,
+              language: res.data.language,
+              openId: res.data.openId,
+              city: res.data.city,
+              province: res.data.province
+            },
+            success: function (res) {
+              that.writeInfo();
+            }
+          })
+        },
+        fail: function (res) {
+          console.log("fail" + res)
+        },
+        complete: function (res) {
+          console.log("asd" + that.data.category)
+        },
+      })
+    }else{
+      this.writeInfo();
+    }
+  },
+  writeInfo:function(){
+    var that = this;
+    var time = new Date();
+    var current = time.toLocaleDateString() + time.toLocaleTimeString();
     wx.request({
-      url: 'http://localhost:8081/identity?encryptedData=' + res.detail.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + res.detail.iv,
+      url: 'http://127.0.0.1:8081/msg',
+      method: "POST",
       header: {
         'content-type': 'application/json'
       },
-      method: 'GET',
-      success: function (res) {
-        console.log("sad"+res.data.openId)
-        that.setData({
-          openId:res.data.openId,
-        })
-        console.log("sad" + that.data.openId)
+      data: {
+        category: that.data.category,
+        current: current,
+        time: that.data.time,
+        picPath: that.data.picPath,
+        contactWay: that.data.contactWay,
+        place: that.data.place,
+        infomation: that.data.information,
+        aBoolean: true,
+        identity: that.data.openId
       },
-      fail: function (res) { },
-      complete: function (res) { 
-        wx.request({
-          url: 'http://127.0.0.1:8081/msg',
-          method: "POST",
-          header: {
-            'content-type': 'application/json'
-          },
-          data: {
-            category: that.data.category,
-            time: that.data.time,
-            picPath: that.data.picPath,
-            contactWay: that.data.contactWay,
-            place: that.data.place,
-            infomation: that.data.information,
-            aBoolean: true,
-            identity: that.data.openId
-          },
-          success: function (res) {
-            console.log(res)
-            if (res.statusCode == 200) {
-              if (res.data.code == 12) {
-                console.log("asd" + that.data.openId)
-                wx.showToast({
-                  title: "网络错误,获取用户表示失败",
-                  icon: "none",
-                })
-              } else if (res.data.code == 0) {
-                wx.showToast({
-                  title: res.data.msg,
-                  duration: 5000,
-                  success: function () {
-                    that.hideModal();
-                    wx.navigateBack({
-                      delta: 1
-                    })
-                  }
+      success: function (res) {
+        console.log(res)
+        if (res.statusCode == 200) {
+          if (res.data.code == 12) {
+            console.log("asd" + that.data.openId)
+            wx.showToast({
+              title: "网络错误,获取用户表示失败",
+              icon: "none",
+            })
+          } else if (res.data.code == 0) {
+            wx.showToast({
+              title: res.data.msg,
+              duration: 5000,
+              success: function () {
+                that.hideModal();
+                wx.navigateBack({
+                  delta: 1
                 })
               }
-            }
+            })
           }
-        })
+        }
       },
+      fail: function (res) {
+        console.log(res)
+      }
     })
   }
 })

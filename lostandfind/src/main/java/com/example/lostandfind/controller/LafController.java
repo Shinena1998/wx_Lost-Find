@@ -38,6 +38,31 @@ public class LafController {
         return ResultUtil.success(userMysql);
     }
 
+    /**
+     * 写入拾取人信息
+     * @param userMysql
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/user")
+    public Result addUser(@RequestBody UserMysql userMysql){
+        userRepository.save(userMysql);
+        return ResultUtil.success(userMysql);
+    }
+
+    @GetMapping(value = "/openid/{openid}")
+    public boolean checkOpenId(@PathVariable("openid") String openid){
+        if(userRepository.findByOpenId(openid)==null){
+            return true;
+        }else {
+            return false;
+        }
+    }
+    /**
+     * 写入数据信息
+     * @param infoMysql
+     * @return
+     */
     @ResponseBody
     @PostMapping(value = "/msg")
 //    public Result addMsg(@Valid InfoMysql infoMysql,BindingResult bindingResult){
@@ -53,11 +78,22 @@ public class LafController {
 
     }
 
+    /**
+     * 查看数据信息
+     * @return
+     */
     @GetMapping(value = "/msg")
     public List<InfoMysql> msgList() {
         return infoRepository.findAll();
     }
 
+    /**
+     * 解码拾取人信息
+     * @param encryptedData
+     * @param iv
+     * @param session_key
+     * @return
+     */
     @GetMapping(value = "/identity")
     public Object decode(@RequestParam("encryptedData") String encryptedData,
                          @RequestParam("iv") String iv,
@@ -71,11 +107,12 @@ public class LafController {
         try {
             dataStr = new String(data, "utf-8");
             // 根据解密算法自行解密(输入参数为appId,sessionKey,encryptedData,iv,返回一个jsonObj)
-//			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + dataStr);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + dataStr);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        System.out.println(dataStr);
         return dataStr;
     }
 }

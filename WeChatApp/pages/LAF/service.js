@@ -45,13 +45,13 @@ Page({
             infor: res.data
           })
           for (var i = 0; i < that.data.infor.length; i++) {
-            if (that.data.infor[i].category == "card") {
+            if (that.data.infor[i].category == "证件") {
               Card.push(that.data.infor[i])
-            } else if (that.data.infor[i].category == "book") {
+            } else if (that.data.infor[i].category == "书本") {
               Book.push(that.data.infor[i])
-            } else if (that.data.infor[i].category == "money") {
+            } else if (that.data.infor[i].category == "钱包") {
               Money.push(that.data.infor[i])
-            } else if (that.data.infor[i].category == "else") {
+            } else if (that.data.infor[i].category == "其他") {
               Else.push(that.data.infor[i])
             }
           }
@@ -70,8 +70,14 @@ Page({
       },
     })
     wx.getSavedFileList({
+      
       success: function (res) {
-        console.log(res.fileList)
+        console.log(res);
+        // for(var i = 0 ; i < 130 ; i ++){
+        //   wx.removeSavedFile({
+        //     filePath: res.fileList[i].filePath
+        //   })
+        // }
       }
     })
   },
