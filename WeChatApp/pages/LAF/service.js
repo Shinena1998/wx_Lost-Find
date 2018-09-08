@@ -13,7 +13,7 @@ Page({
   data: {
     session_key:"",
     infor: [],
-    categoryInfo:[],
+    category:[],
     type: ["primary", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
   },
@@ -23,6 +23,9 @@ Page({
    */
   onLoad: function (options) {
   },
+  /**
+   * 查看失物详细信息
+   */
   comein: function (e) {
     // console.log(e)
     // console.log(this.data.category[e.currentTarget.dataset.index])

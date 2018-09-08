@@ -11,11 +11,11 @@
     <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </radio-group>
-<input class='inputborder' value="" name="time" placeholder='时间' style='number'></input>
-<input class='inputborder'value="" name="contactWay" placeholder='联系方式' style='text'></input>
-<input class='inputborder' value="" name="place" placeholder='地点' style='number'></input>
+<view class="info_c">拾取时间：<input class='inputborder' value="" name="time" placeholder='拾取物品时间' style='number'></input></view>
+<view class="info_c">联系方式：<input class='inputborder'value="" name="contactWay" placeholder='用于联系失主' style='text'></input></view>
+<view class="info_c">失物地点：<input class='inputborder' value="" name="place" placeholder='失物地点' style='number'></input></view>
 <!-- <input class="inputsize" value="" name="info" placeholder='信息' type='text'>sdfs</input> -->
-<textarea name="info" placeholder='信息'auto-height='true'></textarea>
+<view class="info_c">详细信息：<textarea class='inputborder' name="info" placeholder='失物上主要信息' auto-height='true'></textarea></view>
 <button  formType="submit">提交</button>
 </form>
 
@@ -23,11 +23,11 @@
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>声明与条款</text></view>
-  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,不同意您可以设置问题答案，您是否同意授权？</view>
+  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,您是否同意授权？</view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <button class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</button>
     <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-    <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="default" plain='true'>同意并继续</button>
+    <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="primary" plain='true'>同意并继续</button>
   </view>
 </view>

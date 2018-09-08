@@ -8,6 +8,7 @@
 <button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button>
 <button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button>
 <button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button>
+<button size='mini' plain='true' id='4' type='{{type[3]}}' bindtap='category'>关于我的</button>
 </view>
 <view class="contain" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
 <view class='containe'>

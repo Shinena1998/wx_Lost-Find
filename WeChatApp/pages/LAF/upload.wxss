@@ -30,6 +30,7 @@ page{
 .inputborder{
   border: 1rpx solid;
   border-color: #F5F5F5;
+  width: 500rpx;
 }
 .imgsize{
    width: 100%
@@ -144,4 +145,9 @@ input-holder {
 .border{
   border: 1rpx solid;
   border-color: #F5F5F5;
+}
+
+.info_c{
+  display: flex;
+  flex-direction: row;
 }
