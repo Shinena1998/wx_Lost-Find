@@ -47,25 +47,16 @@ Page({
     var that = this
     wx.chooseImage({
       count: 1,
+      sizeType:'compressed',
       success: function (res) {
         console.log("a"+res)
         that.setData({
-          tempFilePath: res.tempFilePaths[0]
+          /**
+           * 1.在视图界面显示上传图片
+           * 2.记录上传图片的临时文件路径，以便后面上传至服务器
+           */
+          savedFilePath: res.tempFilePaths[0]
         })
-        wx.saveFile({
-            tempFilePath: that.data.tempFilePath,
-            success: function (res) {
-             console.log(res+"asd")
-              that.setData({
-                savedFilePath: res.savedFilePath,
-                picPath: res.savedFilePath
-              })
-              console.log(res.savedFilePath)
-            },
-          fail: function (res) {
-            console.log(res);
-          }
-          })
       }
     })
   },
@@ -241,50 +232,71 @@ Page({
     var that = this;
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
-    wx.request({
-      url: 'http://127.0.0.1:8081/msg',
-      method: "POST",
+    /**
+    * 上传图片，最大10M
+    */
+    wx.uploadFile({
+      url: 'http://localhost:8081/uploadImage',
+      filePath: that.data.savedFilePath,
+      name: 'file',
       header: {
-        'content-type': 'application/json'
-      },
-      data: {
-        category: that.data.category,
-        current: current,
-        time: that.data.time,
-        picPath: that.data.picPath,
-        contactWay: that.data.contactWay,
-        place: that.data.place,
-        infomation: that.data.information,
-        aBoolean: true,
-        identity: that.data.openId
+        'content-type': 'multipart/form-data'
       },
       success: function (res) {
-        console.log(res)
-        if (res.statusCode == 200) {
-          if (res.data.code == 12) {
-            console.log("asd" + that.data.openId)
-            wx.showToast({
-              title: "网络错误,获取用户表示失败",
-              icon: "none",
-            })
-          } else if (res.data.code == 0) {
-            wx.showToast({
-              title: res.data.msg,
-              duration: 5000,
-              success: function () {
-                that.hideModal();
-                wx.navigateBack({
-                  delta: 1
+        that.setData({
+          picPath: res.data
+        })
+        /**
+         * 将所有信息写进数据库
+         */
+        wx.request({
+          url: 'http://127.0.0.1:8081/msg',
+          method: "POST",
+          header: {
+            'content-type': 'application/json'
+          },
+          data: {
+            category: that.data.category,
+            current: current,
+            time: that.data.time,
+            picPath: that.data.picPath,
+            contactWay: that.data.contactWay,
+            place: that.data.place,
+            infomation: that.data.information,
+            aBoolean: true,
+            identity: that.data.openId
+          },
+          success: function (res) {
+            console.log(res)
+            if (res.statusCode == 200) {
+              if (res.data.code == 12) {
+                console.log("asd" + that.data.openId)
+                wx.showToast({
+                  title: "网络错误,获取用户表示失败",
+                  icon: "none",
+                })
+              } else if (res.data.code == 0) {
+                wx.showToast({
+                  title: res.data.msg,
+                  duration: 5000,
+                  success: function () {
+                    that.hideModal();
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  }
                 })
               }
-            })
+            }
+          },
+          fail: function (res) {
+            console.log(res)
           }
-        }
-      },
-      fail: function (res) {
-        console.log(res)
+        })
       }
     })
+   
+  
   },
 
 })

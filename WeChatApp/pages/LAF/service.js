@@ -12,9 +12,21 @@ Page({
    */
   data: {
     session_key:"",
-    infor: [],
+    infor: [
+      {
+        aBoolean
+          :
+          true,
+category
+          :
+          "证件",
+contactWay
+          :
+          "sdac",
+current
+          :"2018/9/7上午12:59:54",id:83,identity:"oCQY3418OXiAziUyF2pBHNkTdbKY",infomation:"asdada",picPath:"http://store/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.ue9NXrsjcwtW57f73ef6dfc476b0753ac2e28537cbbc.png",place:"zxcz",time: "asd"}],
     category:[],
-    type: ["primary", "default", "default", "default"],
+    type: ["primary", "default", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
   },
 
@@ -99,28 +111,34 @@ Page({
   },
   category:function(res){
     if(res.currentTarget.id == "0"){
-      var newType = ["primary", "default", "default", "default"]
+      var newType = ["primary", "default", "default", "default", "default"]
       this.setData({
         type: newType,
         category:Card
       })
     } else if (res.currentTarget.id == "1"){
-      var newType = ["default", "primary",  "default", "default"]
+      var newType = ["default", "primary", "default", "default", "default"]
       this.setData({
         type: newType,
         category:Book
       })
     } else if (res.currentTarget.id == "2") {
-      var newType = ["default", "default", "primary", "default"]
+      var newType = ["default", "default", "primary", "default", "default"]
       this.setData({
         type: newType,
         category:Money
       })
     } else if (res.currentTarget.id == "3") {
-      var newType = ["default", "default", "default", "primary"]
+      var newType = ["default", "default", "default", "primary" ,"default"]
       this.setData({
         type: newType,
         category:Else
+      })
+    } else if (res.currentTarget.id == "4") {
+      var newType = ["default", "default", "default", "default","primary"]
+      this.setData({
+        type: newType,
+        category: Else
       })
     }
   },

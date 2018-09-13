@@ -3,13 +3,15 @@
 <view class='buttonstyle'><input type="text" class="select" confirm-type='search'></input>
 <image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="addsize" bindtap='searcH'></image></view>
 </view>
-<view class="buttonstyle">
-<button size='mini' plain='true' id="0" type='{{type[0]}}' bindtap='category'>证件</button>
-<button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button>
-<button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button>
-<button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button>
-<button size='mini' plain='true' id='4' type='{{type[3]}}' bindtap='category'>关于我的</button>
+<scroll-view  scroll-x="true">
+<view class="buttonstyle" style='width:130%' >
+<view ><button size='mini' plain='true' id='0' type='{{type[0]}}' bindtap='category'>证件</button></view>
+<view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button></view>
+<view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button></view>
+<view><button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button></view>
+<view><button size='mini' plain='true' id='4' type='{{type[4]}}' bindtap='category'>关于我的</button></view>
 </view>
+</scroll-view>
 <view class="contain" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
 <view class='containe'>
 <view>

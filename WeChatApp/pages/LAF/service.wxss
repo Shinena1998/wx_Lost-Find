@@ -54,7 +54,7 @@ page{
 .buttonstyle{
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  justify-content: space-between
 } 
 .addsize{
   width: 40rpx;

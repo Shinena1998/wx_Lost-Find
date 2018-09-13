@@ -11,8 +11,15 @@ import com.example.lostandfind.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -57,6 +64,11 @@ public class LafController {
         }else {
             return false;
         }
+    }
+
+    @GetMapping(value = "/openid1/{openid}")
+    public UserMysql checkOpenId1(@PathVariable("openid") String openid){
+        return userRepository.findByOpenId(openid);
     }
     /**
      * 写入数据信息
@@ -114,5 +126,20 @@ public class LafController {
         }
         System.out.println(dataStr);
         return dataStr;
+    }
+
+    @PostMapping(value = "/uploadImage")
+    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+        //获取文件需要上传到的路径
+
+        if(file.isEmpty()==true){
+            return "error";
+        }else {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
+            Files.write(path,bytes);
+            file.getOriginalFilename();
+            return "/pages/img/"+file.getOriginalFilename();
+        }
     }
 }

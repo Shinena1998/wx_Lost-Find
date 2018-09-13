@@ -229,7 +229,7 @@ Page({
       message="谢谢"
     }
     this,setData({
-      message:res.detail.value
+      message:message
     })
   },
   /**

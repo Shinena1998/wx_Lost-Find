@@ -3,6 +3,8 @@
     "pages/LAF/service",
     "pages/LAF/upload",
     "pages/LAF/detail"
+
+   
   ],
   "window":{
     "backgroundTextStyle":"light",

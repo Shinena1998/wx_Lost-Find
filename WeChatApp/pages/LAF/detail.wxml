@@ -39,9 +39,9 @@
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <button class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</button>
     <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-    <button class='btn-confirm'open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="primary" plain='true'>同意并继续</button>
+    <button  class='btn-confirm'open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="primary" plain='true'>同意并继续</button>
 </view>
 </view>
 <form bindsubmit="get_access_token" report-submit='true' >
-  <button form-type="submit" type="default">提交</button>
+  <button  form-type="submit" type="default">提交</button>
 </form>
