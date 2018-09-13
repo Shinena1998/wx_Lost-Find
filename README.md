@@ -10,7 +10,9 @@
 * 微信开发者工具上传图片后自动刷新
   * 设置->编辑设置->取消保存时自动编译小程序
 * 上传图片大小超过1MB出现异常
-  * 在yml中配置spring.servlet.multipart.maxFileSize=10Mb（默认1MB） spring.servlet.multipart.maxRequestSize=10Mb
+  * 在yml中配置
+    * spring.servlet.multipart.maxFileSize=10Mb（默认1MB） 
+    * spring.servlet.multipart.maxRequestSize=10Mb
 
 ###### 吐槽
 之前出现那个问题是因为用了wx.saveFile()，这个是把文件保存在本地，而不是上传至服务器，我搞混了两个的api，我是真的菜啊，菜就算了，而且刚开始遇到问题还静不下心来慢慢解决，总想急着跳，然而急又急不来，反而又无脑去百度随便查，这样当然查不出来。这次是一个教训，希望自己能记住。今后遇到问题要静下心来看文档，查找问题错在哪方面，解决问题的关键又在哪方面。
