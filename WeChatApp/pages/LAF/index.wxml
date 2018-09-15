@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<!-- <view class="container">
   <view class="userinfo">
    <button id="ad" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
@@ -9,5 +9,34 @@
   </view>
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
+  </view>
+</view> -->
+<view class="top"><image class="logoLeft" src='{{logoLeft}}'></image>
+<text class="logoRight">失物招领网</text></view>
+<view class="container">
+<view class="userinfo">
+   <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view class="info">
+    <text bindtap="toService" class="makeInfo">查看信息</text>
+    <text bindtap="toUpload" class="sreachInfo">发布信息</text>
+</view>
+</view>
+
+
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+<view class="modal-title"><text>声明与条款</text></view>
+  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,您是否同意授权？</view>
+  <view class='modal-content1'><text class="btn-cancel">* 头像，昵称，openid等</text></view>
+  <view class="modal-footer">
+    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
+    <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
+    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
+    <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>同意并继续</button>
   </view>
 </view>

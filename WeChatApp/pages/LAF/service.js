@@ -5,6 +5,8 @@ var Card = []
 var Money = []
 var Book = []
 var Else = []
+var aboutMe = []
+const app = getApp();
 Page({
 
   /**
@@ -12,19 +14,7 @@ Page({
    */
   data: {
     session_key:"",
-    infor: [
-      {
-        aBoolean
-          :
-          true,
-category
-          :
-          "证件",
-contactWay
-          :
-          "sdac",
-current
-          :"2018/9/7上午12:59:54",id:83,identity:"oCQY3418OXiAziUyF2pBHNkTdbKY",infomation:"asdada",picPath:"http://store/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.ue9NXrsjcwtW57f73ef6dfc476b0753ac2e28537cbbc.png",place:"zxcz",time: "asd"}],
+    infor: [],
     category:[],
     type: ["primary", "default", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
@@ -34,6 +24,7 @@ current
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(app.globalData.openid);
   },
   /**
    * 查看失物详细信息
@@ -54,7 +45,7 @@ current
       url: 'http://localhost:8081/msg',
       method: 'GET',
       success: function (res) {//连接成功运行
-
+        console.log(res.data)
         if (res.statusCode === 200) {
           that.setData({
             infor: res.data
@@ -68,6 +59,9 @@ current
               Money.push(that.data.infor[i])
             } else if (that.data.infor[i].category == "其他") {
               Else.push(that.data.infor[i])
+            }
+            if (that.data.infor[i].identity == app.globalData.openid){
+              aboutMe.push(that.data.infor[i])
             }
           }
           that.setData({
@@ -96,11 +90,25 @@ current
       }
     })
   },
+  /**
+   * 进入新页面后初始化数据
+   */
   onHide:function(){
     Card = []
     Money = []
     Book = []
     Else = []
+    aboutMe = []
+  },
+  /**
+   * 返回就页面初始化数据
+   */
+  onUnload:function(){
+    Card = []
+    Money = []
+    Book = []
+    Else = []
+    aboutMe = []
   },
   onPullDownRefresh: function () {
   },
@@ -138,7 +146,7 @@ current
       var newType = ["default", "default", "default", "default","primary"]
       this.setData({
         type: newType,
-        category: Else
+        category: aboutMe
       })
     }
   },

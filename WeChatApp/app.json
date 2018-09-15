@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/LAF/index",
     "pages/LAF/service",
     "pages/LAF/upload",
     "pages/LAF/detail"

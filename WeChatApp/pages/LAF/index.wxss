@@ -1,4 +1,7 @@
 /**index.wxss**/
+page{
+  background-color: rgb(233, 241, 235);
+}
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -18,4 +21,139 @@
 
 .usermotto {
   margin-top: 200px;
+}
+
+.logoLeft{
+  width:100rpx;
+  height:100%; 
+}
+.logoRight{
+  font-family: SimSun;
+  font-size: 200%;
+  height:100%;
+  line-height: 100rpx;
+}
+.top{
+  width: 100%;
+  height: 100rpx;
+  background-color: rgb(243, 160, 6);
+  display:flex;
+}
+.info{
+  width: 100%;
+  height: 300rpx;
+  display: flex;
+  background-color: green;
+  margin-top: 100rpx;
+}
+
+.makeInfo{
+  width: 50%;
+  height: 300rpx;
+  text-align: center;
+  line-height: 300rpx;
+  background-color: rgb(255, 102, 0)
+}
+.sreachInfo{
+  width: 50%;
+  height: 300rpx;
+  text-align: center;
+  line-height: 300rpx;
+  background-color: greenyellow
+}
+
+
+.show-btn {
+  margin-top: 100rpx;
+  color: #22cc22;
+}
+
+.modal-mask {
+
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+.modal-dialog {
+  width: 540rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0; 
+  z-index: 9999;
+  background: rgb(233, 241, 235);
+  margin: -180rpx 105rpx; 
+  border-radius: 16rpx;
+}
+
+.modal-title {
+  color: #030303;
+  text-align: center;
+}
+
+.modal-content {
+  padding: 50rpx 32rpx;
+  font-size: 80%
+}
+.modal-content1{
+  border-top: 1px solid #dedede;
+  padding: 20rpx 32rpx;
+  font-size: 80%
+}
+
+.modal-input {
+  display: flex;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+}
+
+
+.input {
+  width: 80%;
+  height: 82rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  color: #333;
+  border-radius: 16rpx;
+}
+
+input-holder {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  line-height: 86rpx;
+  font-size: 80%
+}
+
+.btn-cancel {
+  width: 50%;
+  color: #666;
+  text-align: center;
+  border-right: 1px solid #dedede;
+  border-radius: 10rpx;
+  font-size: 80%
+}
+
+.btn-confirm {
+  width: 50%;
+  border-radius:10rpx;
+  font-size: 80%
 }

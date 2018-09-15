@@ -5,7 +5,9 @@ page{
 }
 .imgsize{
   height: 200rpx;
+  line-height: 200rpx;
    width: 300rpx;
+   border-radius: 20rpx;
 }
 .textsize{
   height: 150rpx;
@@ -16,6 +18,8 @@ page{
 }
 .containe{
   display: flex;
+  margin-top: 15rpx;
+  border-radius: 5%
 }
 .contain{
 
@@ -24,6 +28,8 @@ page{
   flex-direction: column;
 
   margin-left: 15rpx;
+  
+  margin-right: 15rpx;
 }
 .contai{
 
