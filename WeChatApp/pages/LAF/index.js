@@ -38,10 +38,16 @@ Page({
             app.globalData.openid = res.data.openid;
             that.data.openid=res.data.opeid;
             that.data.session_key=res.data.session_key;
+            /**
+             * 判断用户是否为新用户
+             */
             wx.request({
               url: 'http://127.0.0.1:8081/openid/' + res.data.openid,
               method: "GET",
               complete: function (res) {
+                /**
+                 * 用户为新用户，则将用户写入数据库
+                 */
                 if(res.data){
                   that.decodeEncryptedData()
                 }
@@ -55,7 +61,8 @@ Page({
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框          
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
+          app.globalData.power = true;         
           wx.getUserInfo({
             success: res => {
               that.data.encryptedData = res.encryptedData
@@ -126,23 +133,53 @@ Page({
   onShareAppMessage: function () {
     
   },
+  /**
+   * 用户授权
+   */
  getUserInfo: function (e) {
     app.globalData.userInfo = e.detail.userInfo
+    if(e.detail.userInfo != null){
+      app.globalData.power = true;
+    }
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
     this.hideModal();
   },
-  toService:function(){
+  /**
+   * 进入查看界面
+   */
+  toService: function (e) {
+    console.log(e.currentTarget.id);
+    /**
+     * 这里将json包赋值给app.globalData.category而不是e.currentTarget.id
+     * 是为了配合service.js里面的category()函数的参数一致
+     */
+    app.globalData.category = e;
     wx.navigateTo({
       url: 'service',
     })
   },
-  toUpload: function () {
-    wx.navigateTo({
-      url: 'upload',
-    })
+  /**
+   * 进入发布信息界面
+   */
+  toUpload: function (e) {
+    console.log(e.currentTarget.id);
+    /**
+     * 因为发布信息种类只是一个raido-group，所以我们只需要把数组对应位置记录就行了
+     */
+    app.globalData.checked = e.currentTarget.id;
+    if(app.globalData.power){
+      wx.navigateTo({
+        url: 'upload',
+      })
+    }else {
+      wx.showToast({
+        title: '请授权',
+        icon:"none"
+      })
+    }  
   },
     /**
    * 

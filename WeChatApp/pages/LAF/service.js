@@ -32,10 +32,17 @@ Page({
   comein: function (e) {
     // console.log(e)
     // console.log(this.data.category[e.currentTarget.dataset.index])
-    wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index]    )
-    wx.navigateTo({
-      url: 'detail',
-    })
+    if(app.globalData.power){
+        wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index]    )
+        wx.navigateTo({
+          url: 'detail',
+        })
+    }else{
+      wx.showToast({
+        title: '请授权',
+        icon: 'none',
+      })
+    }
   },
   onReady: function () {
   },
@@ -64,10 +71,34 @@ Page({
               aboutMe.push(that.data.infor[i])
             }
           }
-          that.setData({
-            category: Card,
-          })
-          console.log(Card);
+          /**
+           * 因为app.globalData.category是json包
+           */
+          if (app.globalData.category.currentTarget.id  == "0"){
+            that.setData({
+              category: Card,
+            })
+          }else if(app.globalData.category.currentTarget.id == "1"){
+            that.setData({
+              category: Book,
+            })
+          } else if (app.globalData.category.currentTarget.id  == "2") {
+            that.setData({
+              category: Money,
+            })
+          } else if (app.globalData.category.currentTarget.id  == "3") {
+            that.setData({
+              category: Else,
+            })
+          } else if (app.globalData.category.currentTarget.id  == "4") {
+            that.setData({
+              category: aboutMe,
+            })
+          }
+          /**
+           * 调用此函数使标签栏颜色正常
+           */
+          that.category(app.globalData.category);
         } else {
           console.log("error")
         }
@@ -117,6 +148,9 @@ Page({
       url: 'upload',
     })
   },
+  /**
+   * 根据显示不同内容使相应标签变色
+   */
   category:function(res){
     if(res.currentTarget.id == "0"){
       var newType = ["primary", "default", "default", "default", "default"]

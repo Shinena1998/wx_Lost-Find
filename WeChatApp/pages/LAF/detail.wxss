@@ -24,9 +24,10 @@ page{
  margin-left: 35%
 }
 .textareaa{
-  width:73%;
-  /* border: 1rpx solid;
+  width:70%;
+   /* border: 1rpx solid;
   border-color: #F5F5F5; */
+  margin-left: 10rpx;
 }
 .flexx{
   display: flex

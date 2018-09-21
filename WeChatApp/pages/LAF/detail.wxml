@@ -25,23 +25,11 @@
 <textarea class='textareaa' name="info" disabled="true" auto-height='true'>{{detailInfo.infomation}}</textarea>
 </view>
 <view class="flexx">
-<text class="color">失主留言： </text>
+<text class="color">失主留言：  </text>
 <textarea class='textareaa' placeholder='留下感谢的话吧'  auto-height='true' bindblur="message"></textarea>
 </view>
 </view>
 <button class='submit' bindtap='affirm'  wx:if="true" >确认</button>
-
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
-<view class="modal-dialog" wx:if="{{showModal}}">
-<view class="modal-title"><text>声明与条款</text></view>
-  <view class='modal-content'>为了能确定您是否为失主，小程序需要用到用户的信息,您是否同意授权？</view>
-<view class="modal-footer">
-    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
-    <button class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</button>
-    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-    <button  class='btn-confirm'open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="primary" plain='true'>同意并继续</button>
-</view>
-</view>
-<form bindsubmit="get_access_token" report-submit='true' >
-  <button  form-type="submit" type="default">提交</button>
+<form bindsubmit="get_access_token" report-submit='true'>
+<button  form-type="submit" type="default">提交</button>
 </form>

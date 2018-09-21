@@ -4,6 +4,9 @@ App({
   },
   globalData: {
     userInfo: null,
-    openid:null
+    openid:null,
+    power:false,
+    category:null,
+    checked:null
   }
 })

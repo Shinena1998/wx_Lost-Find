@@ -19,10 +19,10 @@ Page({
     aBoolean:false,
     showModal:false,
     items: [
-      { name: '证件', value: '证件' },
-      { name: '钱包', value: '钱包' },
-      { name: '书本', value: '书本' },
-      { name: '其他', value: '其他' },
+      { name: '证件', value: '证件', checked: false },
+      { name: '钱包', value: '钱包', checked: false },
+      { name: '书本', value: '书本', checked: false  },
+      { name: '其他', value: '其他', checked: false  },
     ]
   },
 
@@ -31,10 +31,17 @@ Page({
    */
   onLoad: function (options) {
     this.data.openId = app.globalData.openid;
+    /**
+     * 因为app.globalData.checked为字符串，所以先要转化为int型,将对应种类checked
+     * 赋值为true即可使对应按钮选中
+     */
+    console.log(parseInt(app.globalData.checked))
+    this.data.items[parseInt(app.globalData.checked)].checked=true;
+    this.setData({
+      items : this.data.items
+    })
   },
-  /**
-   * 获取用户session_key,以及判断用户是否已经登录过
-   */
+
   onReady: function () {
   },
   onShow: function () {
@@ -95,6 +102,7 @@ Page({
    * 获取失物类型
    */
   radioChange:function(e){
+    console.log(e);
     this.data.category = e.detail.value;
   },
   /**
