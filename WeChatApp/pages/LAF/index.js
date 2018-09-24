@@ -38,26 +38,11 @@ Page({
             app.globalData.openid = res.data.openid;
             that.data.openid=res.data.opeid;
             that.data.session_key=res.data.session_key;
-            /**
-             * 判断用户是否为新用户
-             */
-            wx.request({
-              url: 'http://127.0.0.1:8081/openid/' + res.data.openid,
-              method: "GET",
-              complete: function (res) {
-                /**
-                 * 用户为新用户，则将用户写入数据库
-                 */
-                if(res.data){
-                  that.decodeEncryptedData()
-                }
-              }
-            })
           }
         })
       }
     })
-    // 获取用户信息
+    //获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -137,6 +122,25 @@ Page({
    * 用户授权
    */
  getUserInfo: function (e) {
+    console.log(e)
+    var that = this
+    that.data.encryptedData = e.detail.encryptedData;
+    that.data.iv = e.detail.iv;
+    /**
+    * 判断用户是否为新用户
+    */
+   wx.request({
+     url: 'http://45.40.205.72:8081/openid/' + that.data.openid,
+     method: "GET",
+     complete: function (res) {
+       /**
+        * 用户为新用户，则将用户写入数据库
+        */
+       if (res.data) {
+         that.decodeEncryptedData()
+       }
+     }
+   })
     app.globalData.userInfo = e.detail.userInfo
     if(e.detail.userInfo != null){
       app.globalData.power = true;
@@ -188,8 +192,9 @@ Page({
    * 将用户信息发送到后端
    */
   decodeEncryptedData:function(){
+      var that = this;
       wx.request({
-        url: 'http://localhost:8081/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
+        url: 'http://45.40.205.72:8081/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
         header: {
           'content-type': 'application/json'
         },
@@ -199,7 +204,7 @@ Page({
             openId: res.data.openId,
           })
           wx.request({
-            url: 'http://127.0.0.1:8081/user',
+            url: 'http://45.40.205.72:8081/user',
             method: "POST",
             header: {
               'content_type': "applocation/json"

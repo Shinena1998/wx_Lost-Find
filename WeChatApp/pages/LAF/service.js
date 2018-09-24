@@ -49,7 +49,7 @@ Page({
   onShow: function () {
     var that = this
     wx.request({
-      url: 'http://localhost:8081/msg',
+      url: 'http://45.40.205.72:8081/msg',
       method: 'GET',
       success: function (res) {//连接成功运行
         console.log(res.data)
@@ -74,27 +74,6 @@ Page({
           /**
            * 因为app.globalData.category是json包
            */
-          if (app.globalData.category.currentTarget.id  == "0"){
-            that.setData({
-              category: Card,
-            })
-          }else if(app.globalData.category.currentTarget.id == "1"){
-            that.setData({
-              category: Book,
-            })
-          } else if (app.globalData.category.currentTarget.id  == "2") {
-            that.setData({
-              category: Money,
-            })
-          } else if (app.globalData.category.currentTarget.id  == "3") {
-            that.setData({
-              category: Else,
-            })
-          } else if (app.globalData.category.currentTarget.id  == "4") {
-            that.setData({
-              category: aboutMe,
-            })
-          }
           /**
            * 调用此函数使标签栏颜色正常
            */
@@ -149,7 +128,7 @@ Page({
     })
   },
   /**
-   * 根据显示不同内容使相应标签变色
+   * 根据显示不同内容使相应标签变色并给category赋值
    */
   category:function(res){
     if(res.currentTarget.id == "0"){

@@ -40,6 +40,7 @@ Page({
     this.setData({
       items : this.data.items
     })
+    this.data.category = this.data.items[parseInt(app.globalData.checked)].value;
   },
 
   onReady: function () {
@@ -112,25 +113,28 @@ Page({
     var that = this;
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
+    console.log("asda")
     /**
     * 上传图片，最大10M
     */
     wx.uploadFile({
-      url: 'http://localhost:8081/uploadImage',
+      url: 'http://45.40.205.72:8081/uploadImage',
       filePath: that.data.savedFilePath,
       name: 'file',
       header: {
         'content-type': 'multipart/form-data'
       },
       success: function (res) {
+        console.log("iop"+res.data)
         that.setData({
           picPath: res.data
         })
+        console.log("zxc")
         /**
          * 将所有信息写进数据库
          */
         wx.request({
-          url: 'http://127.0.0.1:8081/msg',
+          url: 'http://45.40.205.72:8081/msg',
           method: "POST",
           header: {
             'content-type': 'application/json'
@@ -171,11 +175,10 @@ Page({
           fail: function (res) {
             console.log(res)
           }
-        })
+        })             
+      },fail:function(res){
+        console.log(ress.data)
       }
     })
-   
-  
   },
-
 })

@@ -126,18 +126,32 @@ public class LafController {
         return dataStr;
     }
 
-    @PostMapping(value = "/uploadImage")
-    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-        //获取文件需要上传到的路径
+//    @PostMapping(value = "/uploadImage")
+//    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+//        //获取文件需要上传到的路径
+//
+//        if(file.isEmpty()==true){
+//            return "error";
+//        }else {
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
+//            Files.write(path,bytes);
+//            file.getOriginalFilename();
+//            return "/pages/img/"+file.getOriginalFilename();
+//        }
+//    }
+@PostMapping(value = "/uploadImage")
+public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+    //获取文件需要上传到的路径
 
-        if(file.isEmpty()==true){
-            return "error";
-        }else {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
-            Files.write(path,bytes);
-            file.getOriginalFilename();
-            return "/pages/img/"+file.getOriginalFilename();
-        }
+    if(file.isEmpty()==true){
+        return "error";
+    }else {
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get("/root/html/"+ file.getOriginalFilename());
+        Files.write(path,bytes);
+        file.getOriginalFilename();
+        return "http://45.40.205.72/"+file.getOriginalFilename();
     }
+}
 }
