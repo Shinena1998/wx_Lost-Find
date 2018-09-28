@@ -1,3 +1,4 @@
+const app = getApp();
 Page({
 
   /**
@@ -8,7 +9,9 @@ Page({
     message:"",
     access_token:'',
     formId:'',
-    nickName:''
+    nickName:'',
+    confirm:null,
+    isshow:true
   },
 
   /**
@@ -18,6 +21,13 @@ Page({
     this.setData({
       detailInfo: wx.getStorageSync("infor")
     })
+    this.remind(false);
+    if(app.globalData.openid == this.data.detailInfo.identity){
+      this.setData({
+        isshow:false,
+        confirm:true
+      })
+    }
   },
 
   /**
@@ -77,11 +87,12 @@ Page({
    * 失主留言
    */
   message:function(res){
-    var message = res.detail.value
+    console.log(app.globalData.userInfo.nickName)
+    var message = app.globalData.userInfo.nickName+":res.detail.value"
     if(message==""){
-      message="谢谢"
+      message=app.global.userInfo.nickName+":谢谢"
     }
-    this,setData({
+    this.setData({
       message:message
     })
   },
@@ -106,10 +117,30 @@ Page({
     })
   },
   /**
+   * 提醒拾取人失主找到失物，待确认
+   */
+  remind:function(res){
+    wx.request({
+      url: 'http://127.0.0.1:8081/confirm/' + this.data.detailInfo.id,
+      method: 'POST',
+      header: {
+        'content-type': 'application/json'
+      },
+      data: {
+        confirm: res
+      },
+      success: function (res) {
+        console.log(res)
+      }
+    })
+  },
+  /**
    * 发送模板信息
    */
   sendMessage:function(){
     var that = this
+    console.log(that.data.detailInfo.id)
+    that.remind(true);
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
     wx.request({
@@ -139,7 +170,6 @@ Page({
             "value": "请您去小程序内确认"
           }
         },
-        "emphasis_keyword": "keyword1.DATA"
       },
       success:function(res){
         console.log(res)

@@ -1,20 +1,28 @@
 package com.example.lostandfind.mysql;
 
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
+@Data
 @Component
 @Entity
-public class UserMysql {
-
+public class UserMysql implements Serializable {
     @Id
-    @GeneratedValue
-    private Integer id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer num;
+    public Integer getNum() {
+        return num;
+    }
+    public void setNum(Integer num) {
+        this.num = num;
+    }
     private String nickName;
 
     private String avatarUrl;
@@ -33,13 +41,6 @@ public class UserMysql {
 
     private String unionId = null;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNickName() {
         return nickName;

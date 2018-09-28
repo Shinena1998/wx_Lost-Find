@@ -35,9 +35,23 @@ Page({
           url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc&js_code=' + res.code + '&grant_type=authorization_code',
           method: 'GET',
           success: function (res) {
+            console.log(res.data)
             app.globalData.openid = res.data.openid;
-            that.data.openid=res.data.opeid;
+            that.data.openid=res.data.openid;
             that.data.session_key=res.data.session_key;
+           
+            /**
+             * 判断用户是否为管理员
+             */
+            wx.request({
+              url: 'http://127.0.0.1:8081/manager/' + that.data.openid,
+              method: 'POST',
+              success: function (res) {
+                if(res.data){
+                  app.globalData.isManager = res.data;
+                }
+              }
+            })
           }
         })
       }
@@ -50,6 +64,12 @@ Page({
           app.globalData.power = true;         
           wx.getUserInfo({
             success: res => {
+              
+              /**
+               * 记录用户基本信息
+               */
+              app.globalData.userInfo = res.userInfo
+              console.log(res)
               that.data.encryptedData = res.encryptedData
               that.data.iv = res.iv;
               //可以将 res 发送给后台解码出 unionId
@@ -122,7 +142,6 @@ Page({
    * 用户授权
    */
  getUserInfo: function (e) {
-    console.log(e)
     var that = this
     that.data.encryptedData = e.detail.encryptedData;
     that.data.iv = e.detail.iv;
@@ -130,7 +149,7 @@ Page({
     * 判断用户是否为新用户
     */
    wx.request({
-     url: 'http://45.40.205.72:8081/openid/' + that.data.openid,
+     url: 'http://127.0.0.1:8081/openid/' + that.data.openid,
      method: "GET",
      complete: function (res) {
        /**
@@ -194,7 +213,7 @@ Page({
   decodeEncryptedData:function(){
       var that = this;
       wx.request({
-        url: 'http://45.40.205.72:8081/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
+        url: 'http://127.0.0.1:8081/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
         header: {
           'content-type': 'application/json'
         },
@@ -204,7 +223,7 @@ Page({
             openId: res.data.openId,
           })
           wx.request({
-            url: 'http://45.40.205.72:8081/user',
+            url: 'http://127.0.0.1:8081/user',
             method: "POST",
             header: {
               'content_type': "applocation/json"
@@ -247,4 +266,10 @@ Page({
   onCancel: function () {
     this.hideModal();
   },
+  toManager:function(){
+    console.log(this.data.openid)
+    wx.navigateTo({
+      url: 'user',
+    })
+  }
 })

@@ -13,6 +13,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    /**
+     * inAboutMe只能在关于我的页面有提示
+     */
+    inAboutMe:false,
     session_key:"",
     infor: [],
     category:[],
@@ -49,7 +53,7 @@ Page({
   onShow: function () {
     var that = this
     wx.request({
-      url: 'http://45.40.205.72:8081/msg',
+      url: 'http://127.0.0.1:8081/msg',
       method: 'GET',
       success: function (res) {//连接成功运行
         console.log(res.data)
@@ -81,23 +85,13 @@ Page({
         } else {
           console.log("error")
         }
+        
       },
       fail: function (res) {//连接失败执行
         wx.showToast({ title: '系统错误' })
       },
       complete: function (res) {//都执行
       },
-    })
-    wx.getSavedFileList({
-      
-      success: function (res) {
-        console.log(res);
-        // for(var i = 0 ; i < 130 ; i ++){
-        //   wx.removeSavedFile({
-        //     filePath: res.fileList[i].filePath
-        //   })
-        // }
-      }
     })
   },
   /**
@@ -135,31 +129,36 @@ Page({
       var newType = ["primary", "default", "default", "default", "default"]
       this.setData({
         type: newType,
-        category:Card
+        category:Card,
+        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "1"){
       var newType = ["default", "primary", "default", "default", "default"]
       this.setData({
         type: newType,
-        category:Book
+        category:Book,
+        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "2") {
       var newType = ["default", "default", "primary", "default", "default"]
       this.setData({
         type: newType,
-        category:Money
+        category:Money,
+        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "3") {
       var newType = ["default", "default", "default", "primary" ,"default"]
       this.setData({
         type: newType,
-        category:Else
+        category:Else,
+        inAboutMe:false,
       })
     } else if (res.currentTarget.id == "4") {
       var newType = ["default", "default", "default", "default","primary"]
       this.setData({
         type: newType,
-        category: aboutMe
+        category: aboutMe,
+        inAboutMe:true
       })
     }
   },

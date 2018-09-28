@@ -2,75 +2,102 @@
 /* pages/weishi/index.wxss */
 page{
   background-color: rgb(220, 230, 223);
-}
-.imgsize{
-  height: 200rpx;
-  line-height: 200rpx;
-   width: 300rpx;
-   border-radius: 20rpx;
-}
-.textsize{
-  height: 150rpx;
-   width: 450rpx;
-}
-.hover{
-  background-color: gray;
-}
-.containe{
-  display: flex;
-  margin-top: 15rpx;
-  border-radius: 5%
-}
-.contain{
-
-  display: flex;
-
-  flex-direction: column;
-
-  margin-left: 15rpx;
-  
-  margin-right: 15rpx;
-}
-.contai{
-
-  display: flex;
-  margin-left: 10rpx;
-  flex-direction: column;
-}
-.buttonr{
-  position: fixed; left: 50%; bottom: 0;
-}
-.buttonl{
-  position: fixed; right: 50%; bottom: 0;
-}
-.buttonsize{
-  width:50%;
-}
-.size{
-  height: 110rpx;
-}/* pages/LAF/service.wxss */
-.inputborder{
-  border: 1rpx solid;
-  border-color: #F5F5F5;
-}
-.imgsize{
-  height: 200rpx;
-   width: 300rpx;
-}
-.buttonstyle{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between
-} 
-.addsize{
-  width: 40rpx;
-  height: 40rpx;
-}
-.select{
-  border: 1rpx solid;
-  border-color:green;
+  height:100%;
+  width: 98%;
+  margin-left:1%;
+  margin-right:1%; 
 }
 .top{
+  height: 5%;
   display: flex;
   justify-content: space-between
+}
+.top_addimg{
+  height:100%;
+  width:50%;
+  border-radius: 15%
+}
+.top_addimgtext{
+  height:100%;
+  width:45%;
+  font-size: 60%;
+  color: white;
+}
+.top_search{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  width: 50%;
+  border: 1rpx solid;
+  border-color: blue;
+} 
+.top_searchImg{
+  width: 10%;
+  height: 100%
+}
+.top_searchText{
+  width: 90%;
+  height: 100%
+}
+.top_searchTextPlaceholder{
+  font-size: 80%;
+  color: white;
+  padding-left:10% 
+}
+.label{
+  display: flex;
+  flex-direction:row;
+  justify-content:space-between;
+  width:120%;
+  height:4%;
+  padding-top: 1%;
+}
+.infoAll{
+  width: 100%;
+  height: 90%;
+}
+.infoView{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 18%;
+  margin-bottom: 2%;
+}
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+ 
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%
+}
+.infoPlaceView{
+  display: flex;
+  height: 80%;
+  width: 95%;
+}
+.infoPlace{
+  height: 100%;
+  width: 100%;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 15%;
 }

@@ -1,10 +1,16 @@
 <view class="top">
-<image src='/pages/img/13343689.png' class="addsize" bindtap='comeinadd'></image>
-<view class='buttonstyle'><input type="text" class="select" confirm-type='search'></input>
-<image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="addsize" bindtap='searcH'></image></view>
+<view style='width:19%;height:100%;display:flex'>
+<image class="top_addimg" src='/pages/img/6EBDB92D-9D10-432F-B4E2-98DE09EAA18D.png ' bindtap='comeinadd'></image>
+<text class='top_addimgtext'>发布信息</text>
 </view>
+<view class='top_search'>
+<image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg" bindtap='searcH'></image>
+<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' placeholder-class='top_searchTextPlaceholder'></input>
+</view>
+</view>
+
 <scroll-view  scroll-x="true">
-<view class="buttonstyle" style='width:130%' >
+<view class="label">
 <view ><button size='mini' plain='true' id='0' type='{{type[0]}}' bindtap='category'>证件</button></view>
 <view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button></view>
 <view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button></view>
@@ -12,28 +18,20 @@
 <view><button size='mini' plain='true' id='4' type='{{type[4]}}' bindtap='category'>关于我的</button></view>
 </view>
 </scroll-view>
-<view class="contain" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
-<view class='containe'>
-<view>
-<image  class="imgsize" src = "{{goods.picPath}}"></image>
-</view>
-<view  class="contai">
-<view class = "textsize">
-<text color="red">拾取时间:{{goods.time}}</text>
-</view>
-<text>地点:{{goods.place}}</text>
-</view>
-</view>
-</view>
 
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
-<view class="modal-dialog" wx:if="{{showModal}}">
-<view class="modal-title"><text>声明与条款</text></view>
-  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,您是否同意授权？</view>
-  <view class="modal-footer">
-    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
-    <button class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</button>
-    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-    <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="onGotUserInfo" type="primary" plain='true'>同意并继续</button>
-  </view>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true">
+<view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view class='OneInfo'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{goods.picPath}}"></image>
 </view>
+<view  class="infoText">
+<view class = "infoPlaceView">
+<textarea class="infoPlace"auto-height='true' value='地点:{{goods.place}}'></textarea>
+<image class="infoRemind"src='/pages/img/C329252B-4FC3-4677-9AAF-362E42B3D75D.png ' wx:if="{{inAboutMe && goods.confirm}}"></image>
+</view>
+<text>拾取时间:{{goods.time}}</text>
+</view>
+</view>
+</view>
+</scroll-view>

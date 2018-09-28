@@ -1,13 +1,17 @@
 package com.example.lostandfind.controller;
 
 import com.example.lostandfind.Repository.InfoRepository;
+import com.example.lostandfind.Repository.ManageRepository;
 import com.example.lostandfind.Repository.UserRepository;
 import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mysql.InfoMysql;
 import com.example.lostandfind.mysql.UserMysql;
+import com.example.lostandfind.service.ConfirmService;
 import com.example.lostandfind.service.DecryptService;
 import com.example.lostandfind.service.InfoService;
 import com.example.lostandfind.utils.ResultUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +26,16 @@ import java.util.List;
 
 @RestController
 public class LafController {
+    private static final Logger logger = LoggerFactory.getLogger(LafController.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private InfoRepository infoRepository;
+
+    @Autowired
+    private ManageRepository manageRepository;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -57,7 +65,9 @@ public class LafController {
 
     @GetMapping(value = "/openid/{openid}")
     public boolean checkOpenId(@PathVariable("openid") String openid){
-        if(userRepository.findByOpenId(openid)==null){
+        logger.info("openid={}",openid);
+        logger.info("openid={}",userRepository.findByOpenId(openid).isEmpty());
+        if(userRepository.findByOpenId(openid).isEmpty()){
             return true;
         }else {
             return false;
@@ -65,7 +75,7 @@ public class LafController {
     }
 
     @GetMapping(value = "/openid1/{openid}")
-    public UserMysql checkOpenId1(@PathVariable("openid") String openid){
+    public List<UserMysql> checkOpenId1(@PathVariable("openid") String openid){
         return userRepository.findByOpenId(openid);
     }
     /**
@@ -126,32 +136,62 @@ public class LafController {
         return dataStr;
     }
 
-//    @PostMapping(value = "/uploadImage")
-//    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-//        //获取文件需要上传到的路径
-//
-//        if(file.isEmpty()==true){
-//            return "error";
-//        }else {
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
-//            Files.write(path,bytes);
-//            file.getOriginalFilename();
-//            return "/pages/img/"+file.getOriginalFilename();
-//        }
-//    }
-@PostMapping(value = "/uploadImage")
-public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-    //获取文件需要上传到的路径
+    /**
+     * 向本地上传图片
+     * @param file 图片的二进制字节流
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/uploadImage")
+    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+        //获取文件需要上传到的路径
 
-    if(file.isEmpty()==true){
-        return "error";
-    }else {
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get("/root/html/"+ file.getOriginalFilename());
-        Files.write(path,bytes);
-        file.getOriginalFilename();
-        return "http://45.40.205.72/"+file.getOriginalFilename();
+        if(file.isEmpty()==true){
+            return "error";
+        }else {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
+            Files.write(path,bytes);
+            file.getOriginalFilename();
+            return "/pages/img/"+file.getOriginalFilename();
+        }
     }
-}
+    /**
+     * 向服务器端传图片
+     */
+//@PostMapping(value = "/uploadImage")
+//public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+//    //获取文件需要上传到的路径
+//
+//    if(file.isEmpty()==true){
+//        return "error";
+//    }else {
+//        byte[] bytes = file.getBytes();
+//        Path path = Paths.get("/root/html/"+ file.getOriginalFilename());
+//        Files.write(path,bytes);
+//        file.getOriginalFilename();
+//        return "http://45.40.205.72/"+file.getOriginalFilename();
+//    }
+//}
+
+    @ResponseBody
+    @PostMapping(value = "/confirm/{id}")
+    public InfoMysql doConfirm(@PathVariable("id") Integer id,
+                               @RequestBody ConfirmService confirm){
+        InfoMysql infoMysql = infoRepository.findById(id).get();
+        infoMysql.setConfirm(confirm.isConfirm());
+        return infoRepository.save(infoMysql);
+    }
+    /**
+     * 管理员
+     */
+    @PostMapping(value ="/manager/{openid}")
+    public Boolean doManager(@PathVariable("openid") String openid){
+        logger.info("manager={}+{}",manageRepository.findByOpenId(openid),openid);
+        if(manageRepository.findByOpenId(openid) != null){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

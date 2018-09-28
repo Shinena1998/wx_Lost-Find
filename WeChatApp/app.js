@@ -7,6 +7,7 @@ App({
     openid:null,
     power:false,
     category:null,
-    checked:null
+    checked:null,
+    isManager:false,
   }
 })

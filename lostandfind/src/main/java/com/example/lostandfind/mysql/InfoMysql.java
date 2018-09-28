@@ -2,16 +2,14 @@ package com.example.lostandfind.mysql;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Component
 @Entity
 public class InfoMysql {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String Time;
@@ -19,6 +17,29 @@ public class InfoMysql {
     private String category;
 
     private String current;
+
+    /**
+     * 失主确认
+     */
+    private boolean isConfirm;
+
+    private boolean finalConfirm;
+
+    public boolean isFinalConfirm() {
+        return finalConfirm;
+    }
+
+    public void setFinalConfirm(boolean finalConfirm) {
+        this.finalConfirm = finalConfirm;
+    }
+
+    public boolean isConfirm() {
+        return isConfirm;
+    }
+
+    public void setConfirm(boolean confirm) {
+        isConfirm = confirm;
+    }
 
     public String getCurrent() {
         return current;

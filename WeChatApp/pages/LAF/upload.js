@@ -34,13 +34,17 @@ Page({
     /**
      * 因为app.globalData.checked为字符串，所以先要转化为int型,将对应种类checked
      * 赋值为true即可使对应按钮选中
+     * 上传界面也可能从service界面进入，所以要对app.globalData.checked进行判断是否为空
      */
     console.log(parseInt(app.globalData.checked))
+    if(app.globalData.checked != null){
     this.data.items[parseInt(app.globalData.checked)].checked=true;
-    this.setData({
-      items : this.data.items
-    })
-    this.data.category = this.data.items[parseInt(app.globalData.checked)].value;
+      this.setData({
+        items: this.data.items
+      })
+      this.data.category = this.data.items[parseInt(app.globalData.checked)].value;
+    }
+    
   },
 
   onReady: function () {
@@ -118,7 +122,7 @@ Page({
     * 上传图片，最大10M
     */
     wx.uploadFile({
-      url: 'http://45.40.205.72:8081/uploadImage',
+      url: 'http://127.0.0.1:8081/uploadImage',
       filePath: that.data.savedFilePath,
       name: 'file',
       header: {
@@ -134,7 +138,7 @@ Page({
          * 将所有信息写进数据库
          */
         wx.request({
-          url: 'http://45.40.205.72:8081/msg',
+          url: 'http://127.0.0.1:8081/msg',
           method: "POST",
           header: {
             'content-type': 'application/json'

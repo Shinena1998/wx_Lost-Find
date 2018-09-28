@@ -16,7 +16,7 @@
 <view class="userinfo">
    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+      <image bindtap="toManager" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
@@ -33,7 +33,7 @@
 <view class="Info_left"><text bindtap="toUpload" >发布信息</text></view>
 <view class='Info_middle'><text id="0" class="Middle_text1"bindtap="toUpload">发布证件</text>
 <text bindtap="toUpload" id = "1" class="Middle_text1">发布钱包</text><text bindtap="toUpload" id="2"class="Middle_text2">发布书本</text><text class="Middle_text2" id="3" bindtap="toUpload">发布其他</text></view>
-<view class="Info_right" id="4" bindtap="toUpload" ><text>发布重要事件</text><text>（需审核）</text></view>
+<view class="Info_right" id="4" bindtap="toUpload" ><text>发布重要物品</text><text>（需审核）</text></view>
 </view>
 </view>
 
