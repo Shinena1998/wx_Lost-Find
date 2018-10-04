@@ -56,7 +56,9 @@ Page({
         })
       }
     })
-    //获取用户信息
+    /**
+     * 判断用户是否已经授权
+     */
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -266,10 +268,16 @@ Page({
   onCancel: function () {
     this.hideModal();
   },
+
   toManager:function(){
-    console.log(this.data.openid)
-    wx.navigateTo({
-      url: 'user',
-    })
+    if (app.globalData.isManager){
+      wx.navigateTo({
+        url: 'manager',
+      })
+    }else{
+      wx.navigateTo({
+        url: 'user',
+      })
+    }
   }
 })

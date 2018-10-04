@@ -1,6 +1,6 @@
 /**index.wxss**/
 page{
-  background-color: rgb(233, 241, 235);
+  background-color:  whitesmoke;
   height: 100%
 }
 .userinfo {

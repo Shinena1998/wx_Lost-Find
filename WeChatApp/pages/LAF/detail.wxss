@@ -1,19 +1,20 @@
 page{
-  background-color: rgb(233, 241, 235);
+  background-color:  whitesmoke;
   height: 100%;
-  margin-left: 1%;
-  margin-right: 1%;
-  width: 98%
+  margin-left: 3%;
+  margin-right: 3%;
+  width: 94%
 }
 .title{
-  display: flex;
-  flex-direction: row;
   width: 100%;
   height: 5%;
+  border-bottom:1rpx solid;
+  border-color: wheat
 }
-.title_imgView{
-  width: 39%;
-  height: 100%
+.title_text{
+  width: 100%;
+  height: 100%;
+  text-align: center
 }
 .comeback{
   width: 15%;
@@ -50,35 +51,49 @@ page{
 }
 .flexx{
   display: flex;
-  width: 100%
-}
-
-.modal-mask {
   width: 100%;
+  height: 20%;
+}
+.info_c{
+  width: 100%;
+  height: 6%;
+  padding-top: 2%;
+  border-bottom:1rpx solid;
+  border-top:1rpx solid;
+  border-color: wheat
+}
+.info_a{
+  width: 100%;
+  height: 60%;
+  display: flex;
+}
+.finishView{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.finish_remind_view{
+  width:100%;
+  height: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+.finish_remind{
+  color: rgb(184, 180, 180);
+  width:55%;
   height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: #000;
-  opacity: 0.5;
-  overflow: hidden;
-  z-index: 9000;
-  color: #fff;
+  font-size: 60%;
 }
-
-
-.input {
-  width: 80%;
-  height: 82rpx;
-  font-size: 28rpx;
-  line-height: 28rpx;
-  padding: 0 20rpx;
-  box-sizing: border-box;
-  color: #333;
-   border-radius: 16rpx;
+.finish_button_view{
+  width:100%;
+  height: 70%;
+  text-align: right;
 }
-
-input-holder {
-  color: #666;
-  font-size: 28rpx;
+.finish_button{
+  border:1rpx solid;
+  border-color:black;
+  border-radius: 15%;
+  padding-top: 2%
 }

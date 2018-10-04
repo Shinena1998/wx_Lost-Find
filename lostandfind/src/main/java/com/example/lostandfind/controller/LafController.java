@@ -22,6 +22,8 @@ import javax.validation.Valid;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -78,7 +80,21 @@ public class LafController {
     public List<UserMysql> checkOpenId1(@PathVariable("openid") String openid){
         return userRepository.findByOpenId(openid);
     }
+
     /**
+     * 查询待审核物品
+     * @param confirm
+     * @return
+     */
+    @GetMapping(value = "/valuable")
+    public List<InfoMysql> searchValuableInfo(@RequestParam("confirm") boolean confirm){
+        return infoRepository.findByIsValuable(confirm);
+    }
+    @GetMapping(value = "/service/info")
+    public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm){
+        return infoRepository.findByABooleanAndFinalConfirmAndIsValuable(confirm,false,false);
+    }
+    /**s
      * 写入数据信息
      * @param infoMysql
      * @return
@@ -88,7 +104,6 @@ public class LafController {
 //    public Result addMsg(@Valid InfoMysql infoMysql,BindingResult bindingResult){
     public Result addMsg(@RequestBody InfoMysql infoMysql) {
         InfoService infoService = new InfoService();
-        System.out.println(infoMysql.getCategory());
         if (infoService.hasError(infoMysql)) {
             return ResultUtil.error(12, "填全内容");
         }
@@ -175,7 +190,7 @@ public class LafController {
 //}
 
     @ResponseBody
-    @PostMapping(value = "/confirm/{id}")
+    @PutMapping(value = "/confirm/{id}")
     public InfoMysql doConfirm(@PathVariable("id") Integer id,
                                @RequestBody ConfirmService confirm){
         InfoMysql infoMysql = infoRepository.findById(id).get();
@@ -193,5 +208,32 @@ public class LafController {
         }else {
             return false;
         }
+    }
+    /**
+     *是否同意审核
+     * 经过审核后Valubable变为0，由aBoolean再来进行判断贵重
+     * 因为事件审核后要消失，所以选择Valubable变量来控制在审核界面的显示
+     * aBoolean则控制在信息显示界面的显示
+     */
+    @PutMapping(value="/check/{id}")
+    public String doCheck(@PathVariable("id") Integer id,
+                          @RequestBody ConfirmService confirmService){
+        InfoMysql infoMysql =  infoRepository.findById(id).get();
+        infoMysql.setaBoolean(confirmService.isConfirm());
+        infoMysql.setValuable(false);
+        infoRepository.save(infoMysql);
+        return "asd"+confirmService.isConfirm();
+    }
+    /**
+     * 结束事件
+     */
+    @PutMapping(value="/finish/{id}")
+    public String doFinish(@PathVariable("id") Integer id){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        InfoMysql infoMysql =  infoRepository.findById(id).get();
+        infoMysql.setFinalConfirm(true);
+        //infoMysql.setFinalTime(df.format(new Date()));// new Date()为获取当前系统时间
+        infoRepository.save(infoMysql);
+        return "success";
     }
 }

@@ -16,16 +16,22 @@ Page({
     question:"",
     anwer:"",
     openId:"",
+    theme:'',
     aBoolean:false,
     showModal:false,
-    items: [
+    kind:"",
+    isValuable:false,
+    items_category:[
       { name: '证件', value: '证件', checked: false },
       { name: '钱包', value: '钱包', checked: false },
       { name: '书本', value: '书本', checked: false  },
       { name: '其他', value: '其他', checked: false  },
+    ],
+    items_kind: [
+      { name: '遗失', value: '遗失', checked: false },
+      { name: '招领', value: '招领', checked: false },
     ]
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -37,14 +43,23 @@ Page({
      * 上传界面也可能从service界面进入，所以要对app.globalData.checked进行判断是否为空
      */
     console.log(parseInt(app.globalData.checked))
+    var count = parseInt(app.globalData.checked)
     if(app.globalData.checked != null){
-    this.data.items[parseInt(app.globalData.checked)].checked=true;
-      this.setData({
-        items: this.data.items
-      })
-      this.data.category = this.data.items[parseInt(app.globalData.checked)].value;
-    }
-    
+      if(count < 4){
+        this.data.items_category[count].checked = true;
+        this.setData({
+          items_category: this.data.items_category
+        })
+        this.data.category = this.data.items_category[count].value;  
+      }
+      /**
+      * 物品为重要物品
+      */
+      else {
+        console.log(count+"zxc")
+        this.data.isValuable = true;
+      }
+    } 
   },
 
   onReady: function () {
@@ -84,7 +99,8 @@ Page({
       contactWay:value.contactWay,
       information:value.info,
       place:value.place,
-      time:value.time
+      time:value.time,
+      theme:value.theme
     })
     console.log(value.place+this.data.category)
     if (this.data.category == "" || this.data.information == "" 
@@ -104,9 +120,16 @@ Page({
     })
   },
   /**
+   * 获取事件类型
+   */
+  radioChangeKind: function (e) {
+    console.log(e);
+    this.data.kind = e.detail.value;
+  },
+  /**
    * 获取失物类型
    */
-  radioChange:function(e){
+  radioChangeCategory:function(e){
     console.log(e);
     this.data.category = e.detail.value;
   },
@@ -117,7 +140,6 @@ Page({
     var that = this;
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
-    console.log("asda")
     /**
     * 上传图片，最大10M
     */
@@ -133,7 +155,7 @@ Page({
         that.setData({
           picPath: res.data
         })
-        console.log("zxc")
+        console.log("zxc" + that.data.isValuable)
         /**
          * 将所有信息写进数据库
          */
@@ -144,15 +166,17 @@ Page({
             'content-type': 'application/json'
           },
           data: {
-            category: that.data.category,
-            current: current,
+            kind:that.data.kind,
+            theme:that.data.theme,
+            valuable: that.data.isValuable,
+            category: that.data.category,   
             time: that.data.time,
             picPath: that.data.picPath,
             contactWay: that.data.contactWay,
             place: that.data.place,
             infomation: that.data.information,
-            aBoolean: true,
-            identity: that.data.openId
+            aBoolean: false,
+            identity: that.data.openId,
           },
           success: function (res) {
             console.log(res)
@@ -166,7 +190,6 @@ Page({
               } else if (res.data.code == 0) {
                 wx.showToast({
                   title: res.data.msg,
-                  duration: 5000,
                   success: function () {
                     wx.navigateBack({
                       delta: 1

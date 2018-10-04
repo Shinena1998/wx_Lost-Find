@@ -1,0 +1,118 @@
+page{
+  background-color:  whitesmoke;
+  height:100%;
+  width: 94%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.label{
+  display: flex;
+  flex-direction:row;
+  justify-content:space-between;
+  width:100%;
+  height:7%;
+  margin-bottom: 3%;
+  border-bottom:1rpx solid;
+  border-color: wheat
+}
+.label_left{
+  display: flex;
+  flex-direction:row;
+  width:40%;
+  height:100%;
+  font-size: 170%;
+  color: rgb(255, 167, 51)
+}
+.label_right{
+  font-size: 100%
+}
+.infoAll{
+  width: 100%;
+  height: 90%;
+}
+.infoView{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 35%;
+  margin-bottom: 2%;
+  box-shadow: 2px 2px 5px #bbb;
+  border-radius: 5%;
+  /* border:1rpx ridge;
+  border-color: rgb(220, 230, 223);
+  border-radius: 5%; */
+}
+.info_view{
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  width: 75%;
+  height: 100%;
+  border-radius: 5% 0 0 5%;
+}
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.infoImgView{
+  height: 100%;
+  width: 50%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+ 
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 50%;
+
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  font-size: 70%;
+  height: 40%;
+  width: 95%;
+}
+.infoTheme{
+  height: 33%;
+  width: 100%;
+  color: g
+
+}
+.infoPlace{
+  height: 30%;
+  width: 95%;
+  font-size: 70%;
+}
+.checkInfoView{
+  height: 100%;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 10% 10% 0;
+  background-color: wheat
+}
+.checkInfoTitle{
+  display: flex;
+  justify-content: center;
+  height: 30%;
+  width: 100%;
+  font-size: 100%;
+}
+.checkInfoAgree{
+  height: 35%;
+  width: 100%;
+  text-align: center
+}
+.checkInfoDisagree{
+  height: 35%;
+  width: 100%;
+  text-align: center
+}

@@ -1,6 +1,5 @@
 <view class="title">
-<view class='title_imgView'><image class="comeback" bindtap='back' src='/pages/img/timg.jpeg'></image></view>
-<view class='textstyle'><text>详细信息</text></view>
+<view class='title_text'><text>填写信息</text></view>
 </view>
 <view class="InfoView">
 <view class="ImgView">
@@ -8,35 +7,36 @@
 <text class="color">物品照片：</text></view>
 <image class="Img"  src = "{{detailInfo.picPath}}"></image>
 </view>
-<view>
-<text class="color">物品类型：</text>
-<text>{{detailInfo.category}}</text>
-</view>
-<view>
-<text class="color">拾取时间：</text>
-<text>{{detailInfo.time}}</text>
-</view>
-<view>
-<text class="color">拾取地点：</text>
-<text>{{detailInfo.place}}</text>
-</view>
-<view>
-<text class="color">联系方式：</text>
-<text>{{detailInfo.contactWay}}</text>
-</view>
+<view class="info_c"><view class='info_a'><text class="color">物品类型：</text>
+<text>{{detailInfo.category}}</text></view></view>
+<view class="info_c"><view class='info_a'><text class="color">拾取时间：</text>
+<text>{{detailInfo.time}}</text></view></view>
+<view class="info_c"><view class='info_a'><text class="color">拾取地点：</text>
+<text>{{detailInfo.place}}</text></view></view>
+<view class="info_c"><view class='info_a'><text class="color">联系方式：</text>
+<text>{{detailInfo.contactWay}}</text></view></view>
 <view class="flexx">
 <text class="color">详细内容：</text>
 <textarea class='textarea' name="info" disabled="true" auto-height='true'>{{detailInfo.infomation}}</textarea>
 </view>
-<view class="flexx">
-<text class="color">失主留言：</text>
-<textarea class='textarea' placeholder='留下感谢的话吧'   style="height:200rpx"bindblur="message"></textarea>
+<view>
+<view wx:if="{{confirm}}">
+<view class='finishView' >
+<view class='finish_remind_view' >
+<text class='finish_remind'>如果失主找回失物，请发布消息者点击</text></view>
+<view class='finish_button_view'>
+<button class='finish_button' size='mini' bindtap='finish'>结束事件</button></view>
 </view>
+</view>
+<block wx:else>
 <form bindsubmit="get_access_token" report-submit='true'>
-
-<!-- auto-height='true' -->
-
-<button  wx:if="{{isshow}}"form-type="submit" type="default">确认失物</button>
+<view class='finishView' >
+<view class='finish_remind_view' >
+<text class='finish_remind'>如果是需要找回失物，通知发布消息者</text></view>
+<view class='finish_button_view'>
+<button class='finish_button' size='mini'form-type="submit">确认失物</button></view>
+</view>
 </form>
-<button  wx:if="{{confirm}}"form-type="submit" type="default">确认失主（失物）</button>
+</block>
+</view>
 </view>

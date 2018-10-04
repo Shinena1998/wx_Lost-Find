@@ -1,20 +1,28 @@
 <view class="title">
-<view><image class="comeback" bindtap='back' src='/pages/img/timg.jpeg'></image></view>
-<view class='textstyle'><text>填写信息</text></view>
+<view class='title_text'><text>填写信息</text></view>
 </view>
 <form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
-<view class="imgsize inputborder" bindtap='uploadImg'>
-<image class="imgsize inputborder" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
+<view class="imageView" bindtap='uploadImg'>
+<view class="imageText">上传照片：</view><image class="image" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
 </view>
-<radio-group class="radio-group" bindchange="radioChange">
-  <label class="radio" wx:for="{{items}}" wx:key="{{items}}">
-    <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+<radio-group class="radio-group_kind" bindchange="radioChangeKind">
+  <label class="radio" wx:for="{{items_kind}}" wx:key="{{items_kind}}">
+  <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </radio-group>
-<view class="info_c">拾取时间：<input class='inputborder' value="" name="time" placeholder='拾取物品时间' style='number'></input></view>
-<view class="info_c">联系方式：<input class='inputborder'value="" name="contactWay" placeholder='用于联系失主' style='text'></input></view>
-<view class="info_c">失物地点：<input class='inputborder' value="" name="place" placeholder='失物地点' style='number'></input></view>
+<radio-group class="radio-group_category" bindchange="radioChangeCategory">
+  <label class="radio" wx:for="{{items_category}}" wx:key="{{items_category}}">
+  <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+  </label>
+</radio-group>
+<view class="info_c"><view class='info_a'>物品名称：<input value="" name="theme" style='number'></input></view></view>
+<view class="info_c"><view class='info_a'>拾取时间：<input value="" name="time" style='number'></input></view></view>
+<view class="info_c"><view class='info_a'>联系方式：<input value="" name="contactWay"  style='text'></input></view></view>
+<view class="info_c"><view class='info_a'>失物地点：<input value="" name="place" style='number'></input></view></view>
 <!-- <input class="inputsize" value="" name="info" placeholder='信息' type='text'>sdfs</input> -->
-<view class="info_c">详细信息：<textarea class='inputborder' name="info" placeholder='失物上主要信息' auto-height='true'></textarea></view>
-<button  formType="submit">提交</button>
+<view class="info_c"><view class='info_a'>详细信息：<input value="" name="info" style='number'></input></view></view>
+<view class='buttonView'>
+<button  bindtap='back' size="mini">取消</button>
+<button  formType="submit" size="mini">提交</button>
+</view>
 </form>

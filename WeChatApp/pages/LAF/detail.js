@@ -21,6 +21,9 @@ Page({
     this.setData({
       detailInfo: wx.getStorageSync("infor")
     })
+    /**
+     * 删除标记标记
+     */
     this.remind(false);
     if(app.globalData.openid == this.data.detailInfo.identity){
       this.setData({
@@ -78,41 +81,66 @@ Page({
   onShareAppMessage: function () {
     
   },
-  back: function () {
-    wx.navigateBack({
-      url: 'service',
+  /**
+   * 发布信息者结束事件
+   */
+  finish:function(){
+    var that = this
+    wx.showModal({
+      title: '操作确认',
+      content: '是否确定',
+      confirmColor:'green',
+      success:function(res){
+        if(res.confirm){
+          wx.request({
+            url: 'http://127.0.0.1:8081/finish/' + that.data.detailInfo.id,
+            method: 'PUT',
+            success: function (res) {
+              wx.navigateBack({
+                delta:1
+              })
+            }
+          })
+        }
+      }
     })
   },
   /**
-   * 失主留言
+   * 失主留言(未实现)
    */
   message:function(res){
     console.log(app.globalData.userInfo.nickName)
-    var message = app.globalData.userInfo.nickName+":res.detail.value"
-    if(message==""){
-      message=app.global.userInfo.nickName+":谢谢"
-    }
-    this.setData({
-      message:message
-    })
+    this.data.message = app.globalData.userInfo.nickName+":res.detail.value"
   },
   /**
    * 获取formId以及access_token用于发送模板
    */
   get_access_token:function(res){
-    console.log(res)
-    this.setData({
-      formId:res.detail.formId
-    })
     var that = this
-    wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc',
-      method:"GET",
-      success:function(res){
-        that.setData({
-          access_token:res.data.access_token
-        })
-        that.sendMessage();
+    wx.showModal({
+      title: '操作确认',
+      content: '是否确定',
+      confirmColor: 'green',
+      success: function (e) {
+        if (e.confirm) {
+          that.setData({
+            formId: res.detail.formId
+          })
+
+          wx.request({
+            url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc',
+            method: "GET",
+            success: function (res) {
+              that.setData({
+                access_token: res.data.access_token
+              })
+              //加标记
+              that.remind(true);
+              //发模板信息
+              that.sendMessage();
+            }
+          })
+        }
       }
     })
   },
@@ -120,9 +148,10 @@ Page({
    * 提醒拾取人失主找到失物，待确认
    */
   remind:function(res){
+    console.log(res)
     wx.request({
       url: 'http://127.0.0.1:8081/confirm/' + this.data.detailInfo.id,
-      method: 'POST',
+      method: 'PUT',
       header: {
         'content-type': 'application/json'
       },
@@ -138,8 +167,16 @@ Page({
    * 发送模板信息
    */
   sendMessage:function(){
+    if (this.data.message == "") {
+      this.setData({
+        message: app.globalData.userInfo.nickName + ":谢谢"
+      })
+    }
     var that = this
     console.log(that.data.detailInfo.id)
+    /**
+     * 添加标记
+     */
     that.remind(true);
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
@@ -173,6 +210,9 @@ Page({
       },
       success:function(res){
         console.log(res)
+        wx.navigateBack({
+          delta:1,
+        })
       }
     })
   },

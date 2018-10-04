@@ -23,6 +23,7 @@ public class UserMysql implements Serializable {
     public void setNum(Integer num) {
         this.num = num;
     }
+
     private String nickName;
 
     private String avatarUrl;

@@ -1,0 +1,29 @@
+<view class='label'>
+<view class="label_left"><text>审核区</text></view>
+<view class='label_right'><text>用户界面</text></view></view>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true">
+<view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view class='OneInfo'>
+<view class='info_view'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{goods.picPath}}"></image>
+</view>
+<view  class="infoText">
+<view class = "infoThemeView">
+<text class='infoTheme'>{{goods.theme}}</text>
+<text class='infoTheme'>{{goods.category}}</text>
+<text class='infoTheme'>{{goods.contactWay}}</text>
+</view>
+<view class="infoPlace">
+<textarea auto-height='true' disabled="true" value='地点:{{goods.place}}'></textarea></view>
+<view class="infoPlace">
+<textarea auto-height='true' disabled="true" value='信息:{{goods.infomation}}'></textarea></view>
+</view>
+</view>
+<view class='checkInfoView'>
+<view class='checkInfoTitle'><text >审核</text></view>
+<view class='checkInfoAgree' ><button bindtap='agree'id="{{index}}" size='mini' plain='true'style='border:1px solid;border-color: green;color:green'>同意</button></view>
+<view class='checkInfoDisagree'><button bindtap='disagree'id="{{index}}" size='mini' plain='true' style='border:1px solid;border-color: red;color:red'>拒绝</button></view></view>
+</view>
+</view>
+</scroll-view>
