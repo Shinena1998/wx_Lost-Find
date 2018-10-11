@@ -1,6 +1,5 @@
 const app = getApp();
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -10,6 +9,7 @@ Page({
     access_token:'',
     formId:'',
     nickName:'',
+    infoCss:{},
     confirm:null,
     isshow:true
   },
@@ -21,6 +21,15 @@ Page({
     this.setData({
       detailInfo: wx.getStorageSync("infor")
     })
+    if (this.data.detailInfo.kind == "遗失"){
+      this.setData({
+        infoCss:app.globalData.infoLostCss
+      })
+    } else if (this.data.detailInfo.kind == "招领"){
+      this.setData({
+        infoCss: app.globalData.infoFindCss
+      })
+    }
     /**
      * 删除标记标记
      */

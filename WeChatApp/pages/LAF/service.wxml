@@ -1,11 +1,11 @@
 <view class="top">
 <view style='width:19%;height:100%;display:flex'>
-<image class="top_addimg" src='/pages/img/6EBDB92D-9D10-432F-B4E2-98DE09EAA18D.png ' bindtap='comeinadd'></image>
-<text class='top_addimgtext'>发布信息</text>
+
+<text class='top_addimgtext' >发布信息</text>
 </view>
 <view class='top_search'>
-<image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg" bindtap='searcH'></image>
-<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' placeholder-class='top_searchTextPlaceholder'></input>
+<image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg"></image>
+<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' confirm-type='search' bindfocus='search' placeholder-class='top_searchTextPlaceholder'></input>
 </view>
 </view>
 
@@ -37,8 +37,8 @@
 <text class='infoTheme' style='color:green;'>{{goods.theme}}</text>
 </view>
 <view class="infoPlace">
-<textarea auto-height='true' value='丢失地点:{{goods.place}}'></textarea></view>
-<text>时间:{{goods.time}}</text>
+<textarea auto-height='true' disabled="true" value='{{inforCss[index][0]}}{{goods.place}}'></textarea></view>
+<text>{{inforCss[index][1]}}{{goods.time}}</text>
 </view>
 </view>
 </view>

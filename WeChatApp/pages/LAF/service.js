@@ -21,6 +21,8 @@ Page({
     infor: [],
     category:[],
     valuable:[],
+    infoCss:{},
+    inforCss:[],
     type: ["primary", "default", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
   },
@@ -112,6 +114,7 @@ Page({
               that.category(app.globalData.category);
             },
             fail: function (res) {//连接失败执行
+            console.log(res)
               wx.showToast({ title: '网络错误' })
             },
           })
@@ -205,16 +208,26 @@ Page({
       })
     }
     /**
-     * 将贵重信息放在普通信息前面
+     * 将重要与非重要连接
      */
+    this.data.category = this.data.valuable.concat(this.data.category);
+    
+    var InforCss = []
+    for (var i = 0; i < this.data.category.length; i++) {
+      if(this.data.category[i].kind == '招领'){
+        InforCss.push(['拾取地点','拾取时间'])
+      } else if (this.data.category[i].kind == '遗失') {
+        InforCss.push(['丢失地点', '丢失时间'])
+      }
+    }
     this.setData({
-      category: this.data.valuable.concat(this.data.category)
+      category:this.data.category,
+      inforCss:InforCss
     })
   },
-  searcH:function(){
-    wx.showToast({
-      title: '404-not found',
-      icon:"none"
-    })
+  search:function(e){
+  wx.navigateTo({
+    url: 'search',
+  })
   }
 })

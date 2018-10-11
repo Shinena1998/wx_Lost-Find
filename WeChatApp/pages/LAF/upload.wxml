@@ -11,14 +11,14 @@
   </label>
 </radio-group>
 <radio-group class="radio-group_category" bindchange="radioChangeCategory">
-  <label class="radio" wx:for="{{items_category}}" wx:key="{{items_category}}">
-  <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+  <label class="radio" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
+  <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </radio-group>
 <view class="info_c"><view class='info_a'>物品名称：<input value="" name="theme" style='number'></input></view></view>
-<view class="info_c"><view class='info_a'>拾取时间：<input value="" name="time" style='number'></input></view></view>
+<view class="info_c"><view class='info_a'>{{infoCss.time}}：<input value="" name="time" style='number'></input></view></view>
 <view class="info_c"><view class='info_a'>联系方式：<input value="" name="contactWay"  style='text'></input></view></view>
-<view class="info_c"><view class='info_a'>失物地点：<input value="" name="place" style='number'></input></view></view>
+<view class="info_c"><view class='info_a'>{{infoCss.place}}：<input value="" name="place" style='number'></input></view></view>
 <!-- <input class="inputsize" value="" name="info" placeholder='信息' type='text'>sdfs</input> -->
 <view class="info_c"><view class='info_a'>详细信息：<input value="" name="info" style='number'></input></view></view>
 <view class='buttonView'>

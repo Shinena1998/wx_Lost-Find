@@ -7,10 +7,20 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 @Component
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@NamedQueries(value =
+        {@NamedQuery(name="InfoMysql.findByInfoTheme",
+                query = "select o from InfoMysql o"),
+        @NamedQuery(name="InfoMysql.findByInfoTime",
+                query = "select o from InfoMysql o"),
+                @NamedQuery(name="InfoMysql.findByInfoPlace",
+                        query = "select o from InfoMysql o"),
+                @NamedQuery(name="InfoMysql.findByInfoInfomation",
+                        query = "select o from InfoMysql o"),
+        })
+
 public class InfoMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

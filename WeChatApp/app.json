@@ -1,12 +1,13 @@
 {
   "pages":[
+
     "pages/LAF/index",
     "pages/LAF/service",
     "pages/LAF/upload",
     "pages/LAF/detail",
-    "pages/LAF/manager"
+    "pages/LAF/manager",
+    "pages/LAF/search"
 
-   
   ],
   "window":{
     "backgroundTextStyle":"light",

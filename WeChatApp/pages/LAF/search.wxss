@@ -1,0 +1,204 @@
+/* pages/LAF/search.wxss */
+page{
+  background-color:  whitesmoke;
+  height:100%;
+  width: 96%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.top{
+  height: 5%;
+  width: 100%;
+  display: flex;
+  margin-top: 3%;
+  justify-content: space-between;
+  /* border: 1px solid red */
+}
+.top_search{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  /* border: 1px solid;
+  border-color: green */
+} 
+.top_pickerView{
+  height: 100%;
+  width: 30%;
+  border-right: 1rpx solid whitesmoke;
+  background-color: white;
+  /* border: 1px solid;
+  border-color: red  */
+}
+.top_picker{
+  height: 100%;
+  width: 100%;
+  font-size: 80%;
+  margin-top: 3%;
+  color: red;
+  /* border: 1px solid;
+  border-color: red  */
+}
+.top_searchText{
+  width: 42%;
+  height: 100%;
+   background-color: white
+  /* border: 1px solid;
+  border-color: red */
+}
+.top_searchTextPlaceholder{
+  font-size: 80%;
+  padding-left:10% 
+}
+.top_sh_left{
+  height: 100%;
+  width: 5%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: white
+}
+.top_sh_middle{
+  height: 100%;
+  width: 15%;
+  color: black;
+  font-size: 60%;
+  border-radius: 50%;
+  background-color: orange
+}
+.top_sh_right{
+  width: 5%;
+  margin-right: 3%;
+  background-color: white;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.remind{
+  width: 100%;
+  height: 5%;
+  margin-top: 5%;
+  font-size: 80%;
+  color: blue
+}
+.else{
+  height: 90%;
+  margin-top: 3%;
+  width: 94%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.labelView{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.labelFor{
+  height: 15%;
+  text-align: center;
+  margin-top: 5%;
+}
+.label_left{
+  width: 40rpx;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: #ffffff;
+}
+.label_middle{
+  background-color: white;
+}
+.label_right{
+  width: 40rpx;
+  background-color: white;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.label_css{
+  display: flex;
+  width: 100%;
+  height: 100%
+}
+.infoAll{
+  width: 94%;
+  height: 90%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.infoView{
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 30%;
+  margin-bottom: 4%;
+  /* border:1rpx ridge;
+  border-color: rgb(220, 230, 223);
+  border-radius: 5%; */
+}
+.remark{
+  width: 100%;
+  height: 20%;
+  display: flex;
+}
+.remark_time{
+  width: 100%;
+  height: 100%;
+  margin-top: 2%;
+  /* border: 1px solid;
+  border-color: green; */
+}
+.OneInfo{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border-radius: 5%;
+  border: 1px solid;
+  border-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+ 
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+}
+.infoPlace{
+  height: 50%;
+  width: 95%;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 50%;
+}

@@ -6,7 +6,13 @@ Page({
   data: {
     decode:true,
     msg: [],
-    savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
+    pictureCssPaths:["/pages/img/199FA2CA-7177-4640-A2F3-B8F7C5FC117E.png ",
+                    "/pages/img/27C36CF5-7208-4527-B3BA-70333A1B09CF.png ",
+                    "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
+                    "/pages/img/3758617A-1DC9-46C4-B092-D49545B70020.png",
+                    "/pages/img/986803F3-6074-4624-8F2A-2FB638147B3E.png"],
+    savedFilePath:"",
+    isUploadPic:false,
     category:"",
     time:"",
     picPath:"",
@@ -17,6 +23,7 @@ Page({
     anwer:"",
     openId:"",
     theme:'',
+    infoCss: { time: "丢失时间", place: "丢失地点" },
     aBoolean:false,
     showModal:false,
     kind:"",
@@ -60,6 +67,13 @@ Page({
         this.data.isValuable = true;
       }
     } 
+    /**
+     * 对应显示默认图片
+     */
+    this.setData({
+      savedFilePath: this.data.pictureCssPaths[count],
+      picPath: this.data.pictureCssPaths[count],
+    })
   },
 
   onReady: function () {
@@ -83,7 +97,8 @@ Page({
            * 1.在视图界面显示上传图片
            * 2.记录上传图片的临时文件路径，以便后面上传至服务器
            */
-          savedFilePath: res.tempFilePaths[0]
+          savedFilePath: res.tempFilePaths[0],
+          isUploadPic:true
         })
       }
     })
@@ -125,87 +140,137 @@ Page({
   radioChangeKind: function (e) {
     console.log(e);
     this.data.kind = e.detail.value;
+    if (e.detail.value == "遗失"){
+      this.setData({
+        infoCss: app.globalData.infoLostCss
+      })
+    }else{
+      this.setData({
+        infoCss:app.globalData.infoFindCss
+      })
+    }
   },
   /**
    * 获取失物类型
+   * 改变默认图片
    */
   radioChangeCategory:function(e){
     console.log(e);
     this.data.category = e.detail.value;
+    var picture = this.data.pictureCssPaths
+    var p = 0;
+    for(var i = 0 ; i < picture.length;i ++){
+      if(this.data.savedFilePath != picture[i]){
+        p = p+1;
+      }   
+    }
+    console.log(p)
+    if(p < 5){
+      if(e.detail.value == "证件"){
+        this.setData({
+          savedFilePath:picture[0],
+          picPath:picture[0]
+        })
+      }else if (e.detail.value == "钱包") {
+        this.setData({
+          savedFilePath: picture[1],
+          picPath: picture[1]
+        })
+      }else if (e.detail.value == "书本") {
+        this.setData({
+          savedFilePath: picture[2],
+          picPath: picture[2]
+        })
+      }else if (e.detail.value == "其他") {
+        this.setData({
+          savedFilePath: picture[3],
+          picPath: picture[3]
+        })
+      }
+      
+    }
   },
   /**
-   * 发送物品信息到后端
+   * isUploadPic用于记录用户是否上传图片，
    */
   writeInfo:function(){
     var that = this;
-    var time = new Date();
-    var current = time.toLocaleDateString() + time.toLocaleTimeString();
-    /**
-    * 上传图片，最大10M
-    */
-    wx.uploadFile({
-      url: 'http://127.0.0.1:8081/uploadImage',
-      filePath: that.data.savedFilePath,
-      name: 'file',
+    if(that.data.isUploadPic){
+      /**
+      * 上传图片，最大10M
+      */
+      wx.uploadFile({
+        url: 'http://127.0.0.1:8081/uploadImage',
+        filePath: that.data.savedFilePath,
+        name: 'file',
+        header: {
+          'content-type': 'multipart/form-data'
+        },
+        success: function (res) {
+          console.log("iop" + res.data)
+          that.setData({
+            picPath: res.data
+          })
+          that.uploadInfo()
+          console.log("zxc" + that.data.isValuable)
+        }, fail: function (res) {
+          console.log(res)
+        }
+      })
+    }else {
+      that.uploadInfo()
+    }
+    
+  },
+  /**
+  * 将所有信息写进数据库
+  */
+  uploadInfo:function(){
+    console.log()
+    var that= this
+    wx.request({
+      url: 'http://127.0.0.1:8081/msg',
+      method: "POST",
       header: {
-        'content-type': 'multipart/form-data'
+        'content-type': 'application/json'
+      },
+      data: {
+        kind: that.data.kind,
+        theme: that.data.theme,
+        valuable: that.data.isValuable,
+        category: that.data.category,
+        time: that.data.time,
+        picPath: that.data.picPath,
+        contactWay: that.data.contactWay,
+        place: that.data.place,
+        infomation: that.data.information,
+        aBoolean: false,
+        identity: that.data.openId,
       },
       success: function (res) {
-        console.log("iop"+res.data)
-        that.setData({
-          picPath: res.data
-        })
-        console.log("zxc" + that.data.isValuable)
-        /**
-         * 将所有信息写进数据库
-         */
-        wx.request({
-          url: 'http://127.0.0.1:8081/msg',
-          method: "POST",
-          header: {
-            'content-type': 'application/json'
-          },
-          data: {
-            kind:that.data.kind,
-            theme:that.data.theme,
-            valuable: that.data.isValuable,
-            category: that.data.category,   
-            time: that.data.time,
-            picPath: that.data.picPath,
-            contactWay: that.data.contactWay,
-            place: that.data.place,
-            infomation: that.data.information,
-            aBoolean: false,
-            identity: that.data.openId,
-          },
-          success: function (res) {
-            console.log(res)
-            if (res.statusCode == 200) {
-              if (res.data.code == 12) {
-                console.log("asd" + that.data.openId)
-                wx.showToast({
-                  title: "网络错误,获取用户表示失败",
-                  icon: "none",
-                })
-              } else if (res.data.code == 0) {
-                wx.showToast({
-                  title: res.data.msg,
-                  success: function () {
-                    wx.navigateBack({
-                      delta: 1
-                    })
-                  }
+        console.log(res)
+        if (res.statusCode == 200) {
+          if (res.data.code == 12) {
+            console.log("asd" + that.data.openId)
+            wx.showToast({
+              title: "网络错误,获取用户表示失败",
+              icon: "none",
+            })
+          } else if (res.data.code == 0) {
+            wx.showToast({
+              title: res.data.msg,
+              success: function () {
+                wx.navigateBack({
+                  delta: 1
                 })
               }
-            }
-          },
-          fail: function (res) {
-            console.log(res)
+            })
           }
-        })             
-      },fail:function(res){
-        console.log(ress.data)
+        }
+      },
+      fail: function (res) {
+        console.log(res)
       }
-    })
-  },
+    })   
+  }
 })

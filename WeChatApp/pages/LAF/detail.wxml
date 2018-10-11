@@ -9,9 +9,9 @@
 </view>
 <view class="info_c"><view class='info_a'><text class="color">物品类型：</text>
 <text>{{detailInfo.category}}</text></view></view>
-<view class="info_c"><view class='info_a'><text class="color">拾取时间：</text>
+<view class="info_c"><view class='info_a'><text class="color">{{infoCss.time}}：</text>
 <text>{{detailInfo.time}}</text></view></view>
-<view class="info_c"><view class='info_a'><text class="color">拾取地点：</text>
+<view class="info_c"><view class='info_a'><text class="color">{{infoCss.place}}：</text>
 <text>{{detailInfo.place}}</text></view></view>
 <view class="info_c"><view class='info_a'><text class="color">联系方式：</text>
 <text>{{detailInfo.contactWay}}</text></view></view>

@@ -1,9 +1,11 @@
 package com.example.lostandfind.controller;
 
+import com.example.lostandfind.Repository.HistoryRepository;
 import com.example.lostandfind.Repository.InfoRepository;
 import com.example.lostandfind.Repository.ManageRepository;
 import com.example.lostandfind.Repository.UserRepository;
 import com.example.lostandfind.domain.Result;
+import com.example.lostandfind.mysql.HistoryMysql;
 import com.example.lostandfind.mysql.InfoMysql;
 import com.example.lostandfind.mysql.UserMysql;
 import com.example.lostandfind.service.ConfirmService;
@@ -38,6 +40,9 @@ public class LafController {
 
     @Autowired
     private ManageRepository manageRepository;
+
+    @Autowired
+    private HistoryRepository historyRepository;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -185,7 +190,7 @@ public class LafController {
 //        Path path = Paths.get("/root/html/"+ file.getOriginalFilename());
 //        Files.write(path,bytes);
 //        file.getOriginalFilename();
-//        return "http://45.40.205.72/"+file.getOriginalFilename();
+//        return "https://yuigahama.info/"+file.getOriginalFilename();
 //    }
 //}
 
@@ -235,5 +240,43 @@ public class LafController {
         //infoMysql.setFinalTime(df.format(new Date()));// new Date()为获取当前系统时间
         infoRepository.save(infoMysql);
         return "success";
+    }
+    /**
+     * 模糊搜索
+     */
+    @GetMapping(value = "/search/{index}/{string}")
+    @ResponseBody
+    public List<InfoMysql> doSearch(@PathVariable("string") String name,
+                                    @PathVariable("index") Integer index){
+        List<InfoMysql> infoMysqlList = null;
+        if(index == 0){
+             infoMysqlList = infoRepository.findByInfoTheme(name);
+        }else if(index == 1){
+            infoMysqlList = infoRepository.findByInfoTime(name);
+        }else if(index == 2){
+            infoMysqlList = infoRepository.findByInfoPlace(name);
+        }else if(index == 3){
+            infoMysqlList = infoRepository.findByInfoInfomation(name);
+        }
+        return infoMysqlList;
+    }
+    /**
+     * 添加历史查询
+     */
+    @ResponseBody
+    @PutMapping(value = "/search/history/{id}")
+    public HistoryMysql doAddHistory(@RequestBody HistoryMysql historyMysql){
+        System.out.print(historyMysql.getHistoryList());
+        return historyRepository.save(historyMysql);
+    }
+    /**
+     * 搜索历史查询
+     */
+    @ResponseBody
+    @GetMapping(value="/search/history/{openid}")
+    public HistoryMysql doSearchHistory(@PathVariable("openid") String openid){
+        HistoryMysql historyMysql = historyRepository.findByOpenid(openid);
+        System.out.println(historyMysql.getHistoryList()[0]);
+        return historyMysql;
     }
 }

@@ -1,0 +1,65 @@
+<form bindsubmit="search2" report-submit='true'>
+<view class='top'>
+<view class='top_search'>
+<view class='top_sh_left'></view><view class="top_pickerView">
+ <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view class="top_picker">
+      选择类型:{{array[index]}}
+    </view>
+  </picker>
+</view>
+<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索信息' confirm-type='search' bindconfirm='search1'
+name='text' placeholder-class='top_searchTextPlaceholder'></input>
+<view class='top_sh_right'></view>
+<button class='top_sh_middle' form-type='submit'>搜索</button>
+</view>
+</view>
+</form>
+
+<view wx:if="{{show}}" class='else'>
+
+<view class="remind">快捷查询</view>
+<view class='labelView'>
+<view class="labelFor"wx:for="{{labelList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindtap='fastSearch'> 
+<view class='label_css'>
+<view class='label_left'></view>
+<view class='label_middle'>{{goods}}</view>
+<view class='label_right'></view></view>
+</view>
+</view>
+
+<view class="remind">历史查询</view>
+<view class='labelView'>
+<view class="labelFor"wx:for="{{storyList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindtap='fastSearch'> 
+<view class='label_css'><view class='label_left'></view><view class='label_middle'>{{goods}}</view><view class='label_right'></view></view>
+</view>
+</view>
+
+</view>
+
+<block wx:else>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true">
+<view class="infoView" wx:for="{{infoList}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view class='remark'>
+τ<view class='remark_time'><text>{{goods.current}}</text></view>
+</view>
+<view class='OneInfo'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{goods.picPath}}"></image>
+</view>
+<view  class="infoText">
+<view class = "infoThemeView">
+<view class='infoThemeRemindView'>
+<text class='infoKind' style='color:red;'>{{goods.kind}}</text>
+<image class="infoRemind"src='/pages/img/C329252B-4FC3-4677-9AAF-362E42B3D75D.png ' wx:if="{{inAboutMe && goods.confirm}}"></image>
+</view>
+<text class='infoTheme' style='color:green;' >{{goods.theme}}</text>
+</view>
+<view class="infoPlace">
+<textarea auto-height='true' disabled="true" value='{{goods.place}}'></textarea></view>
+<text>{{goods.time}}</text>
+</view>
+</view>
+</view>
+</scroll-view>
+</block>
