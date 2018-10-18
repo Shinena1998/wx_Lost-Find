@@ -1,7 +1,8 @@
 /**index.wxss**/
 page{
   background-color:  whitesmoke;
-  height: 100%
+  height: 100%;
+  width: 100%
 }
 .userinfo {
   display: flex;
@@ -187,7 +188,6 @@ page{
 }
 
 .modal-mask {
-
   width: 100%;
   height: 100%;
   position: fixed;
@@ -206,7 +206,7 @@ page{
   position: fixed;
   top: 50%;
   left: 0; 
-  z-index: 9999;
+  z-index: 9998;
   background: rgb(233, 241, 235);
   margin: -180rpx 105rpx; 
   border-radius: 16rpx;
@@ -274,4 +274,14 @@ input-holder {
   width: 50%;
   border-radius:10rpx;
   font-size: 80%
+}
+
+.modal-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  z-index:9999;
+  top: 0%;
+  left: 0%; 
 }

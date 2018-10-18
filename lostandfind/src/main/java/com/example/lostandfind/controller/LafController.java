@@ -11,6 +11,8 @@ import com.example.lostandfind.mysql.UserMysql;
 import com.example.lostandfind.service.ConfirmService;
 import com.example.lostandfind.service.DecryptService;
 import com.example.lostandfind.service.InfoService;
+import com.example.lostandfind.service.TokenService;
+import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-public class LafController {
+public class LafController{
     private static final Logger logger = LoggerFactory.getLogger(LafController.class);
 
     @Autowired
@@ -261,22 +265,74 @@ public class LafController {
         return infoMysqlList;
     }
     /**
-     * 添加历史查询
+     * 更新历史查询
      */
     @ResponseBody
-    @PutMapping(value = "/search/history/{id}")
+    @PutMapping(value = "/search/history")
     public HistoryMysql doAddHistory(@RequestBody HistoryMysql historyMysql){
-        System.out.print(historyMysql.getHistoryList());
-        return historyRepository.save(historyMysql);
+        String history;
+        historyMysql.setHistory(new ChangeListUtil(historyMysql.getHistoryList() , historyMysql.getIndexList()).changeHistoryListUtil());
+        historyMysql.setPicker(new ChangeListUtil(historyMysql.getHistoryList() , historyMysql.getIndexList()).changeIndexListUtil());
+        if(historyRepository.findByOpenid(historyMysql.getOpenid()) == null){
+            return historyRepository.save(historyMysql);
+        }else {
+            HistoryMysql historyMysql1 = historyRepository.findByOpenid(historyMysql.getOpenid());
+            historyMysql1.setHistoryList(historyMysql.getHistoryList());
+            historyMysql1.setHistory(historyMysql.getHistory());
+            historyMysql1.setIndexList(historyMysql.getIndexList());
+            historyMysql1.setPicker(historyMysql.getPicker());
+            return historyRepository.save(historyMysql1);
+        }
     }
     /**
      * 搜索历史查询
      */
     @ResponseBody
     @GetMapping(value="/search/history/{openid}")
-    public HistoryMysql doSearchHistory(@PathVariable("openid") String openid){
+    public HistoryMysql doSearchHistory(@PathVariable("openid") String openid) {
         HistoryMysql historyMysql = historyRepository.findByOpenid(openid);
-        System.out.println(historyMysql.getHistoryList()[0]);
+        if(historyMysql.getHistory() != null){
+            historyMysql.setHistoryList(historyMysql.getHistory().split("\\+"));
+            historyMysql.setIndexList(historyMysql.getPicker().split("\\+"));
+        }
         return historyMysql;
+    }
+    /**
+     * 是否查看历史查询
+     */
+    @ResponseBody
+    @PutMapping(value="/search/eye")
+    public HistoryMysql doaChangeEye(@RequestBody HistoryMysql historyMysql) {
+        HistoryMysql historyMysql1 = historyRepository.findByOpenid(historyMysql.getOpenid());
+        historyMysql1.setEye(historyMysql.getEye());
+        return historyRepository.save(historyMysql1);
+    }
+    /**
+     * 删除历史记录
+     */
+    @ResponseBody
+    @DeleteMapping(value="/search/detele/{openid}")
+    public HistoryMysql doDelete(@PathVariable("openid") String openid){
+        HistoryMysql historyMysql = historyRepository.findByOpenid(openid);
+        historyMysql.setHistory("");
+        historyMysql.setPicker("");
+        return historyRepository.save(historyMysql);
+    }
+    /**
+     * 生成token
+     */
+    @ResponseBody
+    @GetMapping(value = "/token")
+    public TokenService makeToken(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        TokenService tokenService = new TokenService();
+        String token = tokenService.makeToken();
+        logger.info("token1={}",token);
+        session.setAttribute("token",token);
+        tokenService.setToken(token);
+        tokenService.setSession(session.getId());
+        logger.info("token2={}",session.getAttribute("token"));
+        logger.info("token2={}",session.getAttribute("token"));
+        return tokenService;
     }
 }

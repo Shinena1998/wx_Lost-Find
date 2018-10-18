@@ -14,33 +14,46 @@ page{
   background-color: white
 }
 .top_addimg{
-  height:92%;
+  height:100%;
   width:50%;
-  border-radius: 15%;
-  border: 1rpx solid;
-  border-color: blue;
 }
+
 .top_addimgtext{
   height:100%;
   width:45%;
   font-size: 70%;
 }
+
 .top_search{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 92%;
-  width: 50%;
-  border: 1rpx solid;
-  border-color: blue;
+  width: 70%;
 } 
+.top_searchtextLeft{
+  height: 100%;
+  width: 7%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color:  whitesmoke;
+}
 .top_searchImg{
   width: 10%;
-  height: 100%
+  height: 100%;
+  background-color:  whitesmoke;
 }
 .top_searchText{
-  width: 90%;
-  height: 100%
+  width: 76%;
+  height: 100%;
+  background-color:  whitesmoke;
+}
+.top_searchtextRight{
+  height: 100%;
+  width: 7%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  background-color:  whitesmoke;
 }
 .top_searchTextPlaceholder{
   font-size: 80%;

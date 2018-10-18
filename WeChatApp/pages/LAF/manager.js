@@ -1,4 +1,6 @@
 // pages/LAF/manager.js
+
+const app = getApp()
 Page({
 
   /**
@@ -25,6 +27,7 @@ Page({
     wx.request({
       url: 'http://127.0.0.1:8081/valuable',
       method: 'GET',
+      header: app.globalData.header,
       data:{
         confirm:true,
       },
@@ -98,9 +101,7 @@ Page({
     var that =this
     wx.request({
       url: 'http://127.0.0.1:8081/check/' + id,
-      header:{
-        'content-type':'application/json'
-      },
+      header: app.globalData.header,
       method:'PUT',
       data:{
         confirm:res,

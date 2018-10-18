@@ -62,9 +62,7 @@ Page({
     wx.request({
       url: 'http://127.0.0.1:8081/service/info',
       method: 'GET',
-      header:{
-        'content-type':"application/json"
-      },
+      header: app.globalData.header,
       data:{
         confirm:false,
       },
@@ -94,9 +92,7 @@ Page({
           wx.request({
             url: 'http://127.0.0.1:8081/service/info',
             method: 'GET',
-            header: {
-              'content-type': "application/json"
-            },
+            header: app.globalData.header,
             data: {
               confirm: true,
             },

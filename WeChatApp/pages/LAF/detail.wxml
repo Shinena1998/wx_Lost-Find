@@ -21,7 +21,7 @@
 </view>
 <view>
 <view wx:if="{{confirm}}">
-<view class='finishView' >
+<view class='finishView'>
 <view class='finish_remind_view' >
 <text class='finish_remind'>如果失主找回失物，请发布消息者点击</text></view>
 <view class='finish_button_view'>
@@ -29,14 +29,27 @@
 </view>
 </view>
 <block wx:else>
-<form bindsubmit="get_access_token" report-submit='true'>
 <view class='finishView' >
-<view class='finish_remind_view' >
+<view class='finish_remind_view'>
 <text class='finish_remind'>如果是需要找回失物，通知发布消息者</text></view>
 <view class='finish_button_view'>
-<button class='finish_button' size='mini'form-type="submit">确认失物</button></view>
+<button class='finish_button' size='mini' bindtap='showDialogBtn'>确认失物</button></view>
 </view>
-</form>
 </block>
 </view>
+</view>
+
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+<view class="modal-title"><text>失主留言</text></view>
+
+  <view class='modal-content'><input auto-focus='true' bindblur='message'></input></view>
+  <view class="modal-footer">
+    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
+    <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
+    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
+<form bindsubmit="get_access_token" report-submit='true' class='btn-confirm' >
+    <button type="primary" plain='true' form-type="submit">确定</button>
+    </form>
+  </view>
 </view>

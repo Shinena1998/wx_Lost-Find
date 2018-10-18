@@ -1,7 +1,10 @@
 package com.example.lostandfind.aspect;
 
 import com.example.lostandfind.Repository.OperateRespository;
+import com.example.lostandfind.mysql.HistoryMysql;
+import com.example.lostandfind.mysql.ManagerMysql;
 import com.example.lostandfind.mysql.OperateMysql;
+import com.example.lostandfind.service.TokenService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -10,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import sun.tools.jstat.Token;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Random;
 
 @Aspect
 @Component
@@ -47,6 +53,7 @@ public class UserAspect {
         //类方法
         logger.info("class_method={}",joinPoint.getSignature().getDeclaringTypeName()+" "+joinPoint.getSignature().getName());
         //参数
+
         logger.info("args={}",joinPoint.getArgs());
         OperateMysql operateMysql = new OperateMysql();
         operateMysql.setUrl(request.getRequestURI());
@@ -55,10 +62,11 @@ public class UserAspect {
         operateRespository.save(operateMysql);
     }
     @After("log()")
-    public void doAfter(){
+    public void doAfter(JoinPoint joinPoint){
+
     }
+
     @AfterReturning(returning = "object",pointcut = "log()")
     public void doAfterRetuening(Object object){
-        logger.info(object.toString());
     }
 }

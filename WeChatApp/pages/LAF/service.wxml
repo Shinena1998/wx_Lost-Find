@@ -1,11 +1,11 @@
 <view class="top">
 <view style='width:19%;height:100%;display:flex'>
-
-<text class='top_addimgtext' >发布信息</text>
+<image src='/pages/img/logo.png' class='top_addimg'></image>
+<text class='top_addimgtext' >信息一览</text>
 </view>
 <view class='top_search'>
-<image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg"></image>
-<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' confirm-type='search' bindfocus='search' placeholder-class='top_searchTextPlaceholder'></input>
+<view class='top_searchtextLeft'></view><image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg"></image>
+<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' confirm-type='search' bindtap='search' placeholder-class='top_searchTextPlaceholder'></input><view class='top_searchtextRight'></view>
 </view>
 </view>
 

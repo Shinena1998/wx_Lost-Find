@@ -11,11 +11,12 @@ Page({
     nickName:'',
     infoCss:{},
     confirm:null,
-    isshow:true
+    isshow:true,
+    showModal:false,
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 自动显示对应样式
    */
   onLoad: function (options) {
     this.setData({
@@ -104,6 +105,7 @@ Page({
           wx.request({
             url: 'http://127.0.0.1:8081/finish/' + that.data.detailInfo.id,
             method: 'PUT',
+            header: app.globalData.header,
             success: function (res) {
               wx.navigateBack({
                 delta:1
@@ -115,9 +117,32 @@ Page({
     })
   },
   /**
+ * 显示模态对话框
+ */
+  showDialogBtn: function () {
+    this.setData({
+      showModal: true
+    })
+  },
+  /**
+  * 隐藏模态对话框
+  */
+  hideModal: function () {
+    this.setData({
+      showModal: false
+    });
+  },
+  /**
+   * 对话框取消按钮点击事件
+   */
+  onCancel: function () {
+    this.hideModal();
+  },
+  /**
    * 失主留言(未实现)
    */
   message:function(res){
+    console.log(res.detail.value)
     console.log(app.globalData.userInfo.nickName)
     this.data.message = app.globalData.userInfo.nickName+":res.detail.value"
   },
@@ -126,32 +151,23 @@ Page({
    */
   get_access_token:function(res){
     var that = this
-    wx.showModal({
-      title: '操作确认',
-      content: '是否确定',
-      confirmColor: 'green',
-      success: function (e) {
-        if (e.confirm) {
-          that.setData({
-            formId: res.detail.formId
-          })
-
-          wx.request({
-            url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc',
-            method: "GET",
-            success: function (res) {
-              that.setData({
-                access_token: res.data.access_token
-              })
-              //加标记
-              that.remind(true);
-              //发模板信息
-              that.sendMessage();
-            }
-          })
-        }
+    that.setData({
+      formId: res.detail.formId
+    })
+    wx.request({
+      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc',
+      method: "GET",
+      success: function (res) {
+        that.setData({
+          access_token: res.data.access_token
+        })
+        //加标记
+        that.remind(true);
+        //发模板信息
+        that.sendMessage();
       }
     })
+       
   },
   /**
    * 提醒拾取人失主找到失物，待确认
@@ -161,9 +177,7 @@ Page({
     wx.request({
       url: 'http://127.0.0.1:8081/confirm/' + this.data.detailInfo.id,
       method: 'PUT',
-      header: {
-        'content-type': 'application/json'
-      },
+      header: app.globalData.header,
       data: {
         confirm: res
       },

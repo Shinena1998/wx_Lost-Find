@@ -18,8 +18,8 @@ name='text' placeholder-class='top_searchTextPlaceholder'></input>
 
 <view wx:if="{{show}}" class='else'>
 
-<view class="remind">快捷查询</view>
-<view class='labelView'>
+<view class="historyView"><text>推荐查询</text><image class="eyes"  bindtap='changeEye' src='{{eye}}'></image></view>
+<view class='labelView' wx:if="{{isShowFastSearch}}">
 <view class="labelFor"wx:for="{{labelList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindtap='fastSearch'> 
 <view class='label_css'>
 <view class='label_left'></view>
@@ -27,13 +27,19 @@ name='text' placeholder-class='top_searchTextPlaceholder'></input>
 <view class='label_right'></view></view>
 </view>
 </view>
+<block wx:else>
+<text style='color:wheat;font-size:80%;margin-left:35%;'>推荐搜索已隐藏</text>
+</block>
 
-<view class="remind">历史查询</view>
-<view class='labelView'>
-<view class="labelFor"wx:for="{{storyList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindtap='fastSearch'> 
-<view class='label_css'><view class='label_left'></view><view class='label_middle'>{{goods}}</view><view class='label_right'></view></view>
+<view class="historyView"><text>历史查询</text><image class="history_deleteImg"  bindtap='deleteHistorySearch' src='/pages/img/31848B0B-9DEA-4847-B241-18125CB6D371.png '></image></view>
+<view class='labelView' wx:if='{{isshowhistory}}'>
+<view class="labelFor"wx:for="{{storyList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindlongpress='deleteHistorySearch' bindtap='historySearch'> 
+<view class='label_css'  ><view class='label_left'></view><view class='label_middle'>{{goods}}</view><view class='label_right'></view></view>
 </view>
 </view>
+<block wx:else>
+<text style='color:wheat;font-size:80%;margin-left:40%'>无历史记录</text>
+</block>
 
 </view>
 

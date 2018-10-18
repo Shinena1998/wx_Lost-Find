@@ -30,18 +30,20 @@
 </view> 
 
 <view class='makeInfo'>
-<view class="Info_left"><text bindtap="toUpload" >发布信息</text></view>
+<view class="Info_left"><text>发布信息</text></view>
 <view class='Info_middle'><text id="0" class="Middle_text1"bindtap="toUpload">发布证件</text>
 <text bindtap="toUpload" id = "1" class="Middle_text1">发布钱包</text><text bindtap="toUpload" id="2"class="Middle_text2">发布书本</text><text class="Middle_text2" id="3" bindtap="toUpload">发布其他</text></view>
 <view class="Info_right" id="4" bindtap="toUpload" ><text>发布重要物品</text><text>（需审核）</text></view>
 </view>
 </view>
 
+<view class="modal-image" wx:if="{{image_show}}"><image style="height:100%;width:100%"src="/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png "></image>
+</view>
 
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>声明与条款</text></view>
-  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，以用来让发起者结束事件,您是否同意授权？</view>
+  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，您是否同意授权？</view>
   <view class='modal-content1'><text class="btn-cancel">* 头像，昵称，openid等</text></view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
@@ -50,3 +52,4 @@
     <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>同意并继续</button>
   </view>
 </view>
+
