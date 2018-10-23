@@ -1,8 +1,11 @@
 <view class='label'>
-<view class="label_left"><text>审核区</text></view>
-<view class='label_right'><text>用户界面</text></view></view>
+<view class="label_left"><text bindtap='showCheck'>审核区</text></view>
+<view class='label_right' bindtap='getSuggestion'><image  src='/pages/img/94FB2F80-BB44-4547-AC1E-041AE763C95A.png' style='height:100%;width:100%'></image></view></view>
+
+
 <scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true">
-<view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view wx:if="{{showCheck}}" style='height:100%;width:100%'>
+<view  class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
 <view class='OneInfo'>
 <view class='info_view'>
 <view class="infoImgView">
@@ -26,4 +29,15 @@
 <view class='checkInfoDisagree'><button bindtap='disagree'id="{{index}}" size='mini' plain='true' style='border:1px solid;border-color: red;color:red'>拒绝</button></view></view>
 </view>
 </view>
+</view>
+
+
+<block wx:else>
+<view  wx:for="{{suggestion}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view class='remark'>
+<view class='remark_time'><text>{{goods.nickName}}</text></view>
+</view>
+<textarea auto-height='true' disabled='true' value='{{goods.suggestion}}'></textarea>
+</view>
+</block>
 </scroll-view>

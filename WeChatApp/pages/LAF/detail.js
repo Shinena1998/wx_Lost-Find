@@ -139,12 +139,12 @@ Page({
     this.hideModal();
   },
   /**
-   * 失主留言(未实现)
+   * 失主留言
    */
   message:function(res){
     console.log(res.detail.value)
     console.log(app.globalData.userInfo.nickName)
-    this.data.message = app.globalData.userInfo.nickName+":res.detail.value"
+    this.data.message = app.globalData.userInfo.nickName+":"+res.detail.value
   },
   /**
    * 获取formId以及access_token用于发送模板

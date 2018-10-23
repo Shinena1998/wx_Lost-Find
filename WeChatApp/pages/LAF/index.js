@@ -304,10 +304,34 @@ Page({
    * 接收用户建议
    */
   suggestion:function(res){
+    console.log(res)
     this.data.suggestion = res.detail.value;
   },
+  /**
+   * 因为接收用户建议使用bindlur触发的时间，当用户点击完成确定此时使用bindtap触发发送信
+   * 息事件，两事件处于竞争状态，不能确定两者先后次序，但这里需求是要先记录用户建议在发送
+   * ，所以在发送信息事件用setTimeout延迟执行1s写入操作，保证先得到用户建议后写入后端
+   */
   sendSuggestion:function(){
-    
+    this.setData({
+      showModal2:false
+    })
+    var that = this
+    setTimeout(function(){
+      wx.request({
+        url: 'http://127.0.0.1:8081/suggestion',
+        header: app.globalData.header,
+        method: "POST",
+        data: {
+          nickName: that.data.userInfo.nickName,
+          openId: that.data.openid,
+          suggestion: that.data.suggestion
+        },
+        success: function (res) {
+          console.log(res);
+        }
+      })
+    },1000)
   },
   toManager:function(){
     if (app.globalData.isManager){

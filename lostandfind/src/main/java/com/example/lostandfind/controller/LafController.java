@@ -1,12 +1,10 @@
 package com.example.lostandfind.controller;
 
-import com.example.lostandfind.Repository.HistoryRepository;
-import com.example.lostandfind.Repository.InfoRepository;
-import com.example.lostandfind.Repository.ManageRepository;
-import com.example.lostandfind.Repository.UserRepository;
+import com.example.lostandfind.Repository.*;
 import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mysql.HistoryMysql;
 import com.example.lostandfind.mysql.InfoMysql;
+import com.example.lostandfind.mysql.SuggestMysql;
 import com.example.lostandfind.mysql.UserMysql;
 import com.example.lostandfind.service.ConfirmService;
 import com.example.lostandfind.service.DecryptService;
@@ -46,6 +44,9 @@ public class LafController{
 
     @Autowired
     private HistoryRepository historyRepository;
+
+    @Autowired
+    private SuggestRepository suggestRepository;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -327,5 +328,22 @@ public class LafController{
         tokenService.setToken(token);
         tokenService.setSession(session.getId());
         return tokenService;
+    }
+    /**
+     * 写入用户建议
+     */
+    @ResponseBody
+    @PostMapping(value = "/suggestion")
+    public SuggestMysql WriteSuggestion(@RequestBody SuggestMysql suggestMysql){
+        return suggestRepository.save(suggestMysql);
+    }
+
+    /**
+     * 查看用户建议
+     */
+    @ResponseBody
+    @GetMapping(value = "/suggestion")
+    public List<SuggestMysql> GetSuggestion(){
+        return suggestRepository.findAll();
     }
 }

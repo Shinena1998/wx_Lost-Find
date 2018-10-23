@@ -3,6 +3,7 @@ package com.example.lostandfind.mysql;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,8 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
-@Component
+@Repository
+
 @Entity
 public class UserMysql implements Serializable {
     @Id

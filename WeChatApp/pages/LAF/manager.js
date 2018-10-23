@@ -9,6 +9,8 @@ Page({
   data: {
     category:[],
     infor:[],
+    suggestion:[],
+    showCheck:true,
   },
 
   /**
@@ -43,8 +45,12 @@ Page({
       },
       complete: function (res) {//都执行
       },
+    })  
+  },
+  showCheck:function(){
+    this.setData({
+      showCheck:true
     })
-    
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -130,4 +136,24 @@ Page({
     var id = this.data.category[e.currentTarget.id].id
     this.checked(false, id);
   },
+  /**
+   * 获取用户建议
+   */
+  getSuggestion:function(){
+    this.setData({
+      showCheck:false
+    })
+    var that = this
+    wx.request({
+      url: 'http://127.0.0.1:8081/suggestion',
+      method:"GET",
+      header:app.globalData.header,
+      success:function(res){
+        that.setData({
+          suggestion:res.data
+        })
+        console.log(res.data)
+      }
+    })
+  }
 })

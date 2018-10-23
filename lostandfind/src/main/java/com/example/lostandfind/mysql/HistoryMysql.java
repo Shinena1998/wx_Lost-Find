@@ -2,6 +2,7 @@ package com.example.lostandfind.mysql;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-@Component
+@Repository
 public class HistoryMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

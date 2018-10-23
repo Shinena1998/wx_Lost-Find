@@ -28,6 +28,7 @@
 <button class='finish_button' size='mini' bindtap='finish'>结束事件</button></view>
 </view>
 </view>
+
 <block wx:else>
 <view class='finishView' >
 <view class='finish_remind_view'>
@@ -43,7 +44,7 @@
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>失主留言</text></view>
 
-  <view class='modal-content'><input auto-focus='true' bindblur='messageq'></input></view>
+  <view class='modal-content'><input auto-focus='true' bindblur='message'></input></view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>

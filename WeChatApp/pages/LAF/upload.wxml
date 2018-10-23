@@ -22,7 +22,6 @@
 <!-- <input class="inputsize" value="" name="info" placeholder='信息' type='text'>sdfs</input> -->
 <view class="info_c"><view class='info_a'>详细信息：<input value="" name="info" style='number'></input></view></view>
 <view class='buttonView'>
-information
 <button  bindtap='back' size="mini">取消</button>
 <button  formType="submit" size="mini">提交</button>
 </view>

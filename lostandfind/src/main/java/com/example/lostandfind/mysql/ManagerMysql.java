@@ -1,11 +1,13 @@
 package com.example.lostandfind.mysql;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
 @Entity
-@Component
+@Repository
+
 public class ManagerMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
