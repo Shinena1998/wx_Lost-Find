@@ -3,7 +3,8 @@ page{
   height: 100%;
   margin-left: 3%;
   margin-right: 3%;
-  width: 94%
+  width: 94%;
+  font-size: 80%;
 }
 .title{
   width: 100%;
@@ -85,6 +86,7 @@ page{
   width:55%;
   height: 100%;
   font-size: 60%;
+  text-align: right;
 }
 .finish_button_view{
   width:100%;

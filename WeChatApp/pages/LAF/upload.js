@@ -118,7 +118,7 @@ Page({
       theme:value.theme
     })
     console.log(value.place+this.data.category)
-    if (this.data.category == "" || this.data.information == "" 
+    if (this.data.kind == "" || this.data.category == "" || this.data.information == "" 
       || this.data.time == "" || this.data.place == ""
       || this.data.contactWay == ""){
         wx.showToast({
@@ -203,9 +203,7 @@ Page({
         url: 'http://127.0.0.1:8081/uploadImage',
         filePath: that.data.savedFilePath,
         name: 'file',
-        header: {
-          'content-type': 'multipart/form-data'
-        },
+        header: app.globalData.header,
         success: function (res) {
           console.log("iop" + res.data)
           that.setData({
@@ -231,9 +229,7 @@ Page({
     wx.request({
       url: 'http://127.0.0.1:8081/msg',
       method: "POST",
-      header: {
-        'content-type': 'application/json'
-      },
+      header: app.globalData.header,
       data: {
         kind: that.data.kind,
         theme: that.data.theme,

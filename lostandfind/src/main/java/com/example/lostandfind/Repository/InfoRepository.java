@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     public List<InfoMysql> findByIsValuable(boolean b);
-    public List<InfoMysql> findByABooleanAndFinalConfirmAndIsValuable(boolean aBoolean,boolean finalConfirm,boolean isValuable);
+    public List<InfoMysql> findByABooleanAndFinalConfirmAndIsValuableAndTimeOut(boolean aBoolean,boolean finalConfirm,boolean isValuable,boolean timeOut);
     @Query("select o from InfoMysql o where o.theme like %:name% ")
     public List<InfoMysql> findByInfoTheme(@Param("name") String name);
     @Query("select o from InfoMysql o where o.Time like %:name% ")

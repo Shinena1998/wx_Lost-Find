@@ -123,7 +123,7 @@ page{
   margin-left: 2%;
   flex-direction: column;
   height: 100%;
-  width: 58%
+  width: 58%;
 }
 .infoThemeView{
   display: flex;
@@ -148,6 +148,7 @@ page{
 .infoPlace{
   height: 50%;
   width: 95%;
+  padding-top: 2%;
 }
 .infoRemind{
   padding-top: 1%;

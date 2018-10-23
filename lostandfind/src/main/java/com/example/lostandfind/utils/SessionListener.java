@@ -22,27 +22,27 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent httpSessionBindingEvent) {
-        logger.info("--attributeAdded--");
+//        logger.info("--attributeAdded--");
         @SuppressWarnings("unused")
         HttpSession session = httpSessionBindingEvent.getSession();
-        logger.info("key----:" + httpSessionBindingEvent.getName());
-        logger.info("value---:" + httpSessionBindingEvent.getValue());
+//        logger.info("key----:" + httpSessionBindingEvent.getName());
+//        logger.info("value---:" + httpSessionBindingEvent.getValue());
 
     }
 
     @Override
     public void attributeRemoved(HttpSessionBindingEvent httpSessionBindingEvent) {
-        logger.info("--attributeRemoved--");
+//        logger.info("--attributeRemoved--");
     }
 
     @Override
     public void attributeReplaced(HttpSessionBindingEvent httpSessionBindingEvent) {
-        logger.info("--attributeReplaced--");
+//        logger.info("--attributeReplaced--");
     }
 
     @Override
     public void sessionCreated(HttpSessionEvent event) {
-        logger.info("---sessionCreated----");
+//        logger.info("---sessionCreated----");
         HttpSession session = event.getSession();
         ServletContext application = session.getServletContext();
         // 在application范围由一个HashSet集保存所有的session
@@ -63,9 +63,9 @@ public class SessionListener implements HttpSessionListener, HttpSessionAttribut
 
     @Override
     public void sessionDestroyed(HttpSessionEvent event) throws ClassCastException {
-        logger.info("---sessionDestroyed----");
+//        logger.info("---sessionDestroyed----");
         HttpSession session = event.getSession();
-        logger.info("deletedSessionId: " + session.getId());
+//        logger.info("deletedSessionId: " + session.getId());
         System.out.println(session.getCreationTime());
         System.out.println(session.getLastAccessedTime());
         ServletContext application = session.getServletContext();

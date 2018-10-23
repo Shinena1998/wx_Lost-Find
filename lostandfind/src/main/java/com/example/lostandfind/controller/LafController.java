@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,8 +35,6 @@ import java.util.List;
 
 @RestController
 public class LafController{
-    private static final Logger logger = LoggerFactory.getLogger(LafController.class);
-
     @Autowired
     private UserRepository userRepository;
 
@@ -76,8 +75,6 @@ public class LafController{
 
     @GetMapping(value = "/openid/{openid}")
     public boolean checkOpenId(@PathVariable("openid") String openid){
-        logger.info("openid={}",openid);
-        logger.info("openid={}",userRepository.findByOpenId(openid).isEmpty());
         if(userRepository.findByOpenId(openid).isEmpty()){
             return true;
         }else {
@@ -101,7 +98,7 @@ public class LafController{
     }
     @GetMapping(value = "/service/info")
     public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm){
-        return infoRepository.findByABooleanAndFinalConfirmAndIsValuable(confirm,false,false);
+        return infoRepository.findByABooleanAndFinalConfirmAndIsValuableAndTimeOut(confirm,false,false,false);
     }
     /**s
      * 写入数据信息
@@ -116,7 +113,7 @@ public class LafController{
         if (infoService.hasError(infoMysql)) {
             return ResultUtil.error(12, "填全内容");
         }
-
+        infoMysql.setTimestamps((new Date().getTime())/1000);
         infoRepository.save(infoMysql);
         return ResultUtil.success(infoMysql);
 
@@ -176,7 +173,6 @@ public class LafController{
             byte[] bytes = file.getBytes();
             Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
             Files.write(path,bytes);
-            file.getOriginalFilename();
             return "/pages/img/"+file.getOriginalFilename();
         }
     }
@@ -211,7 +207,6 @@ public class LafController{
      */
     @PostMapping(value ="/manager/{openid}")
     public Boolean doManager(@PathVariable("openid") String openid){
-        logger.info("manager={}+{}",manageRepository.findByOpenId(openid),openid);
         if(manageRepository.findByOpenId(openid) != null){
             return true;
         }else {
@@ -324,15 +319,13 @@ public class LafController{
     @ResponseBody
     @GetMapping(value = "/token")
     public TokenService makeToken(HttpServletRequest request){
+
         HttpSession session = request.getSession();
         TokenService tokenService = new TokenService();
         String token = tokenService.makeToken();
-        logger.info("token1={}",token);
         session.setAttribute("token",token);
         tokenService.setToken(token);
         tokenService.setSession(session.getId());
-        logger.info("token2={}",session.getAttribute("token"));
-        logger.info("token2={}",session.getAttribute("token"));
         return tokenService;
     }
 }

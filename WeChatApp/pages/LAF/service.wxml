@@ -37,7 +37,7 @@
 <text class='infoTheme' style='color:green;'>{{goods.theme}}</text>
 </view>
 <view class="infoPlace">
-<textarea auto-height='true' disabled="true" value='{{inforCss[index][0]}}{{goods.place}}'></textarea></view>
+<textarea style="width:100%"auto-height='true' disabled="true" value='{{inforCss[index][0]}}{{goods.place}}'></textarea></view>
 <text>{{inforCss[index][1]}}{{goods.time}}</text>
 </view>
 </view>

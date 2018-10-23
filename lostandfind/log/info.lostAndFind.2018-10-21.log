@@ -1,0 +1,406 @@
+2018-10-21 02:10:37,076 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 2503 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 02:10:37,087 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 02:10:37,202 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 02:10:37 CST 2018]; root of context hierarchy
+2018-10-21 02:10:39,208 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2dc6dc15] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 02:10:40,136 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 02:10:40,182 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 02:10:40,210 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 02:10:40,211 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 02:10:40,219 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 02:10:40,427 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 02:10:40,427 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 3226 ms
+2018-10-21 02:10:40,516 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 02:10:40,522 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 02:10:40,523 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 02:10:40,524 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 02:10:40,524 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 02:10:40,826 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 02:10:41,269 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 02:10:41,350 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 02:10:41,375 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 02:10:41,620 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 02:10:41,622 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 02:10:41,755 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 02:10:42,094 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 02:10:43,402 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 02:10:43,590 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 02:10:44,524 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 02:10:44,860 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 574 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 02:10:37 CST 2018]; root of context hierarchy
+2018-10-21 02:10:44,929 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration 235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2018-10-21 02:10:44,981 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/identity],methods=[GET]}" onto public java.lang.Object com.example.lostandfind.controller.LafController.decode(java.lang.String,java.lang.String,java.lang.String)
+2018-10-21 02:10:44,982 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.UserList()
+2018-10-21 02:10:44,983 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid/{openid}],methods=[GET]}" onto public boolean com.example.lostandfind.controller.LafController.checkOpenId(java.lang.String)
+2018-10-21 02:10:44,984 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid1/{openid}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.checkOpenId1(java.lang.String)
+2018-10-21 02:10:44,984 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/valuable],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchValuableInfo(boolean)
+2018-10-21 02:10:44,984 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/service/info],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchInfo(boolean)
+2018-10-21 02:10:44,985 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addMsg(com.example.lostandfind.mysql.InfoMysql)
+2018-10-21 02:10:44,985 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.msgList()
+2018-10-21 02:10:44,986 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/uploadImage],methods=[POST]}" onto public java.lang.String com.example.lostandfind.controller.LafController.uploadPicture(org.springframework.web.multipart.MultipartFile) throws java.lang.Exception
+2018-10-21 02:10:44,986 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/confirm/{id}],methods=[PUT]}" onto public com.example.lostandfind.mysql.InfoMysql com.example.lostandfind.controller.LafController.doConfirm(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 02:10:44,987 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/manager/{openid}],methods=[POST]}" onto public java.lang.Boolean com.example.lostandfind.controller.LafController.doManager(java.lang.String)
+2018-10-21 02:10:44,987 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/check/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doCheck(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 02:10:44,987 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/finish/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doFinish(java.lang.Integer)
+2018-10-21 02:10:44,988 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/{index}/{string}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.doSearch(java.lang.String,java.lang.Integer)
+2018-10-21 02:10:44,989 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doAddHistory(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 02:10:44,989 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history/{openid}],methods=[GET]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doSearchHistory(java.lang.String)
+2018-10-21 02:10:44,989 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/eye],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doaChangeEye(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 02:10:44,990 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/token],methods=[GET]}" onto public com.example.lostandfind.service.TokenService com.example.lostandfind.controller.LafController.makeToken(javax.servlet.http.HttpServletRequest)
+2018-10-21 02:10:44,990 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/detele/{openid}],methods=[DELETE]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doDelete(java.lang.String)
+2018-10-21 02:10:44,991 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql,org.springframework.validation.BindingResult)
+2018-10-21 02:10:44,991 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/user],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql)
+2018-10-21 02:10:44,994 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-21 02:10:44,995 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-21 02:10:45,024 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 02:10:45,025 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 02:10:45,370 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 433 - Registering beans for JMX exposure on startup
+2018-10-21 02:10:45,372 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 895 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-10-21 02:10:45,378 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 668 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-10-21 02:10:45,391 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Starting ProtocolHandler ["http-nio-8081"]
+2018-10-21 02:10:45,412 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 180 - Using a shared selector for servlet write/read
+2018-10-21 02:10:45,433 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 206 - Tomcat started on port(s): 8081 (http) with context path ''
+2018-10-21 02:10:45,438 [main] INFO  c.e.l.LostandfindApplication 59 - Started LostandfindApplication in 9.542 seconds (JVM running for 11.2)
+2018-10-21 02:37:39,653 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 750 - HikariPool-1 - Retrograde clock change detected (housekeeper delta=28s77ms), soft-evicting connections from pool.
+2018-10-21 03:37:10,025 [Thread-23] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 02:10:37 CST 2018]; root of context hierarchy
+2018-10-21 03:37:10,030 [Thread-23] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
+2018-10-21 03:37:10,032 [Thread-23] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
+2018-10-21 03:37:10,035 [Thread-23] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:37:10,039 [Thread-23] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 03:37:10,045 [Thread-23] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.
+2018-10-21 03:37:17,699 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 3194 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 03:37:17,729 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 03:37:17,881 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@302552ec: startup date [Sun Oct 21 03:37:17 CST 2018]; root of context hierarchy
+2018-10-21 03:37:20,228 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$410f7744] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 03:37:21,034 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 03:37:21,056 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:37:21,076 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 03:37:21,076 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 03:37:21,082 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 03:37:21,239 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 03:37:21,239 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 3358 ms
+2018-10-21 03:37:21,355 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 03:37:21,360 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 03:37:21,361 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 03:37:21,361 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 03:37:21,361 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 03:37:21,595 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 03:37:21,985 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 03:37:22,031 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:37:22,045 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 03:37:22,136 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 03:37:22,139 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 03:37:22,177 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 03:37:22,329 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 03:37:23,110 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 03:37:23,197 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:37:24,118 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:37:24,437 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 574 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@302552ec: startup date [Sun Oct 21 03:37:17 CST 2018]; root of context hierarchy
+2018-10-21 03:37:24,470 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration 235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2018-10-21 03:37:24,507 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/identity],methods=[GET]}" onto public java.lang.Object com.example.lostandfind.controller.LafController.decode(java.lang.String,java.lang.String,java.lang.String)
+2018-10-21 03:37:24,508 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/detele/{openid}],methods=[DELETE]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doDelete(java.lang.String)
+2018-10-21 03:37:24,509 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addMsg(com.example.lostandfind.mysql.InfoMysql)
+2018-10-21 03:37:24,510 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.UserList()
+2018-10-21 03:37:24,510 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid/{openid}],methods=[GET]}" onto public boolean com.example.lostandfind.controller.LafController.checkOpenId(java.lang.String)
+2018-10-21 03:37:24,510 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid1/{openid}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.checkOpenId1(java.lang.String)
+2018-10-21 03:37:24,511 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/valuable],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchValuableInfo(boolean)
+2018-10-21 03:37:24,511 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/service/info],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchInfo(boolean)
+2018-10-21 03:37:24,512 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.msgList()
+2018-10-21 03:37:24,512 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/uploadImage],methods=[POST]}" onto public java.lang.String com.example.lostandfind.controller.LafController.uploadPicture(org.springframework.web.multipart.MultipartFile) throws java.lang.Exception
+2018-10-21 03:37:24,512 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/confirm/{id}],methods=[PUT]}" onto public com.example.lostandfind.mysql.InfoMysql com.example.lostandfind.controller.LafController.doConfirm(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:37:24,513 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/manager/{openid}],methods=[POST]}" onto public java.lang.Boolean com.example.lostandfind.controller.LafController.doManager(java.lang.String)
+2018-10-21 03:37:24,513 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/check/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doCheck(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:37:24,514 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/finish/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doFinish(java.lang.Integer)
+2018-10-21 03:37:24,514 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/{index}/{string}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.doSearch(java.lang.String,java.lang.Integer)
+2018-10-21 03:37:24,515 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doAddHistory(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:37:24,515 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history/{openid}],methods=[GET]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doSearchHistory(java.lang.String)
+2018-10-21 03:37:24,515 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/eye],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doaChangeEye(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:37:24,516 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/token],methods=[GET]}" onto public com.example.lostandfind.service.TokenService com.example.lostandfind.controller.LafController.makeToken(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:37:24,516 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql,org.springframework.validation.BindingResult)
+2018-10-21 03:37:24,517 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/user],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql)
+2018-10-21 03:37:24,520 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:37:24,521 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-21 03:37:24,550 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:37:24,551 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:37:24,861 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 433 - Registering beans for JMX exposure on startup
+2018-10-21 03:37:24,862 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 895 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-10-21 03:37:24,868 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 668 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-10-21 03:37:24,886 [main] INFO  o.s.s.a.ScheduledAnnotationBeanPostProcessor 275 - No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2018-10-21 03:37:24,897 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Starting ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:37:24,918 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 180 - Using a shared selector for servlet write/read
+2018-10-21 03:37:24,932 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 206 - Tomcat started on port(s): 8081 (http) with context path ''
+2018-10-21 03:37:24,937 [main] INFO  c.e.l.LostandfindApplication 59 - Started LostandfindApplication in 8.122 seconds (JVM running for 9.469)
+2018-10-21 03:37:34,512 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-10-21 03:37:34,512 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 494 - FrameworkServlet 'dispatcherServlet': initialization started
+2018-10-21 03:37:34,539 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 509 - FrameworkServlet 'dispatcherServlet': initialization completed in 27 ms
+2018-10-21 03:37:34,606 [http-nio-8081-exec-1] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/token;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.makeToken;time=22ms;
+2018-10-21 03:37:34,843 [http-nio-8081-exec-2] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/manager/oCQY3418OXiAziUyF2pBHNkTdbKY;method=POST;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.doManager;time=75ms;
+2018-10-21 03:38:04,404 [Thread-20] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@302552ec: startup date [Sun Oct 21 03:37:17 CST 2018]; root of context hierarchy
+2018-10-21 03:38:04,407 [Thread-20] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
+2018-10-21 03:38:04,408 [Thread-20] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
+2018-10-21 03:38:04,412 [Thread-20] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:38:04,413 [Thread-20] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 03:38:04,422 [Thread-20] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.
+2018-10-21 03:38:12,226 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 3200 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 03:38:12,233 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 03:38:12,448 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@489115ef: startup date [Sun Oct 21 03:38:12 CST 2018]; root of context hierarchy
+2018-10-21 03:38:14,977 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2925879b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 03:38:15,778 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 03:38:15,800 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:38:15,815 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 03:38:15,816 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 03:38:15,822 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 03:38:15,984 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 03:38:15,985 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 3538 ms
+2018-10-21 03:38:16,106 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 03:38:16,111 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 03:38:16,112 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 03:38:16,113 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 03:38:16,114 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 03:38:16,362 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 03:38:16,755 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 03:38:16,800 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:38:16,815 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 03:38:16,901 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 03:38:16,904 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 03:38:16,949 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 03:38:17,099 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 03:38:17,730 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 03:38:17,809 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:38:18,543 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:38:18,794 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 574 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@489115ef: startup date [Sun Oct 21 03:38:12 CST 2018]; root of context hierarchy
+2018-10-21 03:38:18,832 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration 235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2018-10-21 03:38:18,875 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/identity],methods=[GET]}" onto public java.lang.Object com.example.lostandfind.controller.LafController.decode(java.lang.String,java.lang.String,java.lang.String)
+2018-10-21 03:38:18,876 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/user],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql)
+2018-10-21 03:38:18,877 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql,org.springframework.validation.BindingResult)
+2018-10-21 03:38:18,877 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/detele/{openid}],methods=[DELETE]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doDelete(java.lang.String)
+2018-10-21 03:38:18,877 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.UserList()
+2018-10-21 03:38:18,878 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid/{openid}],methods=[GET]}" onto public boolean com.example.lostandfind.controller.LafController.checkOpenId(java.lang.String)
+2018-10-21 03:38:18,878 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid1/{openid}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.checkOpenId1(java.lang.String)
+2018-10-21 03:38:18,879 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/valuable],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchValuableInfo(boolean)
+2018-10-21 03:38:18,879 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/service/info],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchInfo(boolean)
+2018-10-21 03:38:18,880 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addMsg(com.example.lostandfind.mysql.InfoMysql)
+2018-10-21 03:38:18,880 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.msgList()
+2018-10-21 03:38:18,880 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/uploadImage],methods=[POST]}" onto public java.lang.String com.example.lostandfind.controller.LafController.uploadPicture(org.springframework.web.multipart.MultipartFile) throws java.lang.Exception
+2018-10-21 03:38:18,881 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/confirm/{id}],methods=[PUT]}" onto public com.example.lostandfind.mysql.InfoMysql com.example.lostandfind.controller.LafController.doConfirm(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:38:18,881 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/manager/{openid}],methods=[POST]}" onto public java.lang.Boolean com.example.lostandfind.controller.LafController.doManager(java.lang.String)
+2018-10-21 03:38:18,882 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/check/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doCheck(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:38:18,882 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/finish/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doFinish(java.lang.Integer)
+2018-10-21 03:38:18,883 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/{index}/{string}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.doSearch(java.lang.String,java.lang.Integer)
+2018-10-21 03:38:18,883 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doAddHistory(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:38:18,883 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history/{openid}],methods=[GET]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doSearchHistory(java.lang.String)
+2018-10-21 03:38:18,884 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/eye],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doaChangeEye(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:38:18,884 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/token],methods=[GET]}" onto public com.example.lostandfind.service.TokenService com.example.lostandfind.controller.LafController.makeToken(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:38:18,887 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:38:18,888 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-21 03:38:18,918 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:38:18,919 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:38:19,224 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 433 - Registering beans for JMX exposure on startup
+2018-10-21 03:38:19,227 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 895 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-10-21 03:38:19,233 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 668 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-10-21 03:38:19,250 [main] INFO  o.s.s.a.ScheduledAnnotationBeanPostProcessor 275 - No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2018-10-21 03:38:19,259 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Starting ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:38:19,283 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 180 - Using a shared selector for servlet write/read
+2018-10-21 03:38:19,299 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 206 - Tomcat started on port(s): 8081 (http) with context path ''
+2018-10-21 03:38:19,302 [main] INFO  c.e.l.LostandfindApplication 59 - Started LostandfindApplication in 8.267 seconds (JVM running for 9.89)
+2018-10-21 03:38:24,806 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-10-21 03:38:24,807 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 494 - FrameworkServlet 'dispatcherServlet': initialization started
+2018-10-21 03:38:24,829 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 509 - FrameworkServlet 'dispatcherServlet': initialization completed in 22 ms
+2018-10-21 03:38:24,940 [http-nio-8081-exec-1] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/token;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.makeToken;time=46ms;
+2018-10-21 03:38:25,164 [http-nio-8081-exec-2] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/manager/oCQY3418OXiAziUyF2pBHNkTdbKY;method=POST;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.doManager;time=66ms;
+2018-10-21 03:57:44,237 [Thread-20] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@489115ef: startup date [Sun Oct 21 03:38:12 CST 2018]; root of context hierarchy
+2018-10-21 03:57:44,243 [Thread-20] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
+2018-10-21 03:57:44,245 [Thread-20] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
+2018-10-21 03:57:44,248 [Thread-20] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:57:44,250 [Thread-20] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 03:57:44,258 [Thread-20] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.
+2018-10-21 03:57:50,585 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 3226 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 03:57:50,594 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 03:57:50,739 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 03:57:50 CST 2018]; root of context hierarchy
+2018-10-21 03:57:52,790 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6014b3fe] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 03:57:53,370 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 03:57:53,387 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:57:53,399 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 03:57:53,400 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 03:57:53,404 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 03:57:53,520 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 03:57:53,521 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 2782 ms
+2018-10-21 03:57:53,599 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 03:57:53,603 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 03:57:53,604 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 03:57:53,605 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 03:57:53,606 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 03:57:53,788 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 03:57:54,143 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 03:57:54,179 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:57:54,190 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 03:57:54,246 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 03:57:54,248 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 03:57:54,299 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 03:57:54,416 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 03:57:54,901 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 03:57:54,953 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:57:55,415 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 558 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'schedulerService' defined in file [/Users/zhangcong/IdeaProjects/lostandfind/target/classes/com/example/lostandfind/service/SchedulerService.class]: Initialization of bean failed; nested exception is java.lang.IllegalStateException: Encountered invalid @Scheduled method 'checkInfo': Cron expression must consist of 6 fields (found 7 in "0 0 0 * * ? *")
+2018-10-21 03:57:55,416 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:57:55,417 [main] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 03:57:55,426 [main] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.
+2018-10-21 03:57:55,427 [main] INFO  o.a.catalina.core.StandardService 180 - Stopping service [Tomcat]
+2018-10-21 03:57:55,462 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener 101 - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2018-10-21 03:58:51,983 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 3228 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 03:58:51,990 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 03:58:52,090 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 03:58:52 CST 2018]; root of context hierarchy
+2018-10-21 03:58:53,958 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2925879b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 03:58:54,568 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 03:58:54,587 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:58:54,600 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 03:58:54,601 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 03:58:54,605 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 03:58:54,723 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 03:58:54,723 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 2634 ms
+2018-10-21 03:58:54,803 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 03:58:54,807 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 03:58:54,808 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 03:58:54,808 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 03:58:54,809 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 03:58:54,992 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 03:58:55,329 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 03:58:55,365 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:58:55,376 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 03:58:55,428 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 03:58:55,430 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 03:58:55,477 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 03:58:55,597 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 03:58:56,100 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 03:58:56,152 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 03:58:56,719 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:58:56,956 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 574 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 03:58:52 CST 2018]; root of context hierarchy
+2018-10-21 03:58:56,986 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration 235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2018-10-21 03:58:57,020 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/identity],methods=[GET]}" onto public java.lang.Object com.example.lostandfind.controller.LafController.decode(java.lang.String,java.lang.String,java.lang.String)
+2018-10-21 03:58:57,021 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/detele/{openid}],methods=[DELETE]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doDelete(java.lang.String)
+2018-10-21 03:58:57,022 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/user],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql)
+2018-10-21 03:58:57,022 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql,org.springframework.validation.BindingResult)
+2018-10-21 03:58:57,023 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.UserList()
+2018-10-21 03:58:57,023 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid/{openid}],methods=[GET]}" onto public boolean com.example.lostandfind.controller.LafController.checkOpenId(java.lang.String)
+2018-10-21 03:58:57,023 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid1/{openid}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.checkOpenId1(java.lang.String)
+2018-10-21 03:58:57,024 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/valuable],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchValuableInfo(boolean)
+2018-10-21 03:58:57,024 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/service/info],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchInfo(boolean)
+2018-10-21 03:58:57,025 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addMsg(com.example.lostandfind.mysql.InfoMysql)
+2018-10-21 03:58:57,025 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.msgList()
+2018-10-21 03:58:57,025 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/uploadImage],methods=[POST]}" onto public java.lang.String com.example.lostandfind.controller.LafController.uploadPicture(org.springframework.web.multipart.MultipartFile) throws java.lang.Exception
+2018-10-21 03:58:57,026 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/confirm/{id}],methods=[PUT]}" onto public com.example.lostandfind.mysql.InfoMysql com.example.lostandfind.controller.LafController.doConfirm(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:58:57,026 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/manager/{openid}],methods=[POST]}" onto public java.lang.Boolean com.example.lostandfind.controller.LafController.doManager(java.lang.String)
+2018-10-21 03:58:57,027 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/check/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doCheck(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 03:58:57,027 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/finish/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doFinish(java.lang.Integer)
+2018-10-21 03:58:57,027 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/{index}/{string}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.doSearch(java.lang.String,java.lang.Integer)
+2018-10-21 03:58:57,028 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doAddHistory(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:58:57,028 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history/{openid}],methods=[GET]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doSearchHistory(java.lang.String)
+2018-10-21 03:58:57,029 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/eye],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doaChangeEye(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 03:58:57,029 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/token],methods=[GET]}" onto public com.example.lostandfind.service.TokenService com.example.lostandfind.controller.LafController.makeToken(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:58:57,032 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-21 03:58:57,033 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-21 03:58:57,064 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:58:57,065 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 03:58:57,345 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 433 - Registering beans for JMX exposure on startup
+2018-10-21 03:58:57,348 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 895 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-10-21 03:58:57,354 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 668 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-10-21 03:58:57,366 [main] INFO  o.s.s.a.ScheduledAnnotationBeanPostProcessor 275 - No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2018-10-21 03:58:57,373 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Starting ProtocolHandler ["http-nio-8081"]
+2018-10-21 03:58:57,394 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 180 - Using a shared selector for servlet write/read
+2018-10-21 03:58:57,407 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 206 - Tomcat started on port(s): 8081 (http) with context path ''
+2018-10-21 03:58:57,410 [main] INFO  c.e.l.LostandfindApplication 59 - Started LostandfindApplication in 6.09 seconds (JVM running for 7.336)
+2018-10-21 04:04:22,056 [Thread-16] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 03:58:52 CST 2018]; root of context hierarchy
+2018-10-21 04:04:22,063 [Thread-16] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
+2018-10-21 04:04:22,064 [Thread-16] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
+2018-10-21 04:04:22,068 [Thread-16] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 04:04:22,070 [Thread-16] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 04:04:22,077 [Thread-16] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.
+2018-10-21 04:04:28,395 [main] INFO  c.e.l.LostandfindApplication 50 - Starting LostandfindApplication on zhangcongdeMacBook-Air.local with PID 3231 (/Users/zhangcong/IdeaProjects/lostandfind/target/classes started by zhangcong in /Users/zhangcong/IdeaProjects/lostandfind)
+2018-10-21 04:04:28,402 [main] INFO  c.e.l.LostandfindApplication 662 - No active profile set, falling back to default profiles: default
+2018-10-21 04:04:28,580 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 590 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 04:04:28 CST 2018]; root of context hierarchy
+2018-10-21 04:04:30,259 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker 326 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6014b3fe] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-10-21 04:04:30,767 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 91 - Tomcat initialized with port(s): 8081 (http)
+2018-10-21 04:04:30,784 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Initializing ProtocolHandler ["http-nio-8081"]
+2018-10-21 04:04:30,796 [main] INFO  o.a.catalina.core.StandardService 180 - Starting service [Tomcat]
+2018-10-21 04:04:30,797 [main] INFO  o.a.catalina.core.StandardEngine 180 - Starting Servlet Engine: Apache Tomcat/8.5.32
+2018-10-21 04:04:30,804 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener 180 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/zhangcong/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-10-21 04:04:30,923 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring embedded WebApplicationContext
+2018-10-21 04:04:30,923 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader 285 - Root WebApplicationContext: initialization completed in 2343 ms
+2018-10-21 04:04:31,001 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean 187 - Servlet dispatcherServlet mapped to [/]
+2018-10-21 04:04:31,005 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-10-21 04:04:31,006 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-10-21 04:04:31,006 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-10-21 04:04:31,007 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean 245 - Mapping filter: 'requestContextFilter' to: [/*]
+2018-10-21 04:04:31,189 [main] INFO  com.zaxxer.hikari.HikariDataSource 110 - HikariPool-1 - Starting...
+2018-10-21 04:04:31,516 [main] INFO  com.zaxxer.hikari.HikariDataSource 123 - HikariPool-1 - Start completed.
+2018-10-21 04:04:31,552 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 361 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-10-21 04:04:31,564 [main] INFO  o.h.jpa.internal.util.LogHelper 31 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-10-21 04:04:31,616 [main] INFO  org.hibernate.Version 45 - HHH000412: Hibernate Core {5.2.17.Final}
+2018-10-21 04:04:31,618 [main] INFO  org.hibernate.cfg.Environment 213 - HHH000206: hibernate.properties not found
+2018-10-21 04:04:31,667 [main] INFO  o.h.annotations.common.Version 66 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-10-21 04:04:31,778 [main] INFO  org.hibernate.dialect.Dialect 157 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-10-21 04:04:32,258 [main] INFO  o.h.h.i.QueryTranslatorFactoryInitiator 47 - HHH000397: Using ASTQueryTranslatorFactory
+2018-10-21 04:04:32,316 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 415 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 04:04:32,923 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 04:04:33,173 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter 574 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 04:04:28 CST 2018]; root of context hierarchy
+2018-10-21 04:04:33,204 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration 235 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2018-10-21 04:04:33,240 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/identity],methods=[GET]}" onto public java.lang.Object com.example.lostandfind.controller.LafController.decode(java.lang.String,java.lang.String,java.lang.String)
+2018-10-21 04:04:33,242 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/finish/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doFinish(java.lang.Integer)
+2018-10-21 04:04:33,242 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/check/{id}],methods=[PUT]}" onto public java.lang.String com.example.lostandfind.controller.LafController.doCheck(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 04:04:33,243 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addMsg(com.example.lostandfind.mysql.InfoMysql)
+2018-10-21 04:04:33,243 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/msg],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.msgList()
+2018-10-21 04:04:33,244 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.UserList()
+2018-10-21 04:04:33,244 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid/{openid}],methods=[GET]}" onto public boolean com.example.lostandfind.controller.LafController.checkOpenId(java.lang.String)
+2018-10-21 04:04:33,244 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/openid1/{openid}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.UserMysql> com.example.lostandfind.controller.LafController.checkOpenId1(java.lang.String)
+2018-10-21 04:04:33,245 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/valuable],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchValuableInfo(boolean)
+2018-10-21 04:04:33,245 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/service/info],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.searchInfo(boolean)
+2018-10-21 04:04:33,246 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/uploadImage],methods=[POST]}" onto public java.lang.String com.example.lostandfind.controller.LafController.uploadPicture(org.springframework.web.multipart.MultipartFile) throws java.lang.Exception
+2018-10-21 04:04:33,246 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/confirm/{id}],methods=[PUT]}" onto public com.example.lostandfind.mysql.InfoMysql com.example.lostandfind.controller.LafController.doConfirm(java.lang.Integer,com.example.lostandfind.service.ConfirmService)
+2018-10-21 04:04:33,246 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/manager/{openid}],methods=[POST]}" onto public java.lang.Boolean com.example.lostandfind.controller.LafController.doManager(java.lang.String)
+2018-10-21 04:04:33,247 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/{index}/{string}],methods=[GET]}" onto public java.util.List<com.example.lostandfind.mysql.InfoMysql> com.example.lostandfind.controller.LafController.doSearch(java.lang.String,java.lang.Integer)
+2018-10-21 04:04:33,248 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doAddHistory(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 04:04:33,248 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/history/{openid}],methods=[GET]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doSearchHistory(java.lang.String)
+2018-10-21 04:04:33,248 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/eye],methods=[PUT]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doaChangeEye(com.example.lostandfind.mysql.HistoryMysql)
+2018-10-21 04:04:33,249 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/token],methods=[GET]}" onto public com.example.lostandfind.service.TokenService com.example.lostandfind.controller.LafController.makeToken(javax.servlet.http.HttpServletRequest)
+2018-10-21 04:04:33,249 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/search/detele/{openid}],methods=[DELETE]}" onto public com.example.lostandfind.mysql.HistoryMysql com.example.lostandfind.controller.LafController.doDelete(java.lang.String)
+2018-10-21 04:04:33,250 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/user],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql)
+2018-10-21 04:04:33,250 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/User],methods=[POST]}" onto public com.example.lostandfind.domain.Result com.example.lostandfind.controller.LafController.addUser(com.example.lostandfind.mysql.UserMysql,org.springframework.validation.BindingResult)
+2018-10-21 04:04:33,253 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-10-21 04:04:33,254 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping 547 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-10-21 04:04:33,284 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 04:04:33,285 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping 373 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-10-21 04:04:33,564 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 433 - Registering beans for JMX exposure on startup
+2018-10-21 04:04:33,566 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 895 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-10-21 04:04:33,571 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter 668 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-10-21 04:04:33,583 [main] INFO  o.s.s.a.ScheduledAnnotationBeanPostProcessor 275 - No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2018-10-21 04:04:33,590 [main] INFO  o.a.coyote.http11.Http11NioProtocol 180 - Starting ProtocolHandler ["http-nio-8081"]
+2018-10-21 04:04:33,611 [main] INFO  o.a.tomcat.util.net.NioSelectorPool 180 - Using a shared selector for servlet write/read
+2018-10-21 04:04:33,623 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer 206 - Tomcat started on port(s): 8081 (http) with context path ''
+2018-10-21 04:04:33,627 [main] INFO  c.e.l.LostandfindApplication 59 - Started LostandfindApplication in 6.015 seconds (JVM running for 7.193)
+2018-10-21 04:04:42,547 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] 180 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-10-21 04:04:42,547 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 494 - FrameworkServlet 'dispatcherServlet': initialization started
+2018-10-21 04:04:42,565 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet 509 - FrameworkServlet 'dispatcherServlet': initialization completed in 17 ms
+2018-10-21 04:04:42,615 [http-nio-8081-exec-1] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/token;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.makeToken;time=20ms;
+2018-10-21 04:04:42,797 [http-nio-8081-exec-2] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/manager/oCQY3418OXiAziUyF2pBHNkTdbKY;method=POST;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.doManager;time=60ms;
+2018-10-21 04:04:44,838 [http-nio-8081-exec-3] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/service/info;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.searchInfo;time=15ms;
+2018-10-21 04:04:44,909 [http-nio-8081-exec-4] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/service/info;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.searchInfo;time=10ms;
+2018-10-21 04:07:00,611 [http-nio-8081-exec-6] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/token;method=GET;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.makeToken;time=0ms;
+2018-10-21 04:07:00,636 [http-nio-8081-exec-7] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/manager/oCQY3418OXiAziUyF2pBHNkTdbKY;method=POST;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.doManager;time=2ms;
+2018-10-21 04:07:09,864 [http-nio-8081-exec-8] INFO  c.e.lostandfind.aspect.UserAspect 51 - url=http://127.0.0.1:8081/msg;method=POST;ip=127.0.0.1;classMethod=com.example.lostandfind.controller.LafController.addMsg;time=119ms;
+2018-10-21 04:07:35,094 [Thread-15] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@40005471: startup date [Sun Oct 21 04:04:28 CST 2018]; root of context hierarchy
+2018-10-21 04:07:35,097 [Thread-15] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
+2018-10-21 04:07:35,098 [Thread-15] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
+2018-10-21 04:07:35,102 [Thread-15] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2018-10-21 04:07:35,104 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
+2018-10-21 04:07:35,112 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.

@@ -8,6 +8,8 @@ Page({
   data: {
     image_show: true,
     showModal: true,
+    showModal2:false,
+    suggestion:"",
     logoLeft: "/pages/img/logo.png",
     logoRight:"/pages/img/2014062374843457.png",
     userInfo:{},
@@ -271,6 +273,11 @@ Page({
       showModal: true
     })
   },
+  showDialogBtn2: function () {
+    this.setData({
+      showModal2: true
+    })
+  },
   /**
   * 隐藏模态对话框
   */
@@ -279,13 +286,29 @@ Page({
       showModal: false
     });
   },
+  hideModal2: function () {
+    this.setData({
+      showModal2: false
+    });
+  },
   /**
    * 对话框取消按钮点击事件
    */
   onCancel: function () {
     this.hideModal();
   },
-
+  onCancel2: function () {
+    this.hideModal2();
+  },
+  /**
+   * 接收用户建议
+   */
+  suggestion:function(res){
+    this.data.suggestion = res.detail.value;
+  },
+  sendSuggestion:function(){
+    
+  },
   toManager:function(){
     if (app.globalData.isManager){
       wx.navigateTo({

@@ -151,11 +151,6 @@ Page({
   },
   onPullDownRefresh: function () {
   },
-  comeinadd: function () {
-    wx.navigateTo({
-      url: 'upload',
-    })
-  },
   /**
    * 根据显示不同内容使相应标签变色并给category赋值
    * 重要信息不分种类，全部显示，并且都在排序在前面
@@ -211,9 +206,9 @@ Page({
     var InforCss = []
     for (var i = 0; i < this.data.category.length; i++) {
       if(this.data.category[i].kind == '招领'){
-        InforCss.push(['拾取地点','拾取时间'])
+        InforCss.push(['拾取地点:','拾取时间:'])
       } else if (this.data.category[i].kind == '遗失') {
-        InforCss.push(['丢失地点', '丢失时间'])
+        InforCss.push(['丢失地点:', '丢失时间:'])
       }
     }
     this.setData({

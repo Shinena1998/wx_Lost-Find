@@ -1,12 +1,17 @@
 package com.example.lostandfind.service;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Random;
 
-@Component
+@Service
 public class TokenService {
+    /**
+     * token 记录token
+     * session 记录sessionId
+     */
     private String token;
     private String session;
 

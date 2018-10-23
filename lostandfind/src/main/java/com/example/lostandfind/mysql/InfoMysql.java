@@ -57,6 +57,10 @@ public class InfoMysql {
 
     private String infomation;
 
+    //时间戳
+    private long timestamps;
+    //是否过期
+    private boolean timeOut = false;
     /**
      * 记录管理员是否同意审核
      */
@@ -199,5 +203,21 @@ public class InfoMysql {
 
     public void setInfomation(String infomation) {
         this.infomation = infomation;
+    }
+
+    public long getTimestamps() {
+        return timestamps;
+    }
+
+    public void setTimestamps(long timestamps) {
+        this.timestamps = timestamps;
+    }
+
+    public boolean isTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(boolean timeOut) {
+        this.timeOut = timeOut;
     }
 }
