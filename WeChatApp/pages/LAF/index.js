@@ -79,16 +79,20 @@ Page({
         console.log(res)
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         wx.request({
-          url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc&js_code=' + res.code + '&grant_type=authorization_code',
+          url: 'http://localhost:8080/getUserInfo',
           method: 'GET',
+          data:{
+            code:res.code
+          },
           success: function (res) {
+            console.log('231')
             console.log(res.data)
             app.globalData.openid = res.data.openid;
             that.data.openid = res.data.openid;
             that.data.session_key = res.data.session_key;
             //获取token
             wx.request({
-              url: 'http://127.0.0.1:8081/token',
+              url: 'http://localhost:8080/token',
               success: function (res) {
                 console.log(res)
                 app.globalData.header.token = res.data.token,
@@ -97,7 +101,7 @@ Page({
                 * 判断用户是否为管理员
                 */
                 wx.request({
-                  url: 'http://127.0.0.1:8081/manager/' + that.data.openid,
+                  url: 'http://localhost:8080/manager/' + that.data.openid,
                   method: 'POST',
                   header: app.globalData.header,
                   success: function (res) {
@@ -173,7 +177,7 @@ Page({
     * 判断用户是否为新用户
     */
    wx.request({
-     url: 'http://127.0.0.1:8081/openid/' + that.data.openid,
+     url: 'http://localhost:8080/openid/' + that.data.openid,
      method: "GET",
      header: app.globalData.header,
      complete: function (res) {
@@ -238,7 +242,7 @@ Page({
   decodeEncryptedData:function(){
       var that = this;
       wx.request({
-        url: 'http://127.0.0.1:8081/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
+        url: 'http://localhost:8080/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
         header: app.globalData.header,
         method: 'GET',
         success: function (res) {
@@ -246,7 +250,7 @@ Page({
             openId: res.data.openId,
           })
           wx.request({
-            url: 'http://127.0.0.1:8081/user',
+            url: 'http://localhost:8080/user',
             method: "POST",
             header: app.globalData.header,
             data: {
@@ -319,7 +323,7 @@ Page({
     var that = this
     setTimeout(function(){
       wx.request({
-        url: 'http://127.0.0.1:8081/suggestion',
+        url: 'http://localhost:8080/suggestion',
         header: app.globalData.header,
         method: "POST",
         data: {

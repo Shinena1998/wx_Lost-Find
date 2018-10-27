@@ -27,7 +27,7 @@ Page({
     this.data.category=[]
     var that = this
     wx.request({
-      url: 'http://127.0.0.1:8081/valuable',
+      url: 'http://localhost:8080/valuable',
       method: 'GET',
       header: app.globalData.header,
       data:{
@@ -106,7 +106,7 @@ Page({
     console.log(res)
     var that =this
     wx.request({
-      url: 'http://127.0.0.1:8081/check/' + id,
+      url: 'http://localhost:8080/check/' + id,
       header: app.globalData.header,
       method:'PUT',
       data:{
@@ -145,7 +145,7 @@ Page({
     })
     var that = this
     wx.request({
-      url: 'http://127.0.0.1:8081/suggestion',
+      url: 'http://localhost:8080/suggestion',
       method:"GET",
       header:app.globalData.header,
       success:function(res){

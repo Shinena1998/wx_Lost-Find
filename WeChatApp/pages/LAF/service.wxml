@@ -19,7 +19,7 @@
 </view>
 </scroll-view>
 
-<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true">
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation'>
 <view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
 <view class='remark'>
 τ<view class='remark_time'><text>{{goods.current}}</text></view>

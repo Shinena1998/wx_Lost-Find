@@ -7,6 +7,7 @@ page{
   font-size: 85%;
 }
 .top{
+  padding-top: 2%;
   height: 5%;
   width: 100%;
   display: flex;

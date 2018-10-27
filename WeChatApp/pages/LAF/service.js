@@ -23,7 +23,8 @@ Page({
     valuable:[],
     infoCss:{},
     inforCss:[],
-    type: ["primary", "default", "default", "default", "default"],
+    count:0,
+    type: ["default", "default", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
   },
 
@@ -52,71 +53,102 @@ Page({
     }
   },
   onReady: function () {
+    this.data.type[app.globalData.category] = "primary"
   },
   onShow: function () {
+    var that = this
+    /**
+    * 获取重要信息
+    */
+    wx.request({
+      url: 'http://localhost:8080/service/info',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        confirm: true,
+        count: that.data.count
+      },
+      success: function (res) {
+        console.log(res)
+        console.log(res)
+        for (var i = 0; i < res.data.length; i++) {
+          that.data.valuable.unshift(res.data[i]);
+        }
+        /**
+        * 因为app.globalData.category是json包
+        */
+
+        that.getInfo()
+      },
+      fail: function (res) {//连接失败执行
+        console.log(res)
+        wx.showToast({ title: '网络错误' })
+      },
+    })
+  },
+  getInfo:function(count){
     var that = this
     /**
      * 获取非重要信息
      * unshift数组头插
      */
     wx.request({
-      url: 'http://127.0.0.1:8081/service/info',
+      url: 'http://localhost:8080/service/info',
       method: 'GET',
       header: app.globalData.header,
-      data:{
+      data: {
         confirm:false,
+        count:that.data.count
       },
       success: function (res) {//连接成功运行
         console.log(res.data)
         if (res.statusCode === 200) {
-          that.setData({
-            infor: res.data
-          })
-          for (var i = 0; i < that.data.infor.length; i++) {
-            if (that.data.infor[i].category == "证件") {
-              Card.unshift(that.data.infor[i])
-            } else if (that.data.infor[i].category == "书本") {
-              Book.unshift(that.data.infor[i])
-            } else if (that.data.infor[i].category == "钱包") {
-              Money.unshift(that.data.infor[i])
-            } else if (that.data.infor[i].category == "其他") {
-              Else.unshift(that.data.infor[i])
-            }
-            if (that.data.infor[i].identity == app.globalData.openid){
-              aboutMe.unshift(that.data.infor[i])
-            }
-          }
-          /**
-          * 获取重要信息
-          */
-          wx.request({
-            url: 'http://127.0.0.1:8081/service/info',
-            method: 'GET',
-            header: app.globalData.header,
-            data: {
-              confirm: true,
-            },
-            success: function (res) {
-              console.log(res)
-              for(var i = 0 ; i < res.data.length ; i++){
-                that.data.valuable.unshift(res.data[i]);
+          if(res.data.length > 0){
+            that.setData({
+              infor: res.data
+            })
+            for (var i = 0; i < that.data.infor.length; i++) {
+              if (that.data.infor[i].category == "证件") {
+                Card.unshift(that.data.infor[i])
+              } else if (that.data.infor[i].category == "书本") {
+                Book.unshift(that.data.infor[i])
+              } else if (that.data.infor[i].category == "钱包") {
+                Money.unshift(that.data.infor[i])
+              } else if (that.data.infor[i].category == "其他") {
+                Else.unshift(that.data.infor[i])
               }
-              /**
-              * 因为app.globalData.category是json包
-              */
-              /**
-               * 调用此函数使标签栏颜色正常
-               */
-              that.category(app.globalData.category);
-            },
-            fail: function (res) {//连接失败执行
-            console.log(res)
-              wx.showToast({ title: '网络错误' })
-            },
-          })
+              if (that.data.infor[i].identity == app.globalData.openid) {
+                aboutMe.unshift(that.data.infor[i])
+              }
+            }
+            /**
+             * 当第一页的证件类不足四条信息，则无法触发下拉到底部事件，若第二页
+             * 有证件类信息就不能正常显示，由此推广，如果第一页只要有一种长度小
+             * 于四条信息就会自动再翻一页。
+             */
+            if (Card.length + that.data.valuable.length <= 4) {
+              that.addInformation()
+            } else if (Else.length + that.data.valuable.length <= 4) {
+              that.addInformation()
+            } else if (Book.length + that.data.valuable.length <= 4) {
+              that.addInformation()
+            } else if (Money.length + that.data.valuable.length <= 4) {
+              that.addInformation()
+            }
+            /**
+             *app.globalData.category 调用此函数使标签栏颜色正常
+             */
+            that.category(app.globalData.category);
+            //没有信息且不是第一页
+          } else if (res.data.length == 0 && that.data.count > 1){
+            wx.showToast({
+              title: '到底了',
+              icon:'none'
+            })
+          }
         } else {
           console.log("error")
-        } 
+        }
       },
       fail: function (res) {//连接失败执行
         wx.showToast({ title: '网络错误' })
@@ -157,9 +189,10 @@ Page({
    */
   category:function(res){
     /**
-     * 因为执行wx.navigateBack命令由detail返回service界面执行onshow（）方法，所以要时
-     * 时记录标签的值，返回时正确跳转到之前的标签，不变化app.globalData.category的话。
-     * 从detail返回service界面标签永远是从index进入service的标签。
+     * 因为执行wx.navigateBack命令由detail返回service界面执行onshow（）方法，所以
+     * 要时时记录标签的值，返回时正确跳转到之前的标签，不变化app.globalData.category
+     * 的话。 从detail返回service界面标签永远是从index进入service的标签。
+     * inAboutMe 这能在我的界面显示提醒图标
      */
     app.globalData.category = res
     if(res.currentTarget.id == "0"){
@@ -208,7 +241,7 @@ Page({
       if(this.data.category[i].kind == '招领'){
         InforCss.push(['拾取地点:','拾取时间:'])
       } else if (this.data.category[i].kind == '遗失') {
-        InforCss.push(['丢失地点:', '丢失时间:'])
+        InforCss.push(['丢失地点:','丢失时间:'])
       }
     }
     this.setData({
@@ -220,5 +253,14 @@ Page({
   wx.navigateTo({
     url: 'search',
   })
+  },
+  /**
+   * count 为页数，一页50条信息
+   * 下拉到底触发事件翻页
+   */
+  addInformation:function(res){
+    this.data.count++
+    console.log(this.data.count)
+    this.getInfo();
   }
 })

@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
                 @NamedQuery(name="InfoMysql.findByInfoPlace",
                         query = "select o from InfoMysql o"),
                 @NamedQuery(name="InfoMysql.findByInfoInfomation",
-                        query = "select o from InfoMysql o"),
+                        query = "select o from InfoMysql o")
         })
 
 public class InfoMysql {
@@ -60,8 +60,6 @@ public class InfoMysql {
 
     //时间戳
     private long timestamps;
-    //是否过期
-    private boolean timeOut = false;
     /**
      * 记录管理员是否同意审核
      */
@@ -71,8 +69,6 @@ public class InfoMysql {
      * 失主确认
      */
     private boolean isConfirm;
-
-    private boolean finalConfirm;
 
     //更新时间
     @LastModifiedDate
@@ -100,14 +96,6 @@ public class InfoMysql {
 
     public void setValuable(boolean valuable) {
         isValuable = valuable;
-    }
-
-    public boolean isFinalConfirm() {
-        return finalConfirm;
-    }
-
-    public void setFinalConfirm(boolean finalConfirm) {
-        this.finalConfirm = finalConfirm;
     }
 
     public boolean isConfirm() {
@@ -214,11 +202,4 @@ public class InfoMysql {
         this.timestamps = timestamps;
     }
 
-    public boolean isTimeOut() {
-        return timeOut;
-    }
-
-    public void setTimeOut(boolean timeOut) {
-        this.timeOut = timeOut;
-    }
 }

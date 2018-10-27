@@ -96,6 +96,8 @@ page{
   height: 15%;
   text-align: center;
   margin-top: 5%;
+  margin-right: 5%;
+
 }
 .label_left{
   width: 40rpx;

@@ -118,11 +118,11 @@ Page({
       theme:value.theme
     })
     console.log(value.place+this.data.category)
-    if (this.data.kind == "" || this.data.category == "" || this.data.information == "" 
+    if (this.data.kind == "" || this.data.category == "" 
       || this.data.time == "" || this.data.place == ""
       || this.data.contactWay == ""){
         wx.showToast({
-              title: "填完内容",
+              title: "请填全信息",
               icon: "none",
             })
       }else {
@@ -200,7 +200,7 @@ Page({
       * 上传图片，最大10M
       */
       wx.uploadFile({
-        url: 'http://127.0.0.1:8081/uploadImage',
+        url: 'http://localhost:8080/uploadImage',
         filePath: that.data.savedFilePath,
         name: 'file',
         header: app.globalData.header,
@@ -212,7 +212,9 @@ Page({
           that.uploadInfo()
           console.log("zxc" + that.data.isValuable)
         }, fail: function (res) {
-          console.log(res)
+          wx.showToast({
+            title: '发布信息失败，请重试',
+          })
         }
       })
     }else {
@@ -227,7 +229,7 @@ Page({
     console.log()
     var that= this
     wx.request({
-      url: 'http://127.0.0.1:8081/msg',
+      url: 'http://localhost:8080/msg',
       method: "POST",
       header: app.globalData.header,
       data: {
@@ -254,18 +256,24 @@ Page({
             })
           } else if (res.data.code == 0) {
             wx.showToast({
-              title: res.data.msg,
+              title: '发布成功',
+              icon:'success',
+              duration:1000,
               success: function () {
-                wx.navigateBack({
+                setTimeout(function(){
+                  wx.navigateBack({
                   delta: 1
                 })
+                },1000)
               }
             })
           }
         }
       },
       fail: function (res) {
-        console.log(res)
+        wx.showToast({
+          title: '发布信息失败，请重试',
+        })
       }
     })   
   }

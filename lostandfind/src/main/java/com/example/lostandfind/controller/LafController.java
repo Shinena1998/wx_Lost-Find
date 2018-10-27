@@ -1,29 +1,29 @@
 package com.example.lostandfind.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.Repository.*;
 import com.example.lostandfind.domain.Result;
-import com.example.lostandfind.mysql.HistoryMysql;
-import com.example.lostandfind.mysql.InfoMysql;
-import com.example.lostandfind.mysql.SuggestMysql;
-import com.example.lostandfind.mysql.UserMysql;
+import com.example.lostandfind.mysql.*;
 import com.example.lostandfind.service.ConfirmService;
 import com.example.lostandfind.service.DecryptService;
 import com.example.lostandfind.service.InfoService;
 import com.example.lostandfind.service.TokenService;
 import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.lostandfind.utils.Template;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,6 +47,12 @@ public class LafController{
 
     @Autowired
     private SuggestRepository suggestRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private FinishRespository finishRespository;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -98,8 +104,10 @@ public class LafController{
         return infoRepository.findByIsValuable(confirm);
     }
     @GetMapping(value = "/service/info")
-    public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm){
-        return infoRepository.findByABooleanAndFinalConfirmAndIsValuableAndTimeOut(confirm,false,false,false);
+    public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm,
+                                      @RequestParam("count") int count){
+        System.out.println(count);
+        return infoRepository.findByABoolean(confirm,50*count);
     }
     /**s
      * 写入数据信息
@@ -117,7 +125,6 @@ public class LafController{
         infoMysql.setTimestamps((new Date().getTime())/1000);
         infoRepository.save(infoMysql);
         return ResultUtil.success(infoMysql);
-
     }
 
     /**
@@ -158,42 +165,43 @@ public class LafController{
         return dataStr;
     }
 
-    /**
-     * 向本地上传图片
-     * @param file 图片的二进制字节流
-     * @return
-     * @throws Exception
-     */
-    @PostMapping(value = "/uploadImage")
-    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-        //获取文件需要上传到的路径
-
-        if(file.isEmpty()==true){
-            return "error";
-        }else {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
-            Files.write(path,bytes);
-            return "/pages/img/"+file.getOriginalFilename();
-        }
-    }
+//    /**
+//     * 向本地上传图片
+//     * @param file 图片的二进制字节流
+//     * @return
+//     * @throws Exception
+//     */
+//    @PostMapping(value = "/uploadImage")
+//    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+//        //获取文件需要上传到的路径
+//
+//        if(file.isEmpty()==true){
+//            return "error";
+//        }else {
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
+//            Files.write(path,bytes);
+//            return "/pages/img/"+file.getOriginalFilename();
+//        }
+//    }
     /**
      * 向服务器端传图片
      */
-//@PostMapping(value = "/uploadImage")
-//public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-//    //获取文件需要上传到的路径
-//
-//    if(file.isEmpty()==true){
-//        return "error";
-//    }else {
-//        byte[] bytes = file.getBytes();
-//        Path path = Paths.get("/root/html/"+ file.getOriginalFilename());
-//        Files.write(path,bytes);
-//        file.getOriginalFilename();
-//        return "https://yuigahama.info/"+file.getOriginalFilename();
-//    }
-//}
+@PostMapping(value = "/uploadImage")
+public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+    //获取文件需要上传到的路径
+
+    if(file.isEmpty()==true){
+        return "error";
+    }else {
+
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get("/root/html/img/"+ file.getOriginalFilename());
+        Files.write(path,bytes);
+        file.getOriginalFilename();
+        return "https://yuigahama.xyz/img/"+file.getOriginalFilename();
+    }
+}
 
     @ResponseBody
     @PutMapping(value = "/confirm/{id}")
@@ -232,31 +240,42 @@ public class LafController{
     /**
      * 结束事件
      */
-    @PutMapping(value="/finish/{id}")
+    @DeleteMapping(value="/finish/{id}")
     public String doFinish(@PathVariable("id") Integer id){
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         InfoMysql infoMysql =  infoRepository.findById(id).get();
-        infoMysql.setFinalConfirm(true);
-        //infoMysql.setFinalTime(df.format(new Date()));// new Date()为获取当前系统时间
-        infoRepository.save(infoMysql);
+        infoRepository.deleteById(id);
+        FinishMysql finishMysql = new FinishMysql();
+        finishMysql.setCategory(infoMysql.getCategory());
+        finishMysql.setContactWay(infoMysql.getContactWay());
+        finishMysql.setIdentity(infoMysql.getIdentity());
+        finishMysql.setInfomation(infoMysql.getInfomation());
+        finishMysql.setKind(infoMysql.getKind());
+        finishMysql.setPicPath(infoMysql.getPicPath());
+        finishMysql.setTheme(infoMysql.getTheme());
+        finishMysql.setTime(infoMysql.getTime());
+        finishMysql.setPlace(infoMysql.getPlace());
+        finishMysql.setCurrent(infoMysql.getCurrent());
+        finishMysql.setTimeOut(false);
+        finishRespository.save(finishMysql);
         return "success";
     }
     /**
      * 模糊搜索
      */
-    @GetMapping(value = "/search/{index}/{string}")
+    @GetMapping(value = "/search/{index}/{string}/{count}")
     @ResponseBody
     public List<InfoMysql> doSearch(@PathVariable("string") String name,
-                                    @PathVariable("index") Integer index){
+                                    @PathVariable("index") Integer index,
+                                    @PathVariable("count") Integer count){
         List<InfoMysql> infoMysqlList = null;
         if(index == 0){
-             infoMysqlList = infoRepository.findByInfoTheme(name);
+             infoMysqlList = infoRepository.findByInfoTheme(name,count*10);
         }else if(index == 1){
-            infoMysqlList = infoRepository.findByInfoTime(name);
+            infoMysqlList = infoRepository.findByInfoTime(name,count*10);
         }else if(index == 2){
-            infoMysqlList = infoRepository.findByInfoPlace(name);
+            infoMysqlList = infoRepository.findByInfoPlace(name,count*10);
         }else if(index == 3){
-            infoMysqlList = infoRepository.findByInfoInfomation(name);
+            infoMysqlList = infoRepository.findByInfoInfomation(name,count*10);
         }
         return infoMysqlList;
     }
@@ -281,17 +300,25 @@ public class LafController{
         }
     }
     /**
-     * 搜索历史查询
+     * 获得历史查询
      */
     @ResponseBody
     @GetMapping(value="/search/history/{openid}")
     public HistoryMysql doSearchHistory(@PathVariable("openid") String openid) {
         HistoryMysql historyMysql = historyRepository.findByOpenid(openid);
-        if(historyMysql.getHistory() != null){
-            historyMysql.setHistoryList(historyMysql.getHistory().split("\\+"));
-            historyMysql.setIndexList(historyMysql.getPicker().split("\\+"));
+        if(historyMysql != null) {
+            if (historyMysql.getHistory() != null) {
+                historyMysql.setHistoryList(historyMysql.getHistory().split("\\+"));
+                historyMysql.setIndexList(historyMysql.getPicker().split("\\+"));
+            }
+            return historyMysql;
+        }else {
+            HistoryMysql historyMysql1 = new HistoryMysql();
+            historyMysql1.setOpenid(openid);
+            historyMysql1.setEye("/pages/img/AD1B0CBA-D334-4B9A-A000-F82D33119671.png");
+            historyRepository.save(historyMysql1);
+            return historyMysql1;
         }
-        return historyMysql;
     }
     /**
      * 是否查看历史查询
@@ -310,8 +337,8 @@ public class LafController{
     @DeleteMapping(value="/search/detele/{openid}")
     public HistoryMysql doDelete(@PathVariable("openid") String openid){
         HistoryMysql historyMysql = historyRepository.findByOpenid(openid);
-        historyMysql.setHistory("");
-        historyMysql.setPicker("");
+        historyMysql.setHistory(null);
+        historyMysql.setPicker(null);
         return historyRepository.save(historyMysql);
     }
     /**
@@ -345,5 +372,43 @@ public class LafController{
     @GetMapping(value = "/suggestion")
     public List<SuggestMysql> GetSuggestion(){
         return suggestRepository.findAll();
+    }
+    /**
+     * 为了安全，腾讯相关的api不能在前端调用，只能在服务端调用
+     * 获取用户openid以及session_id,session_id用来解码用户信息，得到用户unionid
+     */
+    @ResponseBody
+    @GetMapping(value = "/getUserInfo")
+    public Object getUserInfo(@RequestParam("code") String code){
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc&js_code=" + code + "&grant_type=authorization_code";
+        return restTemplate.exchange(url, HttpMethod.GET,null,String.class).getBody();
+    }
+
+    /**
+     * 获取发送模板消息的token
+     * @return
+     */
+    @ResponseBody
+    @GetMapping(value = "/get_access_token")
+    public Object getAccessToken(){
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc";
+        return restTemplate.exchange(url, HttpMethod.GET,null,String.class).getBody();
+    }
+    /**
+     *发送模板信息
+     */
+    @ResponseBody
+    @GetMapping(value = "/sendTemplateInfo")
+    public Object sendTemplateInfo(@RequestParam("accessToken") String accessToken,
+                                   @RequestParam("openid") String openid,
+                                   @RequestParam("formId") String formId,
+                                   @RequestParam("category") String category,
+                                   @RequestParam("current") String current,
+                                   @RequestParam("nickName") String nickName,
+                                   @RequestParam("message") String message){
+        String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="+accessToken;
+        String[] infos = {category,"已找到失主",nickName,current,message,"请您去小程序内确认"};
+        JSONObject jsonObject = new Template().makeTemplateData(infos,openid,formId);
+        return restTemplate.postForEntity(url,jsonObject,JSONObject.class).getBody();
     }
 }

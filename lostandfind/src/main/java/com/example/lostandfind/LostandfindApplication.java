@@ -33,7 +33,10 @@ public class LostandfindApplication {
          */
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(new CheckLoginInterceptor()).addPathPatterns("/**");
+            registry.addInterceptor(new CheckLoginInterceptor()).addPathPatterns("/**")
+                    .excludePathPatterns("/getUserInfo")
+                    .excludePathPatterns("/get_access_token")
+                    .excludePathPatterns("/sendTemplateInfo").excludePathPatterns("/sreach/**");
         }
     }
     //注册session监听器;

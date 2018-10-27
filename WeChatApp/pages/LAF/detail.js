@@ -47,7 +47,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**
@@ -103,12 +103,19 @@ Page({
       success:function(res){
         if(res.confirm){
           wx.request({
-            url: 'http://127.0.0.1:8081/finish/' + that.data.detailInfo.id,
-            method: 'PUT',
+            url: 'http://localhost:8080/finish/' + that.data.detailInfo.id,
+            method: 'DELETE',
             header: app.globalData.header,
             success: function (res) {
-              wx.navigateBack({
-                delta:1
+              wx.showToast({
+                title: '删除成功',
+                icon:'success',
+                duration:1500,
+                success:function(){
+                  wx.navigateBack({
+                    delta: 1
+                  })
+                }
               })
             }
           })
@@ -142,9 +149,12 @@ Page({
    * 失主留言
    */
   message:function(res){
-    console.log(res.detail.value)
-    console.log(app.globalData.userInfo.nickName)
+    console.log("ads")
+    console.log(this.data.detailInfo)
     this.data.message = app.globalData.userInfo.nickName+":"+res.detail.value
+    this.setData({
+
+    })
   },
   /**
    * 获取formId以及access_token用于发送模板
@@ -155,7 +165,7 @@ Page({
       formId: res.detail.formId
     })
     wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc8c90d2d684c76a0&secret=7f24acb9cb4cf67e2fd57993032de4dc',
+      url: 'http://localhost:8080/get_access_token',
       method: "GET",
       success: function (res) {
         that.setData({
@@ -175,7 +185,7 @@ Page({
   remind:function(res){
     console.log(res)
     wx.request({
-      url: 'http://127.0.0.1:8081/confirm/' + this.data.detailInfo.id,
+      url: 'http://localhost:8080/confirm/' + this.data.detailInfo.id,
       method: 'PUT',
       header: app.globalData.header,
       data: {
@@ -190,6 +200,11 @@ Page({
    * 发送模板信息
    */
   sendMessage:function(){
+    wx.showToast({
+      title: '正在发送',
+      icon: 'loading',
+      duration: 1500,
+    })
     if (this.data.message == "") {
       this.setData({
         message: app.globalData.userInfo.nickName + ":谢谢"
@@ -204,40 +219,34 @@ Page({
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
     wx.request({
-      url: 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='+that.data.access_token,
-      method:'POST',
+      url: 'http://localhost:8080/sendTemplateInfo',
+      method:'GET',
       data:{
-        "touser": that.data.detailInfo.identity,
-        "template_id": "RxgaGC2KYvrcsD_ZviRM3pXonDsQUPUrXDPKOrIeESo",
-        "form_id": that.data.formId,
-        "data": {
-          "keyword1": {
-            "value": that.data.category,
-          },
-          "keyword2": {
-            "value": "已找到失主"
-          },
-          "keyword3": {
-            "value": that.data.nickName
-          },
-          "keyword4": {
-            "value": current
-          },
-          "keyword5": {
-            "value": that.data.message
-          },
-          "keyword6": {
-            "value": "请您去小程序内确认"
-          }
-        },
+        accessToken:that.data.access_token,
+        openid:that.data.detailInfo.identity,
+        formId:that.data.formId,
+        category: that.data.detailInfo.category,
+        current:current,
+        nickName:app.globalData.userInfo.nickName,
+        message:that.data.message
       },
       success:function(res){
         console.log(res)
-        wx.navigateBack({
-          delta:1,
-        })
+        wx.showToast({
+          title: '发送成功',
+          icon: 'success',
+          duration: 1000,
+          success:function(){
+            setTimeout(function(){
+              wx.navigateBack({
+                delta: 1,
+              })
+            },1000) 
+          }
+        }) 
       }
     })
+    
   },
   affirm:function(){
 
