@@ -1,0 +1,11 @@
+2018-10-30 08:08:52,804 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7h50m41s11ms).
+2018-10-30 12:23:03,412 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4h14m10s631ms).
+2018-10-30 12:59:58,086 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 750 - HikariPool-1 - Retrograde clock change detected (housekeeper delta=23s66ms), soft-evicting connections from pool.
+2018-10-30 14:12:16,274 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=21m17s366ms).
+2018-10-30 15:27:11,974 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 750 - HikariPool-1 - Retrograde clock change detected (housekeeper delta=25s40ms), soft-evicting connections from pool.
+2018-10-30 15:59:48,573 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m6s322ms).
+2018-10-30 16:29:32,311 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=28m43s726ms).
+2018-10-30 17:13:42,975 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=13m40s472ms).
+2018-10-30 17:59:38,207 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 750 - HikariPool-1 - Retrograde clock change detected (housekeeper delta=24s953ms), soft-evicting connections from pool.
+2018-10-30 20:24:32,736 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h24m54s529ms).
+2018-10-30 20:39:56,712 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 750 - HikariPool-1 - Retrograde clock change detected (housekeeper delta=23s859ms), soft-evicting connections from pool.

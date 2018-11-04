@@ -13,8 +13,23 @@ Page({
     confirm:null,
     isshow:true,
     showModal:false,
+    imgHeight:0,
+    imgWidth:0,
+    contact:"",
+    contactWay:"",
+    contactList: ['/pages/img/QQ.png ',
+                  '/pages/img/WeChat.png',
+                  '/pages/img/number.png'],
+    isHasFind:'未找到失主',
   },
-
+  /**
+   * 返回
+   */
+  back:function(){
+    wx:wx.navigateBack({
+      delta: 1,
+    })
+  },
   /**
    * 自动显示对应样式
    */
@@ -22,27 +37,79 @@ Page({
     this.setData({
       detailInfo: wx.getStorageSync("infor")
     })
-    if (this.data.detailInfo.kind == "遗失"){
-      this.setData({
-        infoCss:app.globalData.infoLostCss
-      })
-    } else if (this.data.detailInfo.kind == "招领"){
-      this.setData({
-        infoCss: app.globalData.infoFindCss
-      })
+    if (this.data.detailInfo.kind == "遗失" ){
+      if (this.data.detailInfo.confirm || this.data.detailInfo.timeOut != null ){
+        this.setData({
+          isHasFind: "失物已被找到"
+        })
+      }else {
+        this.setData({
+          isHasFind: "失物未被找到"
+        })
+      }
+    } else if (this.data.detailInfo.kind == "招领" ){
+      if (this.data.detailInfo.confirm || this.data.detailInfo.timeOut != null) {
+        this.setData({
+          isHasFind: "已找到失主"
+        })
+      } else {
+        this.setData({
+          isHasFind: "未找到失主"
+        })
+      }
     }
     /**
-     * 删除标记标记
+     * 改变联系方式样式
      */
-    this.remind(false);
-    if(app.globalData.openid == this.data.detailInfo.identity){
+    var StrList = this.data.detailInfo.contactWay.split("+");
+    console.log(this.data.contactList[parseInt(StrList[0])])
+    this.setData({
+      contactWay:this.data.contactList[parseInt(StrList[0])],
+      contact:StrList[1]
+    })
+    /**
+     * 图片名格式 height width timestamp openid.type
+     * 调整图片大小
+     * 默认图片名字无大小信息，并且不会显示，所以不符合正则表达式就不显示
+     */
+    var height = this.data.detailInfo.picPath.substr(26,3);
+    var width = this.data.detailInfo.picPath.substr(30, 3);
+    var RegExp = /^\d{3}$/
+    if(RegExp.test(height) && RegExp.test(width)){
       this.setData({
-        isshow:false,
-        confirm:true
+        imgHeight: parseInt(height),
+        imgWidth: parseInt(width)
       })
+    } 
+    if (this.data.detailInfo.confirm != null){
+      if (app.globalData.openid == this.data.detailInfo.identity) {
+        /**
+         * 删除标记标记
+         */
+        console.log("sadsd")
+        this.remind(false);
+        this.setData({
+          isshow: false,
+          confirm: true
+        })
+      }
     }
   },
-
+  /**
+   * 一键复制联系方式
+   */
+  copy:function(){
+    wx.setClipboardData({
+      data: this.data.contact,
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            console.log(res.data) // data
+          }
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -88,8 +155,15 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-    
+  onShareAppMessage: function (res) {
+    console.log(res)
+    if(res.from == 'button'){
+      console.log(res)
+    }
+    return {
+      title:"失物详细信息",
+      path:'/pages/LAF/index'
+    }
   },
   /**
    * 发布信息者结束事件
@@ -103,7 +177,7 @@ Page({
       success:function(res){
         if(res.confirm){
           wx.request({
-            url: 'http://localhost:8080/finish/' + that.data.detailInfo.id,
+            url: app.globalData.domain +'/finish/' + that.data.detailInfo.id,
             method: 'DELETE',
             header: app.globalData.header,
             success: function (res) {
@@ -165,8 +239,9 @@ Page({
       formId: res.detail.formId
     })
     wx.request({
-      url: 'http://localhost:8080/get_access_token',
+      url: app.globalData.domain +'/get_access_token',
       method: "GET",
+      header: app.globalData.header,
       success: function (res) {
         that.setData({
           access_token: res.data.access_token
@@ -185,7 +260,7 @@ Page({
   remind:function(res){
     console.log(res)
     wx.request({
-      url: 'http://localhost:8080/confirm/' + this.data.detailInfo.id,
+      url: app.globalData.domain +'/confirm/' + this.data.detailInfo.id,
       method: 'PUT',
       header: app.globalData.header,
       data: {
@@ -219,8 +294,9 @@ Page({
     var time = new Date();
     var current = time.toLocaleDateString() + time.toLocaleTimeString();
     wx.request({
-      url: 'http://localhost:8080/sendTemplateInfo',
+      url: app.globalData.domain +'/sendTemplateInfo',
       method:'GET',
+      header: app.globalData.header,
       data:{
         accessToken:that.data.access_token,
         openid:that.data.detailInfo.identity,

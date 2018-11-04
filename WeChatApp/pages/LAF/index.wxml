@@ -11,37 +11,71 @@
     <text class="user-motto">{{motto}}</text>
   </view>
 </view> -->
-<view class="top">
+<view class="modal-image" wx:if="{{image_show}}"><image style="height:100%;width:100%"src="/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png "></image>
+</view>
+
+<view style='height:100%;width100%'>
+<view class="remind">
+<view style='display:flex;width:100%'>
+<image class="logoLeft" src='/pages/img/2D03FA95-7694-4BDB-AEF0-37F7E9DD853A.png'></image>
+<text class="logoRight" >{{remind}}</text></view></view>
+<view class='top'>
+<view class='top_search'>
+<view class='top_sh_left'><image src='/pages/img/timg.png' style= 'padding-left:40%;height:50%;width:60%;'></image></view>
+<input type="text" class="top_searchText" placeholder='搜索需要信息' bindtap='search' placeholder-class='top_searchTextPlaceholder'></input>
+<view class='top_sh_right'></view>
+</view>
+</view>
+<!-- <view class="top">
 <view style='display:flex;'>
 <image class="logoLeft" src='{{logoLeft}}'></image>
 <text class="logoRight" >失物招领网</text></view>
-<image class='userSugges'src='/pages/img/94FB2F80-BB44-4547-AC1E-041AE763C95A.png ' bindtap='showDialogBtn2'></image></view>
+<image class='userSugges'src='/pages/img/94FB2F80-BB44-4547-AC1E-041AE763C95A.png ' bindtap='showDialogBtn2'></image></view> -->
+
 <view class="userinfo">
    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
+
+  <text style='color:black;font-size:120%'>个人中心</text>
       <image bindtap="toManager" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
+
 <view class="info">
-
-<view class='sreachInfo'>
-<view class="info_left"><text style='color:white'>查看信息</text></view>
-<view class='info_middle'><text id='0' class="middle_text1"bindtap="toService">证件类</text>
-<text bindtap="toService" id='1'class="middle_text1">书本类</text><text bindtap="toService" id='2'class="middle_text2">钱包类</text><text class="middle_text2"id='3' bindtap="toService">其他类</text></view>
-<view class="info_right" id='4'bindtap="toService">关于我的</view>
-</view> 
-
-<view class='makeInfo'>
-<view class="Info_left"><text style='color:white'>发布信息</text></view>
-<view class='Info_middle'><text id="0" class="Middle_text1"bindtap="toUpload">证件类</text>
-<text bindtap="toUpload" id = "1" class="Middle_text1">钱包类</text><text bindtap="toUpload" id="2"class="Middle_text2">书本类</text><text class="Middle_text2" id="3" bindtap="toUpload">其他类</text></view>
-<view class="Info_right" id="4" bindtap="toUpload" ><text>发布重要物品</text><text>（需审核）</text></view>
+<view class='sreachInfo' bindtap='toService'>
+<image class='infoImg1' src='/pages/img/search.png'></image>
+<view class='infoText'>
+<text style='color:black;font-size:80%'>查看信息</text>
+<text style='color:#b1aeae;font-size:60%'>查看遗失招领信息</text>
 </view>
 </view>
 
-<view class="modal-image" wx:if="{{image_show}}"><image style="height:100%;width:100%"src="/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png "></image>
+<view class='makeInfo' bindtap='toUpload'>
+<image class='infoImg2' src='/pages/img/write.png'></image>
+<view class='infoText'>
+<text style='color:black;font-size:80%'>发布信息</text>
+<text style='color:#b1aeae;font-size:60%'>发布找失主或失物信息</text>
 </view>
+</view>
+</view>
+
+<view class='help'>
+<image src='/pages/img/B3061446-0318-4F7D-915C-AE5C7416A88B.png' style='width:10%;height:30%;'></image>
+<view style='width:100%;height:100%;display:flex;flex-direction:column;'>
+<text class='help_text'>1.发布贵重物品，点击红色叹号，须管理员审核通过，贵重物品优先显示</text>
+ <text style='font-size:70%;color:rgb(153, 151, 151);margin-left:2%;'>2.点击图像即可进入个人中心</text> 
+</view>
+</view>
+
+<view class='author'>
+<image src='/pages/img/34223B0D-CCBB-4951-94D4-45C621108F30.png' style='width:8%;height:100%'></image>
+<text style='font-size:80%;color:rgb(170, 167, 167)'>:由比滨结衣</text>
+<image src='/pages/img/FF5E47A8-9C0D-445B-AE0B-707B1CC75938.png' style='width:8%;height:100%;margin-left:5%'></image>
+<text style='font-size:90%;color:rgb(170, 167, 167); text-align:center'>:Shinena1998</text>
+</view>
+</view>
+
 
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
 <view class="modal-dialog" wx:if="{{showModal}}">

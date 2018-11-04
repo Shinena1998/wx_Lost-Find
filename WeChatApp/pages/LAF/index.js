@@ -6,12 +6,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    image_show: true,
-    showModal: true,
+    image_show: false,
+    showModal: false,
     showModal2:false,
+    showIndex:true,
     suggestion:"",
     logoLeft: "/pages/img/logo.png",
     logoRight:"/pages/img/2014062374843457.png",
+    remind:"申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之",
     userInfo:{},
     docode:true,
     hasUserInfo: false,
@@ -20,6 +22,11 @@ Page({
     session_key:"",
     iv:"",
     canIUse: wx.canIUse('button.open-type.getUserInfo')
+  },
+  search: function (e) {
+    wx.navigateTo({
+      url: 'search',
+    })
   },
   show_image:function(){
     this.setData({
@@ -31,92 +38,46 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    setTimeout(function(){
+    var remindList = ["申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之","本平台只负责信息传递，失物的保管及完整性由当事人（拾物者）自行负责", "发布失物或寻物信息请注意您的个人信息泄漏，由此造成的手机骚扰等损失本平台不负任何责任", "当有失主已确认失物时，双方自行商讨归还失物，发布消息者及时结束消息", "信息的真实性由发布者自行负责，本平台不负任何责任","通过本平台发布的信息发生任何意外均与本平台无关"]
+    var count = 0
+    if(app.globalData.power == false){
       that.setData({
-        image_show: false
+        showModal: true,
       })
-    },1500)
+    }
+    setInterval(function () {
+        count = (count + 1)%6
+        that.setData({
+          remind:remindList[count]
+        })
+      }, 2500)
     /**
- * 获取用户session_key,以及判断用户是否已经登录过
- */
-    /**
-         * 判断用户是否已经授权
-         */
-    wx.getSetting({
+    * 获取用户session_key,以及判断用户是否已经登录过
+    */
+    wx.getUserInfo({
       success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
-          app.globalData.power = true;
-          wx.getUserInfo({
-            success: res => {
+        /**
+         * 记录用户基本信息
+         */
+        app.globalData.userInfo = res.userInfo
+        console.log(res)
+        that.data.encryptedData = res.encryptedData
+        that.data.iv = res.iv;
 
-              /**
-               * 记录用户基本信息
-               */
-              app.globalData.userInfo = res.userInfo
-              console.log(res)
-              that.data.encryptedData = res.encryptedData
-              that.data.iv = res.iv;
-           
-              //可以将 res 发送给后台解码出 unionId
-              that.setData({
-                showModal: false,
-                userInfo: res.userInfo,
-                hasUserInfo: true,
-              })
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
-              }
-            }
-          })
+        //可以将 res 发送给后台解码出 unionId
+        that.setData({
+          showModal: false,
+          userInfo: res.userInfo,
+          hasUserInfo: true,
+        })
+        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+        // 所以此处加入 callback 以防止这种情况
+        if (this.userInfoReadyCallback) {
+          this.userInfoReadyCallback(res)
         }
       }
     })
-    wx.login({
-      success: res => {
-        console.log(res)
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        wx.request({
-          url: 'http://localhost:8080/getUserInfo',
-          method: 'GET',
-          data:{
-            code:res.code
-          },
-          success: function (res) {
-            console.log('231')
-            console.log(res.data)
-            app.globalData.openid = res.data.openid;
-            that.data.openid = res.data.openid;
-            that.data.session_key = res.data.session_key;
-            //获取token
-            wx.request({
-              url: 'http://localhost:8080/token',
-              success: function (res) {
-                console.log(res)
-                app.globalData.header.token = res.data.token,
-                app.globalData.header.sessionId = res.data.session
-                /**
-                * 判断用户是否为管理员
-                */
-                wx.request({
-                  url: 'http://localhost:8080/manager/' + that.data.openid,
-                  method: 'POST',
-                  header: app.globalData.header,
-                  success: function (res) {
-                    console.log(res.data)
-                    if (res.data) {
-                      app.globalData.isManager = res.data;
-                    }
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-    })
+   
   },
 
   /**
@@ -177,7 +138,7 @@ Page({
     * 判断用户是否为新用户
     */
    wx.request({
-     url: 'http://localhost:8080/openid/' + that.data.openid,
+     url: app.globalData.domain +'/openid/' + app.globalData.openid,
      method: "GET",
      header: app.globalData.header,
      complete: function (res) {
@@ -203,7 +164,7 @@ Page({
    * 进入查看界面
    */
   toService: function (e) {
-    console.log(e.currentTarget.id);
+    e.currentTarget.id = 0;
     /**
      * 这里将json包赋值给app.globalData.category而不是e.currentTarget.id
      * 是为了配合service.js里面的category()函数的参数一致
@@ -242,15 +203,13 @@ Page({
   decodeEncryptedData:function(){
       var that = this;
       wx.request({
-        url: 'http://localhost:8080/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + that.data.session_key + '&iv=' + that.data.iv,
+        url: app.globalData.domain +'/identity?encryptedData=' + that.data.encryptedData + '&session_key=' + app.globalData.session_key + '&iv=' + that.data.iv,
         header: app.globalData.header,
         method: 'GET',
         success: function (res) {
-          that.setData({
-            openId: res.data.openId,
-          })
+          console.log(res)
           wx.request({
-            url: 'http://localhost:8080/user',
+            url: app.globalData.domain +'/user',
             method: "POST",
             header: app.globalData.header,
             data: {
@@ -322,23 +281,11 @@ Page({
     })
     var that = this
     setTimeout(function(){
-      wx.request({
-        url: 'http://localhost:8080/suggestion',
-        header: app.globalData.header,
-        method: "POST",
-        data: {
-          nickName: that.data.userInfo.nickName,
-          openId: that.data.openid,
-          suggestion: that.data.suggestion
-        },
-        success: function (res) {
-          console.log(res);
-        }
-      })
+      
     },1000)
   },
   toManager:function(){
-    if (app.globalData.isManager){
+    if (!app.globalData.isManager){
       wx.navigateTo({
         url: 'manager',
       })

@@ -1,0 +1,26 @@
+<view class="title" >
+<view class='title_text'><text>个人中心</text></view>
+</view>
+
+<view class="userinfo">
+      <image class="userinfo-avatar" src="{{userPic}}" background-size="cover"></image>
+      <text class="userinfo-nickname">{{username}}</text>
+</view>
+
+
+<view class="info_v" bindtap='showNotFinish' id='0'>
+<view class="info_t"><view class='info_imgV'><image   class="info_img" src='/pages/img/not.png '></image> 未结束信息</view><text value=""  placeholder-style='font-size:70%;text-align:right'>{{labelNot}}</text></view>
+</view>
+
+<view class="info_v" bindtap='showHasFinish' id='1'>
+<view class="info_t"><view class='info_imgV'><image   class="info_img" src='/pages/img/has.png '></image> 已结束信息</view><text value=""  placeholder-style='font-size:70%;text-align:right'>{{labelHas}}</text></view>
+</view>
+
+<view class="info_v" bindtap='showAboutMe' id='2'>
+<view class="info_t"><view class='info_imgV'><image   class="info_img" src='/pages/img/advice.png '></image> 意见反馈</view><text value=""  placeholder-style='font-size:70%;text-align:right'>{{labelMe}}</text></view>
+</view>
+
+<view class="info_v" bindtap='showAboutMe' id='3'>
+<view class="info_t"><view class='info_imgV'><image   class="info_img" src='/pages/img/me.png '></image> 关于失物招领</view><text value=""  placeholder-style='font-size:70%;text-align:right'>{{labelMe}}</text></view>
+</view>
+

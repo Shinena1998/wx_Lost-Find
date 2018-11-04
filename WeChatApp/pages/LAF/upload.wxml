@@ -1,26 +1,44 @@
-<view class="title">
+<view class="title" >
 <view class='title_text'><text>填写信息</text></view>
 </view>
-<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
-<view class="imageView" bindtap='uploadImg'>
-<view class="imageText">上传照片：</view><image class="image" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
-</view>
-<radio-group class="radio-group_kind" bindchange="radioChangeKind">
+<!-- <radio-group class="radio-group_kind" bindchange="radioChangeKind">
   <label class="radio" wx:for="{{items_kind}}" wx:key="{{items_kind}}">
   <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
-</radio-group>
+</radio-group> -->
+<view class="radio-group_kind">
+<view class='lose' id='1' bindtap='selectKind' style='color:{{loseBC}};border-bottom:{{borderL}}'>遗失</view>
+<view class='lose' id='2' bindtap='selectKind' style='color:{{findBC}};border-bottom:{{borderF}}'>招领</view>
+</view>
+<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
+<view class='info_tirtle'><input value="" name="theme" placeholder='请输入物品名称...' maxlength='11' placeholder-style='font-size:70%' confirm-type='next'></input></view>
+<view class='info_detail'><textarea value="" name="info"placeholder='请补充物品特征...' maxlength='100' placeholder-style='font-size:70%' style='height:100%;width:100%'></textarea></view>
 <radio-group class="radio-group_category" bindchange="radioChangeCategory">
   <label class="radio" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
   <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </radio-group>
-<view class="info_c"><view class='info_a'>物品名称：<input value="" name="theme" placeholder='必填' maxlength='11' placeholder-style='font-size:70%' style='number'></input></view></view>
-<view class="info_c"><view class='info_a'>{{infoCss.time}}：<input value="" name="time" maxlength='8'placeholder='必填'  placeholder-style='font-size:70%' style='number'></input></view></view>
-<view class="info_c"><view class='info_a'>联系方式：<input value="" name="contactWay" maxlength='18'placeholder='必填'  placeholder-style='font-size:70%' style='text'></input></view></view>
-<view class="info_c"><view class='info_a'>{{infoCss.place}}：<input value="" name="place" maxlength='18'placeholder='必填'  placeholder-style='font-size:70%' style='number'></input></view></view>
-<!-- <input class="inputsize" value="" name="info" placeholder='信息' type='text'>sdfs</input> -->
-<view class="info_c"><view class='info_a'>详细信息：<input value="" name="info"placeholder='选填' placeholder-style='font-size:70%' style='number'></input></view></view>
+<view class="imageView">
+<image bindtap='uploadImg' class="image" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
+<view style='height:30%;width:2%;margin-left:8%;'>
+<image class="valuable" bindtap="valuable" src = "/pages/img/BEF8C096-6C4E-43BB-8399-732F84DB8855.png "></image>
+</view>
+<image wx:if="{{isValuable}}" class="valuableImg" src = "/pages/img/valuable.png"></image>
+</view>
+<view class="info_time">{{infoCss.time}}：
+<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeChange">
+    <view style='padding-top:2.5%;font-size:80%;color:{{TimeColor}}'>
+      {{Time}}
+    </view>
+  </picker></view>
+
+<view class="info_c">{{infoCss.place}}：<input value="" name="place" maxlength='18'placeholder='请输入详细地点...' placeholder-style='font-size:70%;text-align:right' style='text'></input></view>
+<view class="info_c"><view class='info_content' >联系方式：
+ <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view style='color:green'>
+      {{array[index]}} >
+    </view>
+  </picker></view><input  maxlength='18' placeholder='请输入对应联系方式...' bindblur='contentCss' placeholder-style='font-size:70%;text-align:right' confirm-type='done'></input></view>
 <view class='buttonView'>
 <button  bindtap='back' size="mini">取消</button>
 <button  formType="submit" size="mini">提交</button>

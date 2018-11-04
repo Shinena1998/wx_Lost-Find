@@ -1,16 +1,17 @@
 {
   "pages":[
     "pages/LAF/index",
+    "pages/LAF/user",
+    "pages/LAF/showInfo",
     "pages/LAF/service",
     "pages/LAF/upload",
     "pages/LAF/detail",
     "pages/LAF/manager",
     "pages/LAF/search"
-
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "silver",
+    "navigationBarBackgroundColor": "white",
     "navigationBarTitleText": "失物招领",
     "navigationBarTextStyle":"black"
   },

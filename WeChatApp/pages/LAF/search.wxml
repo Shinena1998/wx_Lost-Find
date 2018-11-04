@@ -1,23 +1,46 @@
-<form bindsubmit="search2" report-submit='true'>
+
 <view class='top'>
-<view class='top_search'>
-<view class='top_sh_left'></view><view class="top_pickerView">
- <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <view class="top_picker">
-      选择类型:{{array[index]}}
+<view class='top_search' wx:if="{{searchType}}">
+<view  style='width:80%;height:100%;display:flex;'>
+<view class='top_sh_left'></view>
+<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索信息'  auto-focus='true' bindconfirm='search1' bindblur='searchSave'
+placeholder-class='top_searchTextPlaceholder'></input>
+<view class='top_sh_right'></view>
+</view>
+<view class='top_search_button' bindtap='search2'>
+<image class='top_left' src='/pages/img/whiteSmoke.png'></image>
+<view class='top_middle'>搜索</view> 
+<image class='top_right' src='/pages/img/whitesmokeR.png'></image></view>
+</view>
+
+<block wx:else class="time">
+<view style='width:80%;height:100%;display:flex;'>
+<view class='time_left'></view>
+<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeStartChange" class='timeStart' style='border-right:3rpx solid white' >
+    <view class='timeStartView' style='color:{{timeStartColor}}'>
+      {{timeStart}}
+    </view>
+</picker>
+<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeEndChange" class='timeStart' >
+    <view class="timeStartView" style='color:{{timeEndColor}}'>
+      {{timeEnd}}
     </view>
   </picker>
+<view class='time_right'></view>
 </view>
-<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索信息' confirm-type='search' bindconfirm='search1'
-name='text' placeholder-class='top_searchTextPlaceholder'></input>
-<view class='top_sh_right'></view>
-<button class='top_sh_middle' form-type='submit'>搜索</button>
+<view class='top_search_button' bindtap='searchTime'>
+<image class='top_left' src='/pages/img/whiteSmoke.png'></image>
+<view class='top_middle'>搜索</view> 
+<image class='top_right' src='/pages/img/whitesmokeR.png'></image></view>
+</block>
 </view>
+
+<view class="searchType">
+<view class='stringType' id='1' bindtap='searchType' style='color:{{strColor}}; border-bottom:{{borderS}};'>信息</view>
+<view class='timeType' id='2' bindtap="searchType" style='color:{{timeColor}}; border-bottom:{{borderT}}'>时间</view>
 </view>
-</form>
 
 <view wx:if="{{show}}" class='else'>
-
 <view class="historyView"><text>推荐查询</text><image class="eyes"  bindtap='changeEye' src='{{eye}}'></image></view>
 <view class='labelView' wx:if="{{isShowFastSearch}}">
 <view class="labelFor"wx:for="{{labelList}}" wx:for-item="goods" data-index='{{index}}'wx:key="name" bindtap='fastSearch'> 
@@ -28,7 +51,7 @@ name='text' placeholder-class='top_searchTextPlaceholder'></input>
 </view>
 </view>
 <block wx:else>
-<text style='color:wheat;font-size:80%;margin-left:35%;'>推荐搜索已隐藏</text>
+<text style='color:rgb(148, 145, 145);font-size:80%;margin-left:35%;'>推荐搜索已隐藏</text>
 </block>
 
 <view class="historyView"><text>历史查询</text><image class="history_deleteImg"  bindtap='deleteHistorySearch' src='/pages/img/31848B0B-9DEA-4847-B241-18125CB6D371.png '></image></view>
@@ -38,7 +61,7 @@ name='text' placeholder-class='top_searchTextPlaceholder'></input>
 </view>
 </view>
 <block wx:else>
-<text style='color:wheat;font-size:80%;margin-left:40%'>无历史记录</text>
+<text style='color:rgb(148, 145, 145);font-size:80%;margin-left:40%'>无历史记录</text>
 </block>
 
 </view>
@@ -46,24 +69,21 @@ name='text' placeholder-class='top_searchTextPlaceholder'></input>
 <block wx:else>
 <scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation'>
 <view class="infoView" wx:for="{{infoList}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
-<view class='remark'>
-τ<view class='remark_time'><text>{{goods.current}}</text></view>
-</view>
 <view class='OneInfo'>
 <view class="infoImgView">
 <image class="infoImg" src = "{{goods.picPath}}"></image>
 </view>
-<view  class="infoText">
-<view class = "infoThemeView">
+<view  class="infoText" 
+style="background-image: url({{imgList[index]}})">
+<view class = "infoThemeView" >
 <view class='infoThemeRemindView'>
-<text class='infoKind' style='color:red;'>{{goods.kind}}</text>
-<image class="infoRemind"src='/pages/img/C329252B-4FC3-4677-9AAF-362E42B3D75D.png ' wx:if="{{inAboutMe && goods.confirm}}"></image>
+<view class='infoKind'><image style="height:80%;width:9%;margin-right:1%;margin-left:1.5%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
 </view>
-<text class='infoTheme' style='color:green;' >{{goods.theme}}</text>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1.5%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
 </view>
-<view class="infoPlace">
-<textarea auto-height='true' disabled="true" value='{{goods.place}}'></textarea></view>
-<text>{{goods.time}}</text>
+<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
+<text style="width:100%">{{goods.place}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:1%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
 </view>
 </view>
 </view>

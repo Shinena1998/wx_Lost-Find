@@ -1,0 +1,139 @@
+/* pages/LAF/showInfo.wxss */
+page{
+  background-color:  whitesmoke;
+  height:100%;
+  width: 100%;
+  font-size: 85%;
+}
+.title{
+  height:5%;
+  background-color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.infoAll{
+  width: 94%;
+  height: 85%;
+  margin-top: 8%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.infoView{
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 25%;
+  margin-top: 1%;
+  /* border:1rpx ridge;
+  border-color: rgb(220, 230, 223);
+  border-radius: 5%; */
+}
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border-radius: 5%;
+  border: 1px solid;
+  border-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%;
+  background-size: 60%;
+  /*图片不填充背景*/
+  background-repeat:no-repeat;
+  /*图片位置偏移量*/
+  background-position: 100% 0%;
+  /* transform: rotate(30deg); 旋转 */
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  color: red;
+  /* border: 1px solid red; */
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.infoPlace{
+  height: 44%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.infoTime{
+  height: 14%;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 50%;
+}
+
+.adviceView{
+  width: 94%;
+  height: 50%;
+  margin-top: 3%;
+  margin-left:3%;
+  margin-right:3%;
+  display: flex;
+  flex-direction: column; 
+}
+.adviceImg{
+  height:50%;
+  width:106%;
+  margin-left:-3%;
+  margin-top: -3%; 
+}
+.advice{
+  height:27%;
+  width:100%;
+  margin-top: 3%;
+  border-radius: 5%;
+  border: 5rpx solid white;
+}
+.content{
+  margin-top:5%; 
+  height: 15%;
+  width:100%;
+  border-radius: 5%;
+  border: 5rpx solid white;
+}

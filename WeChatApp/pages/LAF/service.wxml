@@ -1,12 +1,5 @@
 <view class="top">
-<view style='width:19%;height:100%;display:flex'>
-<image src='/pages/img/logo.png' class='top_addimg'></image>
-<text class='top_addimgtext' >信息一览</text>
-</view>
-<view class='top_search'>
-<view class='top_searchtextLeft'></view><image src='/pages/img/u=3202529814,4163970886&fm=214&gp=0.jpg' class="top_searchImg"></image>
-<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索需要信息' confirm-type='search' bindtap='search' placeholder-class='top_searchTextPlaceholder'></input><view class='top_searchtextRight'></view>
-</view>
+<text>信息一览</text>
 </view>
 
 <scroll-view  scroll-x="true">
@@ -15,30 +8,26 @@
 <view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button></view>
 <view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button></view>
 <view><button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button></view>
-<view><button size='mini' plain='true' id='4' type='{{type[4]}}' bindtap='category'>关于我的</button></view>
 </view>
 </scroll-view>
 
 <scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation'>
 <view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
-<view class='remark'>
-τ<view class='remark_time'><text>{{goods.current}}</text></view>
-</view>
 <view class='OneInfo'>
 <view class="infoImgView">
 <image class="infoImg" src = "{{goods.picPath}}"></image>
 </view>
-<view  class="infoText">
-<view class = "infoThemeView">
+<view  class="infoText" 
+style="background-image: url({{imgList[index]}})">
+<view class = "infoThemeView" >
 <view class='infoThemeRemindView'>
-<text class='infoKind' style='color:red;'>{{goods.kind}}</text>
-<image class="infoRemind"src='/pages/img/C329252B-4FC3-4677-9AAF-362E42B3D75D.png ' wx:if="{{inAboutMe && goods.confirm}}"></image>
+<view class='infoKind'><image style="height:80%;width:9%;margin-right:1%;margin-left:1.5%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
 </view>
-<text class='infoTheme' style='color:green;'>{{goods.theme}}</text>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1.5%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
 </view>
-<view class="infoPlace">
-<textarea style="width:100%"auto-height='true' disabled="true" value='{{inforCss[index][0]}}{{goods.place}}'></textarea></view>
-<text>{{inforCss[index][1]}}{{goods.time}}</text>
+<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
+<text style="width:100%">{{goods.place}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:1%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
 </view>
 </view>
 </view>

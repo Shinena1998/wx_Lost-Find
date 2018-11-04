@@ -6,15 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.Repository.*;
 import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mysql.*;
-import com.example.lostandfind.service.ConfirmService;
-import com.example.lostandfind.service.DecryptService;
-import com.example.lostandfind.service.InfoService;
-import com.example.lostandfind.service.TokenService;
+import com.example.lostandfind.service.*;
 import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
 import com.example.lostandfind.utils.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.crypto.Data;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,12 +116,14 @@ public class LafController{
     @ResponseBody
     @PostMapping(value = "/msg")
 //    public Result addMsg(@Valid InfoMysql infoMysql,BindingResult bindingResult){
-    public Result addMsg(@RequestBody InfoMysql infoMysql) {
+    public Result addMsg(@RequestBody InfoMysql infoMysql) throws Exception {
         InfoService infoService = new InfoService();
         if (infoService.hasError(infoMysql)) {
             return ResultUtil.error(12, "填全内容");
         }
         infoMysql.setTimestamps((new Date().getTime())/1000);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        infoMysql.setLoststamp(simpleDateFormat.parse(infoMysql.getTime()).getTime()/1000 + 1000);
         infoRepository.save(infoMysql);
         return ResultUtil.success(infoMysql);
     }
@@ -165,43 +166,52 @@ public class LafController{
         return dataStr;
     }
 
-//    /**
-//     * 向本地上传图片
-//     * @param file 图片的二进制字节流
-//     * @return
-//     * @throws Exception
-//     */
+    /**
+     * 向本地上传图片
+     * @param file 图片的二进制字节流
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = "/uploadImage")
+    public String uploadPicture(@RequestParam("file") MultipartFile file,
+                                @RequestParam("height") int height,
+                                @RequestParam("width") int width,
+                                @RequestParam("openid") String openid) throws Exception {
+
+       System.out.println(height +" "+width + openid);
+        //获取文件需要上传到的路径
+        if(file.isEmpty()==true){
+            return "error";
+        }else {
+            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
+            Files.write(path,bytes);
+            return "/pages/img/"+imgName;
+        }
+    }
+    /**
+     * 向服务器端传图片
+     */
 //    @PostMapping(value = "/uploadImage")
-//    public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
+//    public String uploadPicture(@RequestParam("file") MultipartFile file,
+//                                @RequestParam("height") int height,
+//                                @RequestParam("width") int width,
+//                                @RequestParam("openid") String openid) throws Exception {
 //        //获取文件需要上传到的路径
 //
 //        if(file.isEmpty()==true){
 //            return "error";
 //        }else {
+//            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+//            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
 //            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ file.getOriginalFilename());
+//            Path path = Paths.get("/root/html/img/"+ imgName);
 //            Files.write(path,bytes);
-//            return "/pages/img/"+file.getOriginalFilename();
+//            return "https://yuigahama.xyz/img/"+imgName;
 //        }
 //    }
-    /**
-     * 向服务器端传图片
-     */
-@PostMapping(value = "/uploadImage")
-public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exception {
-    //获取文件需要上传到的路径
-
-    if(file.isEmpty()==true){
-        return "error";
-    }else {
-
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get("/root/html/img/"+ file.getOriginalFilename());
-        Files.write(path,bytes);
-        file.getOriginalFilename();
-        return "https://yuigahama.xyz/img/"+file.getOriginalFilename();
-    }
-}
 
     @ResponseBody
     @PutMapping(value = "/confirm/{id}")
@@ -266,21 +276,21 @@ public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exc
     @ResponseBody
     public List<InfoMysql> doSearch(@PathVariable("string") String name,
                                     @PathVariable("index") Integer index,
-                                    @PathVariable("count") Integer count){
+                                    @PathVariable("count") Integer count) throws Exception{
         List<InfoMysql> infoMysqlList = null;
         if(index == 0){
              infoMysqlList = infoRepository.findByInfoTheme(name,count*10);
-        }else if(index == 1){
-            infoMysqlList = infoRepository.findByInfoTime(name,count*10);
-        }else if(index == 2){
-            infoMysqlList = infoRepository.findByInfoPlace(name,count*10);
-        }else if(index == 3){
-            infoMysqlList = infoRepository.findByInfoInfomation(name,count*10);
+        }else if(index == 1) {
+
+            Sort sort = new Sort(Sort.Direction.ASC, "loststamp");
+            infoMysqlList = infoRepository.findAll(sort);
+            return new TimeSelectService().timeSelect(name,infoMysqlList);
+
         }
         return infoMysqlList;
     }
     /**
-     * 更新历史查询
+     * 更新历史查询，包括增加删除
      */
     @ResponseBody
     @PutMapping(value = "/search/history")
@@ -331,7 +341,7 @@ public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exc
         return historyRepository.save(historyMysql1);
     }
     /**
-     * 删除历史记录
+     * 删除所有历史记录
      */
     @ResponseBody
     @DeleteMapping(value="/search/detele/{openid}")
@@ -410,5 +420,21 @@ public String uploadPicture(@RequestParam("file") MultipartFile file) throws Exc
         String[] infos = {category,"已找到失主",nickName,current,message,"请您去小程序内确认"};
         JSONObject jsonObject = new Template().makeTemplateData(infos,openid,formId);
         return restTemplate.postForEntity(url,jsonObject,JSONObject.class).getBody();
+    }
+    /**
+     * 搜索自己未完成信息
+     */
+    @ResponseBody
+    @GetMapping(value = "/aboutMeNot")
+    public List<InfoMysql> getNotFinish(@RequestParam("openid") String openid){
+        return infoRepository.findByIdentity(openid);
+    }
+    /**
+     * 搜索自己已完成信息
+     */
+    @ResponseBody
+    @GetMapping(value = "/aboutMeHas")
+    public List<FinishMysql> getHasFinish(@RequestParam("openid") String openid){
+        return finishRespository.findByIdentity(openid);
     }
 }

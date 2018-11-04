@@ -16,12 +16,61 @@ Page({
     eye:"/pages/img/AD1B0CBA-D334-4B9A-A000-F82D33119671.png",
     isShowFastSearch:true,
     isshowhistory:null,
-    index:'0',
+    index:0,
     text:"",
     count:0,
     show:true,
+    searchType:true,
+    id:1,
+    timeStart:'请输入开始时间...',
+    timeStartColor: 'rgb(148, 145, 145)',
+    timeEnd: '请输入结束时间...',
+    timeEndColor: 'rgb(148, 145, 145)',
+    strColor:"black",
+    borderS: '5rpx solid #bbb;',
+    timeColor:'#ddd',
+    borderT:''
   },
-
+  /**
+   * 选择搜索类型
+   */
+  searchType:function(e){
+    console.log(e.currentTarget.id)
+    this.data.id = e.currentTarget.id
+    if (this.data.id == 1) {
+      this.setData({
+        strColor: "black",
+        borderS: '5rpx solid #bbb',
+        timeColor: '#ddd',
+        borderT: '',
+        searchType:true,
+        index:0,
+      })
+    } else if (this.data.id == 2) {
+      this.setData({
+        strColor: "#ddd",
+        borderS: '',
+        timeColor: 'black',
+        borderT: '5rpx solid #bbb',
+        searchType: false,
+        index:1,
+      })
+    }
+  },
+  bindTimeStartChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      timeStart: e.detail.value,
+      timeStartColor: null
+    })
+  },
+  bindTimeEndChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      timeEnd: e.detail.value,
+      timeEndColor: null
+    })
+  },
   /**
  * 生命周期函数--监听页面初次渲染完成
  */
@@ -51,7 +100,7 @@ Page({
       })
     }
     wx.request({
-      url: 'http://localhost:8080/search/eye',
+      url: app.globalData.domain +'/search/eye',
       method: "PUT",
       header: app.globalData.header,
       data: {
@@ -76,7 +125,7 @@ Page({
   onShow: function () {
     var that = this;
     wx,wx.request({
-      url: 'http://localhost:8080/search/history/'+app.globalData.openid,
+      url: app.globalData.domain +'/search/history/'+app.globalData.openid,
       header: app.globalData.header,
       method: 'GET',
       success: function(res) {
@@ -93,7 +142,7 @@ Page({
          * indexList 用户历史记录类型
          */
         if(res.data != ''){
-          if ((res.data.indexList != null && res.data.picker != "") || res.data == null) {
+          if ((res.data.indexList != null && res.data.picker != null) || res.data == null) {
             console.log(res)
             that.setData({
               storyList: res.data.historyList,
@@ -128,6 +177,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
+    this.data.count = 0
   },
 
   /**
@@ -179,7 +229,7 @@ Page({
         success:function(e){
           if(e.confirm){
             wx.request({
-              url: 'http://localhost:8080/search/detele/' + app.globalData.openid,
+              url: app.globalData.domain +'/search/detele/' + app.globalData.openid,
               method: "DELETE",
               header: app.globalData.header,
               success: function (res) {
@@ -206,21 +256,42 @@ Page({
     }
   },
   /**
-   * 点击搜索获取用户搜索字符串
+   * 按时间搜索
    */
-  search2:function(res){
-    console.log(res)
-    if (res.detail.value.text==""){
+  searchTime:function(){
+    if (this.data.timeStart == '请输入开始时间...' || 
+        this.data.timeEnd == '请输入结束时间...'){
       wx.showToast({
-        title: '请输入搜索内容',
-        icon:'none'
+        title: '请输入搜索时间范围',
+        icon: 'none'
       })
-    }else{
-      this.data.text = res.detail.value.text;
+    }else {
+      var text = this.data.timeStart + "~" + this.data.timeEnd
       this.data.count = 0;
       this.data.infoList = new Array()
-      this.updateHistory(0,0,res.detail.value.text,this.data.index)
+      this.updateHistory(0, 0, text, this.data.index)
     }
+  },
+  /**
+   * 存储输入框的值
+   */
+  searchSave:function(res){
+    this.data.text = res.detail.value;
+  },
+  /**
+   * 点击搜索获取用户搜索字符串
+   */
+  search2:function(){
+    if (this.data.text == "") {
+        wx.showToast({
+          title: '请输入搜索内容',
+          icon: 'none'
+        })
+      } else {
+        this.data.count = 0;
+        this.data.infoList = new Array()
+        this.updateHistory(0, 0, this.data.text,this.data.index)
+      }
   },
   /**
    * 点击键盘搜索获取用户搜索字符串
@@ -232,7 +303,7 @@ Page({
         icon:'none'
       })
     } else {
-      this.data.text = res.detail.text;
+      this.data.text = res.detail.value;
       this.data.count = 0;
       this.data.infoList = new Array()
       this.updateHistory(0,0,res.detail.value,this.data.index)
@@ -246,6 +317,7 @@ Page({
    * index 查找类型
    */
   updateHistory:function(a,b,text,index){
+    console.log("asd"+text)
     var that = this
     /**
       * 头插,最多记录10条记录
@@ -258,7 +330,7 @@ Page({
       this.data.indexList.splice(10, 1)
     }
     wx.request({
-      url: 'http://localhost:8080/search/history',
+      url: app.globalData.domain +'/search/history',
       method: "PUT",
       header: app.globalData.header,
       data: {
@@ -307,7 +379,7 @@ Page({
   search: function (res,index) {
     var that = this
     wx.request({
-     url: 'http://localhost:8080/search/'+index+'/'+res+'/'+that.data.count,
+      url: app.globalData.domain +'/search/'+index+'/'+res+'/'+that.data.count,
      method:'GET',
      header: app.globalData.header,
      success:function(res){
@@ -330,7 +402,7 @@ Page({
             var length = that.data.infoList.length
             that.data.InfoList = that.data.InfoList.concat(res.data),
             that.data.infoList = that.data.infoList.concat(res.data),
-            that.infoCss(length);
+            that.infoCss();
             console.log(length)
           }
         }else if(res.statusCode==404){
@@ -343,16 +415,7 @@ Page({
      }
    })
   },
-  infoCss: function (length) {
-    for (var i = length; i < this.data.infoList.length; i++) {
-      if (this.data.infoList[i].kind == "招领") {
-        this.data.infoList[i].place = "拾取地点:" + this.data.infoList[i].place
-        this.data.infoList[i].time = "拾取时间:" + this.data.infoList[i].time
-      } else if (this.data.infoList[i].kind == "遗失") {
-        this.data.infoList[i].place = "丢失地点:" + this.data.infoList[i].place
-        this.data.infoList[i].time = "丢失时间:" + this.data.infoList[i].time
-      }
-    }
+  infoCss: function () {
     this.setData({
       infoList: this.data.infoList
     })
@@ -361,7 +424,6 @@ Page({
    * 推荐查询
    */
   fastSearch:function(res){
-    console.log(res)
     this.data.text = this.data.labelList[res.currentTarget.dataset.index],
     this.search(this.data.labelList[res.currentTarget.dataset.index],this.data.indexList[this.data.index])
   },
@@ -369,8 +431,6 @@ Page({
    * 历史查询
    */
   historySearch:function(res){
-    console.log(this.data.storyList[res.currentTarget.dataset.index])
-    console.log(this.data.indexList[res.currentTarget.dataset.index])
     this.data.text = this.data.storyList[res.currentTarget.dataset.index],
     this.data.index = this.data.indexList[res.currentTarget.dataset.index]
     this.search(this.data.storyList[res.currentTarget.dataset.index], this.data.indexList[res.currentTarget.dataset.index])

@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
                         query = "select o from InfoMysql o")
         })
 
-public class InfoMysql {
+public class InfoMysql implements Comparable<InfoMysql>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -49,6 +49,8 @@ public class InfoMysql {
     //更新表时自动生成时间
     @CreatedDate
     private String current;
+
+    private long loststamp;
 
     private String picPath;
 
@@ -202,4 +204,19 @@ public class InfoMysql {
         this.timestamps = timestamps;
     }
 
+    public long getLoststamp() {
+        return loststamp;
+    }
+
+    public void setLoststamp(long loststamp) {
+        this.loststamp = loststamp;
+    }
+
+    @Override
+    public int compareTo(InfoMysql o) {
+        //降序
+        //return o.age - this.age;
+        //升序
+        return (int)this.loststamp - (int)o.loststamp;
+    }
 }

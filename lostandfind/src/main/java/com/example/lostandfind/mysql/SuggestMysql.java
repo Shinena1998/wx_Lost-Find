@@ -20,6 +20,17 @@ public class SuggestMysql {
     private String openId;
 
     private String suggestion;
+
+    private String contactWay;
+
+    public String getContactWay() {
+        return contactWay;
+    }
+
+    public void setContactWay(String contactWay) {
+        this.contactWay = contactWay;
+    }
+
     public Long getId() {
         return Id;
     }

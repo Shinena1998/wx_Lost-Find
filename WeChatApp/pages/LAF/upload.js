@@ -11,10 +11,14 @@ Page({
                     "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
                     "/pages/img/3758617A-1DC9-46C4-B092-D49545B70020.png",
                     "/pages/img/986803F3-6074-4624-8F2A-2FB638147B3E.png"],
-    savedFilePath:"",
+    savedFilePath:"/pages/img/addPic.png ",
     isUploadPic:false,
     category:"",
-    time:"",
+    time:"2018-11-2",
+    Time:"请输入时间 >",
+    TimeColor:'rgb(148, 145, 145)',
+    array: ['QQ', '微信', '电话'],
+    index:0,
     picPath:"",
     contactWay:"",
     place:"",
@@ -23,15 +27,22 @@ Page({
     anwer:"",
     openId:"",
     theme:'',
+    ImgHeight:0,
+    ImgWidth:0,
     infoCss: { time: "丢失时间", place: "丢失地点" },
     aBoolean:false,
     showModal:false,
-    kind:"",
+    kind:"遗失",
+    loseBC:'black',
+    borderL:'5rpx solid #bbb;',
+    findBC:"#ddd",
+    borderF:"",
+    pageBackgroundColor:null,
     isValuable:false,
     items_category:[
       { name: '证件', value: '证件', checked: false },
+      { name: '书本', value: '书本', checked: false },
       { name: '钱包', value: '钱包', checked: false },
-      { name: '书本', value: '书本', checked: false  },
       { name: '其他', value: '其他', checked: false  },
     ],
     items_kind: [
@@ -40,47 +51,116 @@ Page({
     ]
   },
   /**
+   * 选择信息类型
+   */
+  selectKind:function(e){
+    console.log(e.currentTarget.id)
+    var id = e.currentTarget.id
+    if(id == 1){
+      this.setData({
+        loseBC: 'black',
+        borderL: '5rpx solid #bbb;',
+        findBC: "#ddd",
+        borderF: "",
+        kind:'遗失',
+        infoCss: app.globalData.infoLostCss
+      })
+    }else if(id ==2 ){
+      this.setData({
+        loseBC: '#ddd',
+        borderL: '',
+        findBC: "black",
+        borderF: "5rpx solid #bbb;",
+        kind: '招领',
+        infoCss: app.globalData.infoFindCss
+      })
+    }
+  },
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.data.openId = app.globalData.openid;
-    /**
-     * 因为app.globalData.checked为字符串，所以先要转化为int型,将对应种类checked
-     * 赋值为true即可使对应按钮选中
-     * 上传界面也可能从service界面进入，所以要对app.globalData.checked进行判断是否为空
-     */
-    console.log(parseInt(app.globalData.checked))
-    var count = parseInt(app.globalData.checked)
-    if(app.globalData.checked != null){
-      if(count < 4){
-        this.data.items_category[count].checked = true;
-        this.setData({
-          items_category: this.data.items_category
-        })
-        this.data.category = this.data.items_category[count].value;  
-      }
-      /**
-      * 物品为重要物品
-      */
-      else {
-        console.log(count+"zxc")
-        this.data.isValuable = true;
-      }
-    } 
-    /**
-     * 对应显示默认图片
-     */
     this.setData({
-      savedFilePath: this.data.pictureCssPaths[count],
-      picPath: this.data.pictureCssPaths[count],
+      time: app.time
     })
+    console.log(app.time)
   },
 
   onReady: function () {
+    
   },
   onShow: function () {
   },
   onPullDownRefresh: function () {
+  },
+  /**
+   * 设置重要事件
+   */
+  valuable: function () {
+    if(this.data.pageBackgroundColor == null){
+      this.setData({
+        pageBackgroundColor:'rgb(255, 72, 0)',
+        isValuable:true
+      });
+    }else {
+      this.setData({
+        pageBackgroundColor: null,
+        isValuable: false
+      });
+    }
+    console.log(this.data.isValuable)
+  },
+  /**
+   * 选择联系方式类型
+   */
+  bindPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value
+    })
+  },
+  /**
+   * 联系方式规则
+   * content 输入字符串，qq正则表达式，wechat正则表达式,phone正则表达式
+   */
+  contentCss: function (res) {
+    console.log(res.detail.value)
+    var qq = /^\d{8,10}$/
+    var phone = /^1\d{10}$/
+    var wechat = /^\w{1,}$/
+    var content = res.detail.value
+    if (this.data.index == 0 && (!qq.test(content)) ){
+      wx.showToast({
+        title: '请检查输入qq号',
+        icon: 'none',
+        duration: 500,
+      })
+    } else if (this.data.index == 1 && (!wechat.test(content))) {
+      wx.showToast({
+        title: '请检查输入微信号',
+        icon: 'none',
+        duration: 500,
+      })
+    }else if (this.data.index == 2 && (!phone.test(content)) ){
+      wx.showToast({
+        title: '请检查输入电话号码',
+        icon: 'none',
+        duration: 500,
+      })
+    }else {
+      this.data.contactWay = this.data.index+"+"+content;
+    }
+  },
+  /**
+   * 选择时间
+   */
+  bindTimeChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      Time: e.detail.value,
+      TimeColor:null
+    })
   },
  /**
  *获取物品照片 
@@ -92,6 +172,15 @@ Page({
       sizeType:'compressed',
       success: function (res) {
         console.log("a"+res)
+        wx.getImageInfo({
+          src: res.tempFilePaths[0],
+          success:function(res){
+            that.data.ImgHeight = res.height
+            that.data.ImgWidth = res.width
+            console.log(res)
+          }
+        })
+
         that.setData({
           /**
            * 1.在视图界面显示上传图片
@@ -111,15 +200,16 @@ Page({
     console.log(e.detail)
     var value = e.detail.value
     this.setData({
-      contactWay:value.contactWay,
       information:value.info,
-      place:value.place,
-      time:value.time,
-      theme:value.theme
+      theme:value.theme,
+      place:value.place
     })
+    if(this.data.information == ""){
+      this.data.information = "无"
+    }
     console.log(value.place+this.data.category)
     if (this.data.kind == "" || this.data.category == "" 
-      || this.data.time == "" || this.data.place == ""
+      || this.data.Time == "请输入时间 >" || this.data.place == ""
       || this.data.contactWay == ""){
         wx.showToast({
               title: "请填全信息",
@@ -135,22 +225,6 @@ Page({
     })
   },
   /**
-   * 获取事件类型
-   */
-  radioChangeKind: function (e) {
-    console.log(e);
-    this.data.kind = e.detail.value;
-    if (e.detail.value == "遗失"){
-      this.setData({
-        infoCss: app.globalData.infoLostCss
-      })
-    }else{
-      this.setData({
-        infoCss:app.globalData.infoFindCss
-      })
-    }
-  },
-  /**
    * 获取失物类型
    * 改变默认图片
    */
@@ -158,14 +232,7 @@ Page({
     console.log(e);
     this.data.category = e.detail.value;
     var picture = this.data.pictureCssPaths
-    var p = 0;
-    for(var i = 0 ; i < picture.length;i ++){
-      if(this.data.savedFilePath != picture[i]){
-        p = p+1;
-      }   
-    }
-    console.log(p)
-    if(p < 5){
+    if(!this.data.isUploadPic){
       if(e.detail.value == "证件"){
         this.setData({
           savedFilePath:picture[0],
@@ -200,16 +267,25 @@ Page({
       * 上传图片，最大10M
       */
       wx.uploadFile({
-        url: 'http://localhost:8080/uploadImage',
+        url: app.globalData.domain+'/uploadImage',
         filePath: that.data.savedFilePath,
         name: 'file',
+        formData:{
+          height:that.data.ImgHeight,
+          width:that.data.ImgWidth,
+          openid:app.globalData.openid
+        },
+        method:"POST",
         header: app.globalData.header,
         success: function (res) {
-          console.log("iop" + res.data)
-          that.setData({
-            picPath: res.data
-          })
-          that.uploadInfo()
+          console.log(res)
+          if(res.statusCode== 200){
+            that.setData({
+              picPath: res.data
+            })
+            that.uploadInfo()
+
+          }
           console.log("zxc" + that.data.isValuable)
         }, fail: function (res) {
           wx.showToast({
@@ -229,7 +305,7 @@ Page({
     console.log()
     var that= this
     wx.request({
-      url: 'http://localhost:8080/msg',
+      url: app.globalData.domain +'/msg',
       method: "POST",
       header: app.globalData.header,
       data: {
@@ -237,7 +313,7 @@ Page({
         theme: that.data.theme,
         valuable: that.data.isValuable,
         category: that.data.category,
-        time: that.data.time,
+        time: that.data.Time,
         picPath: that.data.picPath,
         contactWay: that.data.contactWay,
         place: that.data.place,
@@ -251,7 +327,7 @@ Page({
           if (res.data.code == 12) {
             console.log("asd" + that.data.openId)
             wx.showToast({
-              title: "网络错误,获取用户表示失败",
+              title: "发布信息失败，请重试",
               icon: "none",
             })
           } else if (res.data.code == 0) {

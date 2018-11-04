@@ -5,7 +5,6 @@ var Card = []
 var Money = []
 var Book = []
 var Else = []
-var aboutMe = []
 const app = getApp();
 Page({
 
@@ -13,14 +12,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    /**
-     * inAboutMe只能在关于我的页面有提示
-     */
-    inAboutMe:false,
     session_key:"",
     infor: [],
     category:[],
     valuable:[],
+    imgList:[],
     infoCss:{},
     inforCss:[],
     count:0,
@@ -61,7 +57,7 @@ Page({
     * 获取重要信息
     */
     wx.request({
-      url: 'http://localhost:8080/service/info',
+      url: app.globalData.domain +'/service/info',
       method: 'GET',
       header: app.globalData.header,
       data: {
@@ -73,11 +69,18 @@ Page({
         console.log(res)
         for (var i = 0; i < res.data.length; i++) {
           that.data.valuable.unshift(res.data[i]);
+          that.data.imgList.push('https://yuigahama.xyz/icon/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.GdtfZS12NqUF254c4b5b884095adb13a1a52905b6ca6.png')
         }
+        /**
+         * 重要信息标志
+         */
+        that.setData({
+          imgList: that.data.imgList,
+        })
+        console.log(that.data.imgList)
         /**
         * 因为app.globalData.category是json包
         */
-
         that.getInfo()
       },
       fail: function (res) {//连接失败执行
@@ -93,7 +96,7 @@ Page({
      * unshift数组头插
      */
     wx.request({
-      url: 'http://localhost:8080/service/info',
+      url: app.globalData.domain +'/service/info',
       method: 'GET',
       header: app.globalData.header,
       data: {
@@ -117,9 +120,6 @@ Page({
               } else if (that.data.infor[i].category == "其他") {
                 Else.unshift(that.data.infor[i])
               }
-              if (that.data.infor[i].identity == app.globalData.openid) {
-                aboutMe.unshift(that.data.infor[i])
-              }
             }
             /**
              * 当第一页的证件类不足四条信息，则无法触发下拉到底部事件，若第二页
@@ -139,12 +139,16 @@ Page({
              *app.globalData.category 调用此函数使标签栏颜色正常
              */
             that.category(app.globalData.category);
-            //没有信息且不是第一页
+            
+            //没有信息且不是第一页，不能出现到底了提示。
           } else if (res.data.length == 0 && that.data.count > 1){
             wx.showToast({
               title: '到底了',
               icon:'none'
             })
+            //结束最后一条，返回信息长度为0，但要更新视图层数据
+          }else {
+            that.category(app.globalData.category);
           }
         } else {
           console.log("error")
@@ -166,11 +170,12 @@ Page({
     Money = []
     Book = []
     Else = []
-    aboutMe = []
     this.data.valuable=[]
+    this.data.count = 0;
+    this.data.imgList = []
   },
   /**
-   * 返回就页面初始化数据
+   * 返回旧页面初始化数据
    * service->index
    */
   onUnload:function(){
@@ -178,8 +183,9 @@ Page({
     Money = []
     Book = []
     Else = []
-    aboutMe = []
     this.data.valuable = []
+    this.data.count = 0;
+    this.data.imgList = []
   },
   onPullDownRefresh: function () {
   },
@@ -200,35 +206,24 @@ Page({
       this.data.category=Card
       this.setData({
         type: newType,
-        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "1"){
       var newType = ["default", "primary", "default", "default", "default"]
       this.data.category =Book
       this.setData({
         type: newType,
-        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "2") {
       var newType = ["default", "default", "primary", "default", "default"]
       this.data.category=Money
       this.setData({
         type: newType,
-        inAboutMe: false,
       })
     } else if (res.currentTarget.id == "3") {
       var newType = ["default", "default", "default", "primary" ,"default"]
       this.data.category = Else
       this.setData({
         type: newType,
-        inAboutMe:false,
-      })
-    } else if (res.currentTarget.id == "4") {
-      var newType = ["default", "default", "default", "default","primary"]
-      this.data.category=aboutMe,
-      this.setData({
-        type: newType,
-        inAboutMe:true
       })
     }
     /**
@@ -236,23 +231,9 @@ Page({
      */
     this.data.category = this.data.valuable.concat(this.data.category);
     
-    var InforCss = []
-    for (var i = 0; i < this.data.category.length; i++) {
-      if(this.data.category[i].kind == '招领'){
-        InforCss.push(['拾取地点:','拾取时间:'])
-      } else if (this.data.category[i].kind == '遗失') {
-        InforCss.push(['丢失地点:','丢失时间:'])
-      }
-    }
     this.setData({
       category:this.data.category,
-      inforCss:InforCss
     })
-  },
-  search:function(e){
-  wx.navigateTo({
-    url: 'search',
-  })
   },
   /**
    * count 为页数，一页50条信息

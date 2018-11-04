@@ -55,7 +55,7 @@ public class SchedulerService {
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void checkValuable(){
-        List<InfoMysql> infoMysqlList = infoRepository.findByABooleanAndIsValuable(true,false);
+        List<InfoMysql> infoMysqlList = infoRepository.findByABooleanAndIsValuableOrderByTimestampsDesc(true,false);
         infoMysqlList.size();
         long timestamps = (new Date().getTime())/1000;
         for (int i = 0; i < infoMysqlList.size(); i++) {

@@ -1,25 +1,77 @@
 <view class="title">
-<view class='title_text'><text>填写信息</text></view>
+<view class='title_text'><text>详细信息</text></view>
 </view>
-<view class="InfoView">
-<view class="ImgView">
-<view class='Imgtext'>
-<text class="color">物品照片：</text></view>
-<image class="Img"  src = "{{detailInfo.picPath}}"></image>
+<scroll-view scroll-y="true" class="InfoView">
+<view class="info_c">
+<text style='font-size:150%;'>{{detailInfo.theme}}</text>
+<text class='category'>{{detailInfo.category}}</text></view>
+
+<view class="timeView">
+<text class="time">{{detailInfo.time}}</text>
+<text class="time">{{isHasFind}}</text></view>
+
+<view class='place'>
+<text>{{detailInfo.place}}</text></view>
+<view class='text'>
+<text >{{detailInfo.infomation}}</text></view>
+
+
+<image style='height:{{imgHeight}}rpx;width:{{imgWidth}}rpx' src = "{{detailInfo.picPath}}"></image>
+
+<view class="content"><view class='contentWay'>
+<image style='height:90%;width:20%;margin-left:3%' src='{{contactWay}}'></image>
+<text style='margin-left:5%;'>{{contact}}</text></view>
+<view class='label_css' bindtap='copy'>
+<view class='label_left'></view>
+<view class='label_middle'>一键复制</view>
+<view class='label_right'></view>
 </view>
-<view class="info_c"><view class='info_a'><text class="color">物品类型：</text>
-<text>{{detailInfo.category}}</text></view></view>
-<view class="info_c"><view class='info_a'><text class="color">{{infoCss.time}}：</text>
-<text>{{detailInfo.time}}</text></view></view>
-<view class="info_c"><view class='info_a'><text class="color">{{infoCss.place}}：</text>
-<text>{{detailInfo.place}}</text></view></view>
-<view class="info_c"><view class='info_a'><text class="color">联系方式：</text>
-<text>{{detailInfo.contactWay}}</text></view></view>
-<view class="flexx">
-<text class="color">详细内容：</text>
-<textarea class='textarea' name="info" disabled="true" auto-height='true'>{{detailInfo.infomation}}</textarea>
 </view>
+
+</scroll-view> 
+
 <view>
+<view wx:if="{{confirm}}">
+<view class='finishView'>
+<view class='finish_button_view' bindtap='back'><image class="finishImg" src="/pages/img/return.png"></image>返回</view>
+<view class='finish_button_view' bindtap='finish'><image class="finishImg" src="/pages/img/finish.png"></image>结束信息</view>
+<button class="finishButton" open-type='share'><image class="shareImg" src="/pages/img/share.png"></image>转发给好友</button>
+</view>
+</view>
+
+<block wx:else>
+<view class='finishView' >
+<view class='finish_button_view' bindtap='back'><image class="finishImg" src="/pages/img/return.png"></image>返回</view>
+<view class='finish_button_view' bindtap='showDialogBtn'><image style="height:50%;width:30%;" src="/pages/img/talk.png" ></image>通知拾主</view>
+<button class="finishButton" open-type='share'><image class="shareImg" src="/pages/img/share.png"></image>转发给好友</button>
+</view>
+</block>
+</view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <view>
 <view wx:if="{{confirm}}">
 <view class='finishView'>
 <view class='finish_remind_view' >
@@ -37,14 +89,14 @@
 <button class='finish_button' size='mini' bindtap='showDialogBtn'>确认失物</button></view>
 </view>
 </block>
-</view>
-</view>
+</view> -->
+<!-- </view> -->
 
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>失主留言</text></view>
 
-  <view class='modal-content'><input auto-focus='true' bindblur='message'></input></view>
+  <view class='modal-content'><input auto-focus='true' bindblur='message' placeholder='留下你想说的...'></input></view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
