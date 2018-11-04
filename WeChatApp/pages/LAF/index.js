@@ -40,11 +40,14 @@ Page({
     var that = this;
     var remindList = ["申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之","本平台只负责信息传递，失物的保管及完整性由当事人（拾物者）自行负责", "发布失物或寻物信息请注意您的个人信息泄漏，由此造成的手机骚扰等损失本平台不负任何责任", "当有失主已确认失物时，双方自行商讨归还失物，发布消息者及时结束消息", "信息的真实性由发布者自行负责，本平台不负任何责任","通过本平台发布的信息发生任何意外均与本平台无关"]
     var count = 0
-    if(app.globalData.power == false){
-      that.setData({
-        showModal: true,
-      })
-    }
+    console.log('asd'+app.globalData.power)
+    setTimeout(function(){
+      if (app.globalData.power == false) {
+        that.setData({
+          showModal: true,
+        })
+      }
+    },500) 
     setInterval(function () {
         count = (count + 1)%6
         that.setData({
@@ -66,7 +69,6 @@ Page({
 
         //可以将 res 发送给后台解码出 unionId
         that.setData({
-          showModal: false,
           userInfo: res.userInfo,
           hasUserInfo: true,
         })
@@ -285,7 +287,7 @@ Page({
     },1000)
   },
   toManager:function(){
-    if (!app.globalData.isManager){
+    if (app.globalData.isManager){
       wx.navigateTo({
         url: 'manager',
       })

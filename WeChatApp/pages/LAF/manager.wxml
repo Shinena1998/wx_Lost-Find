@@ -1,5 +1,6 @@
 <view class='label'>
 <view class="label_left"><text bindtap='showCheck'>审核区</text></view>
+<view bindtap="toUser" style='display:flex;align-items:center'>个人主页</view>
 <view class='label_right' bindtap='getSuggestion'><image  src='/pages/img/94FB2F80-BB44-4547-AC1E-041AE763C95A.png' style='height:100%;width:100%'></image></view></view>
 
 

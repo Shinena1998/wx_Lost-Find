@@ -155,5 +155,10 @@ Page({
         console.log(res.data)
       }
     })
+  },
+  toUser:function(){
+    wx.navigateTo({
+      url: 'user',
+    })
   }
 })
