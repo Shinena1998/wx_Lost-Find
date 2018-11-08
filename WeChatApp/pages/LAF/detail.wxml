@@ -49,28 +49,6 @@
 </view>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- <view>
 <view wx:if="{{confirm}}">
 <view class='finishView'>
@@ -96,12 +74,12 @@
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>失主留言</text></view>
 
-  <view class='modal-content'><input auto-focus='true' bindblur='message' placeholder='留下你想说的...'></input></view>
+  <view class='modal-content'><input auto-focus='true' bindblur='message' placeholder='留下你想说的...(小程序bug未生效)'></input></view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
     <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-<form bindsubmit="get_access_token" report-submit='true' class='btn-confirm' >
+    <form bindsubmit="get_access_token" report-submit='true' class='btn-confirm'>
     <button type="primary" plain='true' form-type="submit">确定</button>
     </form>
   </view>

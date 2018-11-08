@@ -19,7 +19,8 @@ Page({
     contactWay:"",
     contactList: ['/pages/img/QQ.png ',
                   '/pages/img/WeChat.png',
-                  '/pages/img/number.png'],
+                  '/pages/img/number.png',
+                  '/pages/img/no.png'],
     isHasFind:'未找到失主',
   },
   /**
@@ -74,6 +75,8 @@ Page({
      */
     var height = this.data.detailInfo.picPath.substr(26,3);
     var width = this.data.detailInfo.picPath.substr(30, 3);
+    // var height = this.data.detailInfo.picPath.substr(11, 3);
+    // var width = this.data.detailInfo.picPath.substr(15, 3);
     var RegExp = /^\d{3}$/
     if(RegExp.test(height) && RegExp.test(width)){
       this.setData({
@@ -298,28 +301,42 @@ Page({
       method:'GET',
       header: app.globalData.header,
       data:{
+        id:that.data.detailInfo.id,
         accessToken:that.data.access_token,
         openid:that.data.detailInfo.identity,
-        formId:that.data.formId,
         category: that.data.detailInfo.category,
         current:current,
         nickName:app.globalData.userInfo.nickName,
         message:that.data.message
       },
       success:function(res){
-        console.log(res)
-        wx.showToast({
-          title: '发送成功',
-          icon: 'success',
-          duration: 1000,
-          success:function(){
-            setTimeout(function(){
-              wx.navigateBack({
-                delta: 1,
-              })
-            },1000) 
-          }
-        }) 
+        if(res.data == false){
+          wx.showToast({
+            title: '发送失败，该失主已找到失主',
+            duration: 1000,
+            icon:'none',
+            success: function () {
+              setTimeout(function () {
+                wx.navigateBack({
+                  delta: 1,
+                })
+              }, 1000)
+            }
+          }) 
+        }else{
+          wx.showToast({
+            title: '发送成功',
+            icon: 'success',
+            duration: 1000,
+            success: function () {
+              setTimeout(function () {
+                wx.navigateBack({
+                  delta: 1,
+                })
+              }, 1000)
+            }
+          }) 
+        }
       }
     })
     

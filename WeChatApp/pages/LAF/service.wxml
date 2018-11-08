@@ -21,13 +21,13 @@
 style="background-image: url({{imgList[index]}})">
 <view class = "infoThemeView" >
 <view class='infoThemeRemindView'>
-<view class='infoKind'><image style="height:80%;width:9%;margin-right:1%;margin-left:1.5%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
+<view class='infoKind'><image style="height:80%;width:8%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
 </view>
-<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1.5%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-right:2%;margin-left:1%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
 </view>
 <view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
 <text style="width:100%">{{goods.place}}</text></view>
-<view class="infoTime"><image style="height:110%;width:8%;margin-right:1%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:2%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
 </view>
 </view>
 </view>

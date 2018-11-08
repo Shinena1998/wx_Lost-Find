@@ -37,7 +37,7 @@ Page({
   searchType:function(e){
     console.log(e.currentTarget.id)
     this.data.id = e.currentTarget.id
-    if (this.data.id == 1) {
+    if (this.data.id == 0) {
       this.setData({
         strColor: "black",
         borderS: '5rpx solid #bbb',
@@ -46,7 +46,7 @@ Page({
         searchType:true,
         index:0,
       })
-    } else if (this.data.id == 2) {
+    } else if (this.data.id == 1) {
       this.setData({
         strColor: "#ddd",
         borderS: '',
@@ -268,6 +268,7 @@ Page({
     }else {
       var text = this.data.timeStart + "~" + this.data.timeEnd
       this.data.count = 0;
+      this.data.text = text;
       this.data.infoList = new Array()
       this.updateHistory(0, 0, text, this.data.index)
     }
@@ -339,36 +340,38 @@ Page({
         historyList: this.data.storyList
       },
       success: function (res) {
-        console.log(res)
-        if(res.data.historyList[0] !=  null){
-          that.setData({
-            indexList: res.data.indexList,
-            storyList: res.data.historyList
-          })
-        }else{
-          that.setData({
-            indexList: new Array(),
-            storyList: new Array(),
-            isshowhistory:false,
-          })
-        }
-        
+        if(res.statusCode==200){
+          if (res.data.historyList[0] != null) {
+            that.setData({
+              indexList: res.data.indexList,
+              storyList: res.data.historyList
+            })
+          } else {
+            that.setData({
+              indexList: new Array(),
+              storyList: new Array(),
+              isshowhistory: false,
+            })
+          }
+        } 
       }
     })
     /**
-     * 
+     * 查询时搜索
      */
     if(b == 0){
       this.search(text,index)
     }
   },
   /**
-   * 记录用户触发底部次数
+   * 记录用户触发底部次数(未实现)
    */
   addInformation:function(){
-
-    this.data.count = this.data.count + 1
-    this.search(this.data.text,this.data.index)
+    if(this.data.index == 0){
+      this.data.count = this.data.count + 1
+      console.log(this.data.text)
+      this.search(this.data.text, this.data.index)
+    }
   },
   /**
    * 搜索方法
@@ -377,6 +380,7 @@ Page({
    * length记录infoList未连接新数据时长度
    */
   search: function (res,index) {
+    console.log("sadasdasdasdas"+this.data.count)
     var that = this
     wx.request({
       url: app.globalData.domain +'/search/'+index+'/'+res+'/'+that.data.count,
@@ -424,15 +428,19 @@ Page({
    * 推荐查询
    */
   fastSearch:function(res){
+    console.log(res)
+    console.log(this.data.labelList[res.currentTarget.dataset.index]+this.data.index)
     this.data.text = this.data.labelList[res.currentTarget.dataset.index],
-    this.search(this.data.labelList[res.currentTarget.dataset.index],this.data.indexList[this.data.index])
+    this.data.index = 0;
+    this.search(this.data.text,0)
   },
   /**
    * 历史查询
    */
   historySearch:function(res){
-    this.data.text = this.data.storyList[res.currentTarget.dataset.index],
+    console.log(res)
+    this.data.text = this.data.storyList[res.currentTarget.dataset.index]
     this.data.index = this.data.indexList[res.currentTarget.dataset.index]
-    this.search(this.data.storyList[res.currentTarget.dataset.index], this.data.indexList[res.currentTarget.dataset.index])
+    this.search(this.data.text, this.data.index  )
   }
 })

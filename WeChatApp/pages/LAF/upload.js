@@ -17,7 +17,7 @@ Page({
     time:"2018-11-2",
     Time:"请输入时间 >",
     TimeColor:'rgb(148, 145, 145)',
-    array: ['QQ', '微信', '电话'],
+    array: ['QQ', '微信', '电话','无'],
     index:0,
     picPath:"",
     contactWay:"",
@@ -39,6 +39,7 @@ Page({
     borderF:"",
     pageBackgroundColor:null,
     isValuable:false,
+    formId:"",
     items_category:[
       { name: '证件', value: '证件', checked: false },
       { name: '书本', value: '书本', checked: false },
@@ -119,6 +120,11 @@ Page({
     this.setData({
       index: e.detail.value
     })
+    if(this.data.index == 3){
+      this.setData({
+        contactWay: '3+失主自取'
+      })
+    }
   },
   /**
    * 联系方式规则
@@ -134,23 +140,26 @@ Page({
       wx.showToast({
         title: '请检查输入qq号',
         icon: 'none',
-        duration: 500,
+        duration: 1000,
       })
     } else if (this.data.index == 1 && (!wechat.test(content))) {
       wx.showToast({
         title: '请检查输入微信号',
         icon: 'none',
-        duration: 500,
+        duration: 1000,
       })
     }else if (this.data.index == 2 && (!phone.test(content)) ){
       wx.showToast({
         title: '请检查输入电话号码',
         icon: 'none',
-        duration: 500,
+        duration: 1000,
       })
+    } else if (this.data.index == 3){
+      
     }else {
       this.data.contactWay = this.data.index+"+"+content;
     }
+    console.log(this.data.contactWay)
   },
   /**
    * 选择时间
@@ -175,6 +184,15 @@ Page({
         wx.getImageInfo({
           src: res.tempFilePaths[0],
           success:function(res){
+            /**
+             * 图片长宽最大为999，要配合取值
+             */
+           if(res.height > 999){
+              res.height = 999
+            }
+            if(res.width > 999){
+              res.width = 999
+            } 
             that.data.ImgHeight = res.height
             that.data.ImgWidth = res.width
             console.log(res)
@@ -196,6 +214,10 @@ Page({
    * 提交用户填写的失物数据
    */
   formSubmit: function (e) {
+    this.data.formId = this.data.formId + e.detail.formId + '+'
+    this.setData({
+      formId: this.data.formId
+    })
     var that = this;
     console.log(e.detail)
     var value = e.detail.value
@@ -210,11 +232,20 @@ Page({
     console.log(value.place+this.data.category)
     if (this.data.kind == "" || this.data.category == "" 
       || this.data.Time == "请输入时间 >" || this.data.place == ""
-      || this.data.contactWay == ""){
+      || this.data.contactWay == "" ||
+      (this.data.contactWay == '3+失主自取' && this.data.index != 3) ){
+      if (this.data.contactWay == '3+失主自取' && this.data.index != 3){
         wx.showToast({
-              title: "请填全信息",
-              icon: "none",
-            })
+          title: "请检查联系方式",
+          icon: "none",
+        })
+      }else {
+        wx.showToast({
+          title: "请填全信息",
+          icon: "none",
+        })
+      }
+        
       }else {
         this.writeInfo();
       }
@@ -320,6 +351,7 @@ Page({
         infomation: that.data.information,
         aBoolean: false,
         identity: that.data.openId,
+        formId:that.data.formId,
       },
       success: function (res) {
         console.log(res)
@@ -352,5 +384,13 @@ Page({
         })
       }
     })   
+  },
+  formSubmit1:function(res){
+    console.log(res.detail.formId)
+    this.data.formId = this.data.formId + res.detail.formId + '+'
+    this.setData({
+      formId:this.data.formId
+    })
+    console.log(this.data.formId)
   }
 })

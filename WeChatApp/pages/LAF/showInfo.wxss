@@ -137,3 +137,48 @@ page{
   border-radius: 5%;
   border: 5rpx solid white;
 }
+
+.aboutMeView{
+  width: 100%;
+  height: 100%;
+}
+.logoView{
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.logo{
+  width: 200rpx;
+  height: 200rpx
+}
+.logotitle{
+  font-size: 120%;
+  color: rgb(158, 0, 0)
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+  font-size: 90%;
+  color: rgb(94, 94, 94);
+}
+.wx{
+  display: flex;
+  flex-direction: row;
+  align-items:flex-start;
+}
+.helpText{
+  margin-top: 2%;
+}
+.help{
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
+  font-size: 90%;
+  color: rgb(94, 94, 94);
+}

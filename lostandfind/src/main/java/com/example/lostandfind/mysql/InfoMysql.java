@@ -76,6 +76,17 @@ public class InfoMysql implements Comparable<InfoMysql>{
     @LastModifiedDate
     private String finalTime;
 
+    //
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
+
     public String getKind() {
         return kind;
     }

@@ -172,46 +172,46 @@ public class LafController{
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/uploadImage")
-    public String uploadPicture(@RequestParam("file") MultipartFile file,
-                                @RequestParam("height") int height,
-                                @RequestParam("width") int width,
-                                @RequestParam("openid") String openid) throws Exception {
-
-       System.out.println(height +" "+width + openid);
-        //获取文件需要上传到的路径
-        if(file.isEmpty()==true){
-            return "error";
-        }else {
-            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
-            Files.write(path,bytes);
-            return "/pages/img/"+imgName;
-        }
-    }
-    /**
-     * 向服务器端传图片
-     */
 //    @PostMapping(value = "/uploadImage")
 //    public String uploadPicture(@RequestParam("file") MultipartFile file,
 //                                @RequestParam("height") int height,
 //                                @RequestParam("width") int width,
 //                                @RequestParam("openid") String openid) throws Exception {
-//        //获取文件需要上传到的路径
 //
+//       System.out.println(height +" "+width + openid);
+//        //获取文件需要上传到的路径
 //        if(file.isEmpty()==true){
 //            return "error";
 //        }else {
 //            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
 //            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
 //            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/root/html/img/"+ imgName);
+//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
 //            Files.write(path,bytes);
-//            return "https://yuigahama.xyz/img/"+imgName;
+//            return "/pages/img/"+imgName;
 //        }
 //    }
+    /**
+     * 向服务器端传图片
+     */
+    @PostMapping(value = "/uploadImage")
+    public String uploadPicture(@RequestParam("file") MultipartFile file,
+                                @RequestParam("height") int height,
+                                @RequestParam("width") int width,
+                                @RequestParam("openid") String openid) throws Exception {
+        //获取文件需要上传到的路径
+
+        if(file.isEmpty()==true){
+            return "error";
+        }else {
+            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/root/html/img/"+ imgName);
+            Files.write(path,bytes);
+            return "https://yuigahama.xyz/img/"+imgName;
+        }
+    }
 
     @ResponseBody
     @PutMapping(value = "/confirm/{id}")
@@ -411,15 +411,26 @@ public class LafController{
     @GetMapping(value = "/sendTemplateInfo")
     public Object sendTemplateInfo(@RequestParam("accessToken") String accessToken,
                                    @RequestParam("openid") String openid,
-                                   @RequestParam("formId") String formId,
                                    @RequestParam("category") String category,
                                    @RequestParam("current") String current,
                                    @RequestParam("nickName") String nickName,
-                                   @RequestParam("message") String message){
-        String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="+accessToken;
-        String[] infos = {category,"已找到失主",nickName,current,message,"请您去小程序内确认"};
-        JSONObject jsonObject = new Template().makeTemplateData(infos,openid,formId);
-        return restTemplate.postForEntity(url,jsonObject,JSONObject.class).getBody();
+                                   @RequestParam("message") String message,
+                                   @RequestParam("id") int id){
+        InfoMysql infoMysql = infoRepository.findById(id).get();
+        if(!(infoMysql.getFormId().equals(""))){
+            String[] formIdList = infoMysql.getFormId().split("\\+");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < formIdList.length-1; i++) {
+                sb.append(formIdList[i] + "+");
+            }
+            infoMysql.setFormId(sb.toString());
+            infoRepository.save(infoMysql);
+            String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="+accessToken;
+            String[] infos = {category,"已找到失主",nickName,current,message,"请您去小程序内确认"};
+            JSONObject jsonObject = new Template().makeTemplateData(infos,openid,formIdList[formIdList.length-1]);
+            return restTemplate.postForEntity(url,jsonObject,JSONObject.class).getBody();
+        }
+        return false;
     }
     /**
      * 搜索自己未完成信息

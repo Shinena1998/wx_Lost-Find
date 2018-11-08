@@ -11,12 +11,9 @@
     <text class="user-motto">{{motto}}</text>
   </view>
 </view> -->
-<view class="modal-image" wx:if="{{image_show}}"><image style="height:100%;width:100%"src="/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png "></image>
-</view>
-
 <view style='height:100%;width100%'>
 <view class="remind">
-<view style='display:flex;width:100%'>
+<view style='display:flex;width:100%;align-items:center'>
 <image class="logoLeft" src='/pages/img/2D03FA95-7694-4BDB-AEF0-37F7E9DD853A.png'></image>
 <text class="logoRight" >{{remind}}</text></view></view>
 <view class='top'>
@@ -47,7 +44,7 @@
 <image class='infoImg1' src='/pages/img/search.png'></image>
 <view class='infoText'>
 <text style='color:black;font-size:80%'>查看信息</text>
-<text style='color:#b1aeae;font-size:60%'>查看遗失招领信息</text>
+<text style='color:rgb(112, 110, 110);font-size:60%'>查看遗失招领信息</text>
 </view>
 </view>
 
@@ -55,24 +52,25 @@
 <image class='infoImg2' src='/pages/img/write.png'></image>
 <view class='infoText'>
 <text style='color:black;font-size:80%'>发布信息</text>
-<text style='color:#b1aeae;font-size:60%'>发布找失主或失物信息</text>
+<text style='color:rgb(112, 110, 110);font-size:60%'>发布找失主或失物信息</text>
 </view>
 </view>
 </view>
 
 <view class='help'>
-<image src='/pages/img/B3061446-0318-4F7D-915C-AE5C7416A88B.png' style='width:10%;height:30%;'></image>
+<image src='/pages/img/B3061446-0318-4F7D-915C-AE5C7416A88B.png' style='width:10%;height:40%;'></image>
 <view style='width:100%;height:100%;display:flex;flex-direction:column;'>
 <text class='help_text'>1.发布贵重物品，点击红色叹号，须管理员审核通过，贵重物品优先显示</text>
- <text style='font-size:70%;color:rgb(153, 151, 151);margin-left:2%;'>2.点击图像即可进入个人中心</text> 
+ <text style='font-size:70%;color:rgb(112, 110, 110);margin-left:2%;'>2.点击图像即可进入个人中心</text>
+<text style='font-size:70%;color:rgb(112, 110, 110);margin-left:2%;'>3.详情请在个人中心->关于失物招领查看</text>
 </view>
 </view>
 
 <view class='author'>
 <image src='/pages/img/34223B0D-CCBB-4951-94D4-45C621108F30.png' style='width:8%;height:100%'></image>
-<text style='font-size:80%;color:rgb(170, 167, 167)'>:由比滨结衣</text>
-<image src='/pages/img/FF5E47A8-9C0D-445B-AE0B-707B1CC75938.png' style='width:8%;height:100%;margin-left:5%'></image>
-<text style='font-size:90%;color:rgb(170, 167, 167); text-align:center'>:Shinena1998</text>
+<text style='font-size:80%;color:rgb(112, 110, 110)'>:由比滨结衣</text>
+<image src='/pages/img/FF5E47A8-9C0D-445B-AE0B-707B1CC75938.png' style='width:7%;height:100%;margin-left:5%'></image>
+<text style='font-size:90%;color:rgb(112, 110, 110); text-align:center'>:Shinena1998</text>
 </view>
 </view>
 
@@ -87,18 +85,5 @@
     <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
     <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
     <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>同意并继续</button>
-  </view>
-</view>
-
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal2}}"></view>
-<view class="modal-dialog" wx:if="{{showModal2}}">
-<view class="modal-title"><text>用户建议</text></view>
-
-  <view class='modal-content'><textarea style='width:100%' auto-focus='true' maxlength='300' bindblur='suggestion' auto-height='true'></textarea></view>
-  <view class="modal-footer">
-    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
-    <text class="btn-cancel" bindtap="onCancel2" type="default" plain='true'>取消</text>
-    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-<text class="btn-cancel" bindtap="sendSuggestion" type="default" plain='true'>确定</text>
   </view>
 </view>

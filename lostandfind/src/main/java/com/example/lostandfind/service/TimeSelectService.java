@@ -44,7 +44,7 @@ public class TimeSelectService {
         }
         for (int j = i; j < infoMysqlList.size(); j++) {
             if(timeEnd <= infoMysqlList.get(j).getLoststamp()){
-                timeEnd = j;
+                end = j;
                 break;
             }
         }
@@ -53,6 +53,10 @@ public class TimeSelectService {
             end = infoMysqlList.size();
         }
         if(timeStart >= infoMysqlList.get(infoMysqlList.size()-1).getLoststamp()){
+            return null;
+        }
+        //**防止某天没有信息，但是start>i;end也是>i,end<i+1,此时end为0，start为i-1
+        if(start > end){
             return null;
         }
         System.out.println(start + "+" + end);

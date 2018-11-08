@@ -21,9 +21,13 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
         }else {
             SessionUtil sessionUtil = SessionUtil.getInstance();
             HttpSession session = sessionUtil.getSession(request.getHeader("sessionId"));
-            if(request.getHeader("token").equals(session.getAttribute("token"))){
-                return true;
-            }else {
+            if(session.getAttribute("token") != null){
+                if(request.getHeader("token").equals(session.getAttribute("token"))){
+                    return true;
+                }else {
+                    return false;
+                }
+            } else {
                 return false;
             }
         }
