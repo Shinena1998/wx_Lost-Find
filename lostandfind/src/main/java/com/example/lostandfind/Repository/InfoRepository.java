@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     public List<InfoMysql> findByIdentity(String openid);
-    public List<InfoMysql> findByIsValuable(boolean b);
 
+    //得到重要物品
+    public List<InfoMysql> findByIsValuable(boolean b);
+    //得到证件类
+    public List<InfoMysql> findByCategory(String category);
     public List<InfoMysql> findByABooleanAndIsValuableOrderByTimestampsDesc(boolean aBoolean , boolean valuable);
 
     //原因是limit属于MySQL特有的特性，而@Query默认只接受通用SQL。

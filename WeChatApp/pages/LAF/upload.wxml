@@ -8,8 +8,8 @@
   </label>
 </radio-group> -->
 <view class="radio-group_kind">
-<view class='lose' id='1' bindtap='selectKind' style='color:{{loseBC}};border-bottom:{{borderL}}'>遗失</view>
-<view class='lose' id='2' bindtap='selectKind' style='color:{{findBC}};border-bottom:{{borderF}}'>招领</view>
+<view class='lose' id='1' bindtap='selectKind' style='font-size:80%;color:{{loseBC}};border-bottom:{{borderL}}'>寻找失物</view>
+<view class='lose' id='2' bindtap='selectKind' style='font-size:80%;color:{{findBC}};border-bottom:{{borderF}}'>寻找失主</view>
 </view>
 
 <form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
@@ -21,6 +21,8 @@
   <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </radio-group>
+<view class="info_c" wx:if="{{isCard}}">证件卡号：
+<input value="" name="card" bindinput="getCard" maxlength='18'placeholder='请输入准确卡号...' placeholder-style='font-size:70%;text-align:right' style='text-align:right'></input></view>
 <view class="imageView">
 <image bindtap='uploadImg' class="image" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
 <view style='height:30%;width:2%;margin-left:8%;'>
@@ -63,3 +65,27 @@
 <button  formType="submit" size="mini">提交</button>
 </view>
 </form>
+
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{hasCardInfo}}" bindtap='closeInfo'></view>
+<view class="modal-dialog" wx:if="{{hasCardInfo}}">
+<view class="modal-title"><text>可能对您有用的信息</text></view>
+<view class="infoAll" bindtap='toDetail'>
+<view class='OneInfo'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{detailInfo.picPath}}"></image>
+</view>
+<view  class="infoText" 
+style="background-image: url({{imgList[index]}})">
+<view class = "infoThemeView" >
+<view class='infoThemeRemindView'>
+<view class='infoKind'><image style="height:80%;width:9%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{detailInfo.kind}}</view>
+</view>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{detailInfo.theme}}</text></view>
+</view>
+<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
+<text style="width:100%">{{detailInfo.place}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:2%;"src='/pages/img/time.png'></image><text>{{detailInfo.time}}</text></view>
+</view>
+</view>
+</view>
+</view>

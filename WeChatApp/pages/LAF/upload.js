@@ -33,13 +33,16 @@ Page({
     aBoolean:false,
     showModal:false,
     kind:"遗失",
-    loseBC:'black',
+    loseBC:'white',
     borderL:'5rpx solid #bbb;',
     findBC:"#ddd",
     borderF:"",
     pageBackgroundColor:null,
     isValuable:false,
     formId:"",
+    isCard:false,
+    detailInfo:{},
+    hasCardInfo:false,
     items_category:[
       { name: '证件', value: '证件', checked: false },
       { name: '书本', value: '书本', checked: false },
@@ -59,7 +62,7 @@ Page({
     var id = e.currentTarget.id
     if(id == 1){
       this.setData({
-        loseBC: 'black',
+        loseBC: 'white',
         borderL: '5rpx solid #bbb;',
         findBC: "#ddd",
         borderF: "",
@@ -70,7 +73,7 @@ Page({
       this.setData({
         loseBC: '#ddd',
         borderL: '',
-        findBC: "black",
+        findBC: "white",
         borderF: "5rpx solid #bbb;",
         kind: '招领',
         infoCss: app.globalData.infoFindCss
@@ -229,11 +232,19 @@ Page({
     if(this.data.information == ""){
       this.data.information = "无"
     }
+    if (this.data.category == '证件') {
+      this.data.information = this.data.information +'+'+value.card
+    }
+    console.log(this.data.information)
     console.log(value.place+this.data.category)
     if (this.data.kind == "" || this.data.category == "" 
       || this.data.Time == "请输入时间 >" || this.data.place == ""
       || this.data.contactWay == "" ||
       (this.data.contactWay == '3+失主自取' && this.data.index != 3) ){
+      /**
+       * 联系方式选择无会自动将联系方式填为失主自取，此时如果改变联系方式为qq或其他，
+       * 则会直接通过，提交表单，故在此拦截这种不合理的提交方式
+       */
       if (this.data.contactWay == '3+失主自取' && this.data.index != 3){
         wx.showToast({
           title: "请检查联系方式",
@@ -244,10 +255,9 @@ Page({
           title: "请填全信息",
           icon: "none",
         })
-      }
-        
+      }  
       }else {
-        this.writeInfo();
+       this.writeInfo();
       }
   },
   back:function(){
@@ -267,22 +277,26 @@ Page({
       if(e.detail.value == "证件"){
         this.setData({
           savedFilePath:picture[0],
-          picPath:picture[0]
+          picPath:picture[0],
+          isCard:true
         })
       }else if (e.detail.value == "钱包") {
         this.setData({
           savedFilePath: picture[1],
-          picPath: picture[1]
+          picPath: picture[1],
+          isCard: false
         })
       }else if (e.detail.value == "书本") {
         this.setData({
           savedFilePath: picture[2],
-          picPath: picture[2]
+          picPath: picture[2],
+          isCard: false
         })
       }else if (e.detail.value == "其他") {
         this.setData({
           savedFilePath: picture[3],
-          picPath: picture[3]
+          picPath: picture[3],
+          isCard: false
         })
       }
       
@@ -392,5 +406,51 @@ Page({
       formId:this.data.formId
     })
     console.log(this.data.formId)
+  },
+  /**
+   * 获得证件卡号和已有进行对比数据库
+   */
+  getCard:function(res){
+    var that = this
+    console.log(res.detail.value)
+    wx.request({
+      url: app.globalData.domain + '/Card',
+      method: "GET",
+      header: app.globalData.header,
+      data:{
+        card:res.detail.value
+      },
+      success:function(res){
+        console.log(res)
+        if(res.data != "" && res.statusCode==200){
+          that.setData({
+            detailInfo:res.data,
+            hasCardInfo:true
+          })
+        }
+      }
+    })
+  },
+  /**
+   * 点击信息进入详细界面
+   */
+  toDetail: function () {
+    this.setData({
+      detailInfo: {},
+      hasCardInfo: false
+    })
+    wx.setStorageSync("infor", this.data.detailInfo)
+    wx.navigateTo({
+      url: 'detail',
+    })
+  },
+  /**
+   * 点击其他区域关闭信息
+   */
+  closeInfo:function(){
+    this.setData({
+      detailInfo: {},
+      hasCardInfo: false
+    })
   }
 })

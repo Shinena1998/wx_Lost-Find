@@ -2,7 +2,11 @@
 App({
 
   time : new Date().toLocaleDateString().split("/").join("-"),
-  onLaunch: function () {
+  onLaunch: function (ops) {
+    console.log(ops)
+    if (ops.scene == 1044) {
+      console.log(ops.shareTicket)
+    }
     var that = this
     /**
     * 判断用户是否已经授权
@@ -13,6 +17,8 @@ App({
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框 
           this.globalData.power = true;
           console.log("zxc" + this.globalData.power)
+        }else{
+          this.globalData.power = false;
         }
       }
     })
@@ -62,15 +68,19 @@ App({
   },
   globalData: {
     domain:"http://127.0.0.1:8080",
+    isChangeInfo:false,
     session_key:'',
     userInfo: null,
     openid:null,
-    power:false,
-    category:null,
+    power:null,
+    info:[],
+    valuable:[],
+    imgList:[],
     checked:null,
     isManager:false,
     infoLostCss: { time: "丢失时间", place: "丢失地点" },
     infoFindCss: { time: "拾取时间", place: "拾取地点" },
+    category:[],
     header:{
       'token':'',
       'sessionId':'',

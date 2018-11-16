@@ -10,10 +10,13 @@ button::after{
 border: none;
 }
 .title{
-  width: 106%;
-  margin-left: -3%;
+  width: 107%;
+  margin-left: -4%;
   height: 5%;
-  background-color: white;
+  color: white;
+  background-color: #00ffff;
+  border-bottom-left-radius: 15%;
+  border-bottom-right-radius:15%; 
 }
 .title_text{
   width: 100%;
@@ -86,6 +89,7 @@ border: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 5%;
 }
 .contentWay{
   width: 60%;

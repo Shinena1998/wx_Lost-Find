@@ -5,11 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.Repository.*;
 import com.example.lostandfind.domain.Result;
+import com.example.lostandfind.mapper.InfoMapper;
 import com.example.lostandfind.mysql.*;
 import com.example.lostandfind.service.*;
 import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
 import com.example.lostandfind.utils.Template;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Sort;
@@ -28,12 +31,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
 public class LafController{
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private InfoMapper infoMapper;
 
     @Autowired
     private InfoRepository infoRepository;
@@ -447,5 +453,40 @@ public class LafController{
     @GetMapping(value = "/aboutMeHas")
     public List<FinishMysql> getHasFinish(@RequestParam("openid") String openid){
         return finishRespository.findByIdentity(openid);
+    }
+
+    /**
+     * 测试mybatis分页功能
+     * @return
+     */
+    @GetMapping(value ="/manager")
+    public Page<ManagerMysql> getManager(){
+        System.out.println(PageHelper.startPage(1,10));
+        return infoMapper.findByPage();
+    }
+
+    /**
+     * 实现添加用户在添加证件信息时，如果有相同证件信息已发表，则直接弹出信息功能
+     * 证件卡号与物品详细信息用"+"连接，故需要将证件卡号从详细信息中分开在做匹配
+     * @param card
+     * @return
+     */
+    @GetMapping(value = "/Card")
+    public InfoMysql getCardInfo(@RequestParam("card") String card) {
+        List<InfoMysql> infoMysqls = infoRepository.findByCategory("证件");
+        List<String> cardnum = new LinkedList<String>();
+        for (int i = 0; i < infoMysqls.size(); i++) {
+            String info = infoMysqls.get(i).getInfomation();
+            int label = info.lastIndexOf("+");//得到"+"标记的位置
+            if(label == -1){
+                continue;
+            }
+            info = info.substring(label+1);//截取"+"以后的证件卡号
+            System.out.println(info + " " + card);
+            if(info.equals(card)){
+                return infoMysqls.get(i);
+            }
+        }
+        return null;
     }
 }

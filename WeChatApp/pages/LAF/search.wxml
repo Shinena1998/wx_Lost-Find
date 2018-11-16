@@ -1,9 +1,9 @@
 
 <view class='top'>
 <view class='top_search' wx:if="{{searchType}}">
-<view  style='width:100%;height:100%;display:flex;'>
+<view  style='width:80%;height:100%;display:flex;'>
 <view class='top_sh_left'></view>
-<input type="text" class="top_searchText" confirm-type='search' placeholder='搜索信息'  auto-focus='true' bindconfirm='search1' bindblur='searchSave'
+<input type="text" class="top_searchText" confirm-type='search' placeholder='请输入搜索信息'  auto-focus='true' bindconfirm='search1' bindblur='searchSave'
 placeholder-class='top_searchTextPlaceholder'></input>
 <view class='top_sh_right'></view>
 </view>
@@ -15,7 +15,7 @@ placeholder-class='top_searchTextPlaceholder'></input>
 <block wx:else class="time">
 <view style='width:80%;height:100%;display:flex;'>
 <view class='time_left'></view>
-<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeStartChange" class='timeStart' style='border-right:3rpx solid white' >
+<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeStartChange" class='timeStart' style='border-right:3rpx solid whitesmoke' >
     <view class='timeStartView' style='color:{{timeStartColor}}'>
       {{timeStart}}
     </view>
@@ -62,7 +62,6 @@ placeholder-class='top_searchTextPlaceholder'></input>
 <block wx:else>
 <text style='color:rgb(112, 110, 110);font-size:80%;margin-left:40%'>无历史记录</text>
 </block>
-
 </view>
 
 <block wx:else>

@@ -11,9 +11,9 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "white",
+    "navigationBarBackgroundColor": "#00FFFF",
     "navigationBarTitleText": "失物招领",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"white"
   },
   "networkTimeout": {
     "request": 3000

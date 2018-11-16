@@ -41,13 +41,22 @@ Page({
     var remindList = ["申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之","本平台只负责信息传递，失物的保管及完整性由当事人（拾物者）自行负责", "发布失物或寻物信息请注意您的个人信息泄漏，由此造成的手机骚扰等损失本平台不负任何责任", "当有失主已确认失物时，双方自行商讨归还失物，发布消息者及时结束消息", "信息的真实性由发布者自行负责，本平台不负任何责任","通过本平台发布的信息发生任何意外均与本平台无关"]
     var count = 0
     console.log('asd'+app.globalData.power)
-    setTimeout(function(){
-      if (app.globalData.power == false) {
+    /**
+     * 因为在开发者工具上是先执行app，然后在执行index
+     * 但在手机上是并发执行，两个页面的请求互相竞争，所以有时就会token
+     * 还没在app页面生成，这边发送相应请求。所以使用循环定时器没50毫秒验证一次是否
+     * 对应数据是否改变
+     * 之所以不用setTimeout是因为请求完毕和网速有关系，所以花费时间不确定，直接设置
+     * 估计值有可能偏差太大，而循环定时器只会有小于等于50ms的延迟
+     */
+    var id = setInterval(function(){
+      if (app.globalData.power != null) {
         that.setData({
-          showModal: true,
+          showModal: !app.globalData.power,
         })
+        clearInterval(id)
       }
-    },500) 
+    },50) 
     setInterval(function () {
         count = (count + 1)%6
         that.setData({
@@ -86,15 +95,108 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+    // wx.request({
+    //   url: app.globalData.domain + '/manager',
+    //   method: 'GET',
+    //   header: app.globalData.header,
+    //   success:function(res){
+    //     console.log("page")
+    //     console.log(res)
+    //   }
+    // })
   },
-
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () { 
+    var that =this
+    app.globalData.valuable = []
+    app.globalData.category = []
+    app.globalData.imgList = []
+    /**
+     * 需等待获取token后才可发送请求
+     */
+    var id = setInterval(function () {
+      if(app.globalData.header.token != ''){
+        that.getValuable()
+        clearInterval(id)
+      }
+    }, 50) 
   },
 
+  /**
+   * 优化思路，在index界面获取物品信息，可以减少用户进入service界面是信息加载时间
+   * index界面只获得所有重要物品以及一页普通物品数据，其他则继续在service界面获取
+   * 从数据库获取信息只会在本页面和service翻页时进行，其他所有操作均直接操作app中的
+   * info以及valuable，对内存直接操作，不在从新到数据库获取新数据。
+   */
+  getValuable: function () {
+    var that = this
+    /**
+    * 获取重要信息
+    */
+    wx.request({
+      url: app.globalData.domain + '/service/info',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        confirm: true,
+        count: 0
+      },
+      success: function (res) {
+        console.log(res)
+        for (var i = 0; i < res.data.length; i++) {
+          app.globalData.valuable.unshift(res.data[i]);
+        /**
+         * 重要信息标志
+         */
+          app.globalData.imgList.push('https://yuigahama.xyz/icon/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.GdtfZS12NqUF254c4b5b884095adb13a1a52905b6ca6.png')
+        }
+        console.log("asd")
+        console.log(app.globalData.valuable)
+        /**
+        * 因为app.globalData.category是json包
+        */
+        that.getInfo()
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '网络错误' })
+      },
+    })
+  },
+  getInfo: function (count) {
+    var that = this
+    /**
+     * 获取非重要信息
+     * unshift数组头插
+     */
+    wx.request({
+      url: app.globalData.domain + '/service/info',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        confirm: false,
+        count: 0
+      },
+      success: function (res) {//连接成功运行
+        console.log(res)
+        if (res.statusCode === 200) {
+          if (res.data.length > 0) {
+            app.globalData.info = res.data
+            //没有信息且是第一页，不能出现到底了提示。
+          } 
+        } else {
+          console.log("error")
+        }
+        console.log(app.globalData.category)
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '网络错误' })
+      },
+      complete: function (res) {//都执行
+      },
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

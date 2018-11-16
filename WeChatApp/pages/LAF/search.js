@@ -26,7 +26,7 @@ Page({
     timeStartColor: 'rgb(148, 145, 145)',
     timeEnd: '请输入结束时间...',
     timeEndColor: 'rgb(148, 145, 145)',
-    strColor:"black",
+    strColor:"white",
     borderS: '5rpx solid #bbb;',
     timeColor:'#ddd',
     borderT:''
@@ -39,7 +39,7 @@ Page({
     this.data.id = e.currentTarget.id
     if (this.data.id == 0) {
       this.setData({
-        strColor: "black",
+        strColor: "white",
         borderS: '5rpx solid #bbb',
         timeColor: '#ddd',
         borderT: '',
@@ -50,7 +50,7 @@ Page({
       this.setData({
         strColor: "#ddd",
         borderS: '',
-        timeColor: 'black',
+        timeColor: 'white',
         borderT: '5rpx solid #bbb',
         searchType: false,
         index:1,

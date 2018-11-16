@@ -19,25 +19,35 @@ Page({
     imgList:[],
     infoCss:{},
     inforCss:[],
-    count:0,
+    count:1,
     type: ["default", "default", "default", "default", "default"],
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
   },
 
   /**
    * 生命周期函数--监听页面加载
+   * 获取重要信息及第一页信息
    */
   onLoad: function (options) {
     console.log(app.globalData.openid);
+    console.log(app.globalData.info)
+    console.log(app.globalData.valuable)
+    if (app.globalData.valuable.length > 0 || app.globalData.info.length > 0)    {
+      this.setData({
+        valuable: app.globalData.valuable,
+        imgList: app.globalData.imgList,
+      })
+      this.classify(app.globalData.info)
+    }
   },
   /**
    * 查看失物详细信息
    */
   comein: function (e) {
-    // console.log(e)
+    console.log(e)
     // console.log(this.data.category[e.currentTarget.dataset.index])
     if(app.globalData.power){
-        wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index]    )
+        wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index])
         wx.navigateTo({
           url: 'detail',
         })
@@ -51,13 +61,36 @@ Page({
   onReady: function () {
     this.data.type[app.globalData.category] = "primary"
   },
+  /**
+   * app.globalData.isChangeInfo作用是检测在detail中数据是否被更新
+   * 如果更新，在本页面也进行数据更新，否则数据不变
+   */
   onShow: function () {
+    if(app.globalData.isChangeInfo){
+      app.globalData.isChangeInfo = false
+      Card = []
+      Money = []
+      Book = []
+      Else = []
+      this.data.valuable = []
+      this.data.imgList = []
+      this.setData({
+        valuable: app.globalData.valuable,
+        imgList: app.globalData.imgList,
+      })
+      this.classify(app.globalData.info)
+    }
+  },
+  /**
+   * 获取贵重信息
+   */
+  getValuable:function(){
     var that = this
     /**
     * 获取重要信息
     */
     wx.request({
-      url: app.globalData.domain +'/service/info',
+      url: app.globalData.domain + '/service/info',
       method: 'GET',
       header: app.globalData.header,
       data: {
@@ -89,6 +122,56 @@ Page({
       },
     })
   },
+  /**
+   * 信息分类
+   */
+  classify: function (res) {
+    var that = this
+      if (res.length > 0) {
+        this.setData({
+          infor: res
+        })
+        console.log(that.data.infor)
+        for (var i = 0; i < that.data.infor.length; i++) {
+          if (that.data.infor[i].category == "证件") {
+            Card.unshift(that.data.infor[i])
+          } else if (that.data.infor[i].category == "书本") {
+            Book.unshift(that.data.infor[i])
+          } else if (that.data.infor[i].category == "钱包") {
+            Money.unshift(that.data.infor[i])
+          } else if (that.data.infor[i].category == "其他") {
+            Else.unshift(that.data.infor[i])
+          }
+        }
+        // /**
+        //  * 当第一页的证件类不足四条信息，则无法触发下拉到底部事件，若第二页
+        //  * 有证件类信息就不能正常显示，由此推广，如果第一页只要有一种长度小
+        //  * 于四条信息就会自动再翻一页。
+        //  */
+        // if (Card.length + that.data.valuable.length <= 4) {
+        //   that.addInformation()
+        // } else if (Else.length + that.data.valuable.length <= 4) {
+        //   that.addInformation()
+        // } else if (Book.length + that.data.valuable.length <= 4) {
+        //   that.addInformation()
+        // } else if (Money.length + that.data.valuable.length <= 4) {
+        //   that.addInformation()
+        // }
+        /**
+         *app.globalData.category 调用此函数使标签栏颜色正常
+         */
+        that.category(app.globalData.category);
+        //没有信息且不是第一页，不能出现到底了提示。
+      } else if (res.length == 0 && that.data.count > 1) {
+        wx.showToast({
+          title: '到底了',
+          icon: 'none'
+        })
+        //结束最后一条，返回信息长度为0，但要更新视图层数据
+      } else {
+        that.category(app.globalData.category);
+      }
+  },
   getInfo:function(count){
     var that = this
     /**
@@ -105,54 +188,9 @@ Page({
       },
       success: function (res) {//连接成功运行
         console.log(res.data)
-        if (res.statusCode === 200) {
-          if(res.data.length > 0){
-            that.setData({
-              infor: res.data
-            })
-            for (var i = 0; i < that.data.infor.length; i++) {
-              if (that.data.infor[i].category == "证件") {
-                Card.unshift(that.data.infor[i])
-              } else if (that.data.infor[i].category == "书本") {
-                Book.unshift(that.data.infor[i])
-              } else if (that.data.infor[i].category == "钱包") {
-                Money.unshift(that.data.infor[i])
-              } else if (that.data.infor[i].category == "其他") {
-                Else.unshift(that.data.infor[i])
-              }
-            }
-            /**
-             * 当第一页的证件类不足四条信息，则无法触发下拉到底部事件，若第二页
-             * 有证件类信息就不能正常显示，由此推广，如果第一页只要有一种长度小
-             * 于四条信息就会自动再翻一页。
-             */
-            if (Card.length + that.data.valuable.length <= 4) {
-              that.addInformation()
-            } else if (Else.length + that.data.valuable.length <= 4) {
-              that.addInformation()
-            } else if (Book.length + that.data.valuable.length <= 4) {
-              that.addInformation()
-            } else if (Money.length + that.data.valuable.length <= 4) {
-              that.addInformation()
-            }
-            /**
-             *app.globalData.category 调用此函数使标签栏颜色正常
-             */
-            that.category(app.globalData.category);
-            
-            //没有信息且不是第一页，不能出现到底了提示。
-          } else if (res.data.length == 0 && that.data.count > 1){
-            wx.showToast({
-              title: '到底了',
-              icon:'none'
-            })
-            //结束最后一条，返回信息长度为0，但要更新视图层数据
-          }else {
-            that.category(app.globalData.category);
-          }
-        } else {
-          console.log("error")
-        }
+        app.globalData.info=app.globalData.info.concat(res.data);
+        console.log(app.globalData.info)
+        that.classify(res.data);
       },
       fail: function (res) {//连接失败执行
         wx.showToast({ title: '网络错误' })
@@ -161,18 +199,12 @@ Page({
       },
     })
   },
+ 
   /**
    * 进入新页面后初始化数据
    * service->detail
    */
   onHide:function(){
-    Card = []
-    Money = []
-    Book = []
-    Else = []
-    this.data.valuable=[]
-    this.data.count = 0;
-    this.data.imgList = []
   },
   /**
    * 返回旧页面初始化数据
@@ -229,7 +261,7 @@ Page({
     /**
      * 将重要与非重要连接
      */
-    this.data.category = this.data.valuable.concat(this.data.category);
+    this.data.category = app.globalData.valuable.concat(this.data.category);
     
     this.setData({
       category:this.data.category,

@@ -3,6 +3,7 @@ package com.example.lostandfind;
 import com.example.lostandfind.interceptor.CheckLoginInterceptor;
 import com.example.lostandfind.utils.SessionListener;
 import com.example.lostandfind.utils.SessionUtil;
+import com.github.pagehelper.PageHelper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -12,13 +13,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.mybatis.spring.annotation.*;
+
+import java.util.Properties;
 
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
+//@MapperScan("com.example.lostandfind.mapper")
 public class LostandfindApplication {
 
     public static void main(String[] args) {
@@ -43,4 +45,5 @@ public class LostandfindApplication {
         slrBean.setListener(new SessionListener());
         return slrBean;
     }
+
 }

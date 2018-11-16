@@ -9,9 +9,10 @@ page{
 .top{
   height: 5%;
   width: 100%;
+  color: white;
   display: flex;
   justify-content: center;
-  background-color: white
+  background-color: #00ffff
 }
 .label{
   display: flex;
@@ -22,7 +23,7 @@ page{
   padding-top: 1%;
   border-bottom:1rpx solid;
   border-color: wheat;
-  background-color: white
+  background-color: #00ffff;
 }
 .infoAll{
   width: 94%;

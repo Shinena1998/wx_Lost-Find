@@ -28,16 +28,26 @@ Page({
    */
   back:function(){
     wx:wx.navigateBack({
-      delta: 1,
+      delta: 1
     })
   },
   /**
    * 自动显示对应样式
    */
   onLoad: function (options) {
+    console.log("asd")
+    console.log(options)
+    console.log(wx.getStorageSync("infor"))
+    this.data.detailInfo = wx.getStorageSync("infor")
+    var label = this.data.detailInfo.infomation.lastIndexOf('+')
+    if(label != -1){
+      this.data.detailInfo.infomation = this.data.detailInfo.infomation.substring(0, label)
+    }
+
+    console.log(this.data.detailInfo)
     this.setData({
-      detailInfo: wx.getStorageSync("infor")
-    })
+      detailInfo: this.data.detailInfo
+    })                                                                                                                                                                                
     if (this.data.detailInfo.kind == "遗失" ){
       if (this.data.detailInfo.confirm || this.data.detailInfo.timeOut != null ){
         this.setData({
@@ -165,11 +175,11 @@ Page({
     }
     return {
       title:"失物详细信息",
-      path:'/pages/LAF/index'
+      path:'/pages/LAF/detail'
     }
   },
   /**
-   * 发布信息者结束事件
+   * 发布信息者结束事件,更新后端数据库
    */
   finish:function(){
     var that = this
@@ -184,6 +194,8 @@ Page({
             method: 'DELETE',
             header: app.globalData.header,
             success: function (res) {
+              app.globalData.isChangeInfo = that.deleteInfo()
+              console.log(app.globalData.isChangeInfo )
               wx.showToast({
                 title: '删除成功',
                 icon:'success',
@@ -199,6 +211,24 @@ Page({
         }
       }
     })
+  },
+  /**
+   * 更新前端数据
+   */
+  deleteInfo:function(){
+    for (var i = 0; i < app.globalData.info.length ; i++){
+      if(this.data.detailInfo.id == app.globalData.info[i].id){
+        app.globalData.info.splice(i, 1)
+        return true
+      }
+    }
+    for (var i = 0; i < app.globalData.valuable.length; i++) {
+      if (this.data.detailInfo.id == app.globalData.valuabl[i].id) {
+        app.globalData.valuable.splice(i, 1)
+        return true
+      }
+    }
+    return false
   },
   /**
  * 显示模态对话框
