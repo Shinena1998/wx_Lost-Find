@@ -75,7 +75,7 @@
 <image class="infoImg" src = "{{detailInfo.picPath}}"></image>
 </view>
 <view  class="infoText" 
-style="background-image: url({{imgList[index]}})">
+style="background-image: url({{img}})">
 <view class = "infoThemeView" >
 <view class='infoThemeRemindView'>
 <view class='infoKind'><image style="height:80%;width:9%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{detailInfo.kind}}</view>

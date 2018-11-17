@@ -4,10 +4,10 @@
 
 <scroll-view  scroll-x="true">
 <view class="label">
-<view ><button size='mini' plain='true' id='0' type='{{type[0]}}' bindtap='category'>证件</button></view>
-<view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>书本</button></view>
-<view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>钱包</button></view>
-<view><button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>其他</button></view>
+<view ><button size='mini' plain='true' id='0' type='{{type[0]}}' bindtap='category'>证件类</button></view>
+<view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>学习类</button></view>
+<view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>电子类</button></view>
+<view><button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>生活类</button></view>
 </view>
 </scroll-view>
 

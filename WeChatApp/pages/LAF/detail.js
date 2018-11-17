@@ -17,6 +17,7 @@ Page({
     imgWidth:0,
     contact:"",
     contactWay:"",
+    backType:true,
     contactList: ['/pages/img/QQ.png ',
                   '/pages/img/WeChat.png',
                   '/pages/img/number.png',
@@ -27,18 +28,30 @@ Page({
    * 返回
    */
   back:function(){
-    wx:wx.navigateBack({
-      delta: 1
-    })
+    if(this.data.backType){
+      wx.navigateBack({
+        delta: 1
+      })
+    }else{
+      wx.redirectTo({
+        url: 'index',
+      })
+    }
   },
   /**
    * 自动显示对应样式
    */
   onLoad: function (options) {
     console.log("asd")
-    console.log(options)
-    console.log(wx.getStorageSync("infor"))
-    this.data.detailInfo = wx.getStorageSync("infor")
+    if(options.data!=null){
+      console.log(options.data)
+        this.data.detailInfo = JSON.parse(options.data),
+        this.data.backType = false
+    }else{
+      console.log(wx.getStorageSync("infor"))
+      this.data.detailInfo = wx.getStorageSync("infor"),
+      this.data.backType = true
+    }
     var label = this.data.detailInfo.infomation.lastIndexOf('+')
     if(label != -1){
       this.data.detailInfo.infomation = this.data.detailInfo.infomation.substring(0, label)
@@ -47,7 +60,7 @@ Page({
     console.log(this.data.detailInfo)
     this.setData({
       detailInfo: this.data.detailInfo
-    })                                                                                                                                                                                
+    })                         
     if (this.data.detailInfo.kind == "遗失" ){
       if (this.data.detailInfo.confirm || this.data.detailInfo.timeOut != null ){
         this.setData({
@@ -134,7 +147,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+    wx.showShareMenu({
+      withShareTicket:true
+    })
   },
 
   /**
@@ -167,15 +182,22 @@ Page({
 
   /**
    * 用户点击右上角分享
+   * 因为url上只能添加字符而不能添加JSON对象，所以先把JSON转化为JSON字符串在传递
+   * JSON.stringify(json) 将JSON转化为字符串
+   * JSON.parse(str) 将字符串转化为JSON对象
    */
   onShareAppMessage: function (res) {
     console.log(res)
+    var data = JSON.stringify(this.data.detailInfo)
     if(res.from == 'button'){
       console.log(res)
     }
     return {
       title:"失物详细信息",
-      path:'/pages/LAF/detail'
+      path:'/pages/LAF/detail?data='+data,
+      success:function(res){
+        console.log(res)
+      }
     }
   },
   /**
@@ -201,9 +223,15 @@ Page({
                 icon:'success',
                 duration:1500,
                 success:function(){
-                  wx.navigateBack({
-                    delta: 1
-                  })
+                  if (that.data.backType) {
+                    wx.navigateBack({
+                      delta: 1
+                    })
+                  } else {
+                    wx.redirectTo({
+                      url: 'index',
+                    })
+                  }
                 }
               })
             }
@@ -223,8 +251,9 @@ Page({
       }
     }
     for (var i = 0; i < app.globalData.valuable.length; i++) {
-      if (this.data.detailInfo.id == app.globalData.valuabl[i].id) {
+      if (this.data.detailInfo.id == app.globalData.valuable[i].id) {
         app.globalData.valuable.splice(i, 1)
+        app.globalData.imgList.splice(i,1)
         return true
       }
     }
@@ -347,9 +376,15 @@ Page({
             icon:'none',
             success: function () {
               setTimeout(function () {
-                wx.navigateBack({
-                  delta: 1,
-                })
+                if (that.data.backType) {
+                  wx.navigateBack({
+                    delta: 1
+                  })
+                } else {
+                  wx.redirectTo({
+                    url: 'index',
+                  })
+                }
               }, 1000)
             }
           }) 
@@ -360,9 +395,15 @@ Page({
             duration: 1000,
             success: function () {
               setTimeout(function () {
-                wx.navigateBack({
-                  delta: 1,
-                })
+                if (that.data.backType) {
+                  wx.navigateBack({
+                    delta: 1
+                  })
+                } else {
+                  wx.redirectTo({
+                    url: 'index',
+                  })
+                }
               }, 1000)
             }
           }) 

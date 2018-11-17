@@ -423,6 +423,10 @@ public class LafController{
                                    @RequestParam("message") String message,
                                    @RequestParam("id") int id){
         InfoMysql infoMysql = infoRepository.findById(id).get();
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
+        current = sdf.format(date);
+        //删除已使用的formid
         if(!(infoMysql.getFormId().equals(""))){
             String[] formIdList = infoMysql.getFormId().split("\\+");
             StringBuffer sb = new StringBuffer();
@@ -431,6 +435,8 @@ public class LafController{
             }
             infoMysql.setFormId(sb.toString());
             infoRepository.save(infoMysql);
+
+
             String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="+accessToken;
             String[] infos = {category,"已找到失主",nickName,current,message,"请您去小程序内确认"};
             JSONObject jsonObject = new Template().makeTemplateData(infos,openid,formIdList[formIdList.length-1]);

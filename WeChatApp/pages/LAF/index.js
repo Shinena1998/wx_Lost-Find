@@ -95,6 +95,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    //测试mybatis分页
     // wx.request({
     //   url: app.globalData.domain + '/manager',
     //   method: 'GET',

@@ -135,11 +135,11 @@ Page({
         for (var i = 0; i < that.data.infor.length; i++) {
           if (that.data.infor[i].category == "证件") {
             Card.unshift(that.data.infor[i])
-          } else if (that.data.infor[i].category == "书本") {
+          } else if (that.data.infor[i].category == "学习") {
             Book.unshift(that.data.infor[i])
-          } else if (that.data.infor[i].category == "钱包") {
+          } else if (that.data.infor[i].category == "电子") {
             Money.unshift(that.data.infor[i])
-          } else if (that.data.infor[i].category == "其他") {
+          } else if (that.data.infor[i].category == "生活") {
             Else.unshift(that.data.infor[i])
           }
         }

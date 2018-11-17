@@ -42,12 +42,13 @@ Page({
     formId:"",
     isCard:false,
     detailInfo:{},
+    img:'',
     hasCardInfo:false,
     items_category:[
       { name: '证件', value: '证件', checked: false },
-      { name: '书本', value: '书本', checked: false },
-      { name: '钱包', value: '钱包', checked: false },
-      { name: '其他', value: '其他', checked: false  },
+      { name: '学习', value: '学习', checked: false },
+      { name: '电子', value: '电子', checked: false },
+      { name: '生活', value: '生活', checked: false  },
     ],
     items_kind: [
       { name: '遗失', value: '遗失', checked: false },
@@ -232,12 +233,15 @@ Page({
     if(this.data.information == ""){
       this.data.information = "无"
     }
+    /**
+     * 证件卡号与物品详细信息用"+"连接，
+     */
     if (this.data.category == '证件') {
       this.data.information = this.data.information +'+'+value.card
     }
     console.log(this.data.information)
     console.log(value.place+this.data.category)
-    if (this.data.kind == "" || this.data.category == "" 
+    if (this.data.kind == "" || this.data.theme == "" || this.data.category == "" 
       || this.data.Time == "请输入时间 >" || this.data.place == ""
       || this.data.contactWay == "" ||
       (this.data.contactWay == '3+失主自取' && this.data.index != 3) ){
@@ -280,19 +284,19 @@ Page({
           picPath:picture[0],
           isCard:true
         })
-      }else if (e.detail.value == "钱包") {
+      }else if (e.detail.value == "学习") {
         this.setData({
           savedFilePath: picture[1],
           picPath: picture[1],
           isCard: false
         })
-      }else if (e.detail.value == "书本") {
+      }else if (e.detail.value == "电子") {
         this.setData({
           savedFilePath: picture[2],
           picPath: picture[2],
           isCard: false
         })
-      }else if (e.detail.value == "其他") {
+      }else if (e.detail.value == "生活") {
         this.setData({
           savedFilePath: picture[3],
           picPath: picture[3],
@@ -423,10 +427,18 @@ Page({
       success:function(res){
         console.log(res)
         if(res.data != "" && res.statusCode==200){
-          that.setData({
-            detailInfo:res.data,
-            hasCardInfo:true
-          })
+          if(res.data.aBoolean){
+            that.setData({
+              detailInfo: res.data,
+              hasCardInfo: true,
+              img: 'https://yuigahama.xyz/icon/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.GdtfZS12NqUF254c4b5b884095adb13a1a52905b6ca6.png'
+            })
+          }else{
+            that.setData({
+              detailInfo: res.data,
+              hasCardInfo: true
+            })
+          }
         }
       }
     })
@@ -435,11 +447,11 @@ Page({
    * 点击信息进入详细界面
    */
   toDetail: function () {
+    wx.setStorageSync("infor", this.data.detailInfo)
     this.setData({
       detailInfo: {},
       hasCardInfo: false
     })
-    wx.setStorageSync("infor", this.data.detailInfo)
     wx.navigateTo({
       url: 'detail',
     })

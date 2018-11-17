@@ -162,7 +162,7 @@ button::after{
   height: 30%;
   overflow: hidden;
   position: fixed;
-  top: 30%;
+  top: 41%;
   left: 0; 
   z-index: 9998;
   background: rgb(233, 241, 235);
