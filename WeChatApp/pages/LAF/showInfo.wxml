@@ -46,9 +46,6 @@ style="background-image: url({{imgList[index]}})">
 <view class="info">
 <text style='font-size:150%;text-align:center;color:green'>本人团队介绍</text>
 <text >作者:由比滨结衣</text>
-<view>QQ:1251632747</view>
-<view>github:Shinena1998</view>
-<view class='wx'>微信:<image class="wxcode" src='/pages/img/WeChatCode.png'></image></view>
-<view class='explain'>说明：本项目是团子团队所做，由于本团队所有人所学有限，故该app在前端ui和后端效率上都有严重不足，所以请各位用户积极献出宝贵的建议，您的建议就是我们进步的源泉。并且该项目已在本团队的github上开源，大牛可以自行二次开发，然后通知本团队，本团队会进行相应更新，并附上您的大名。本产品致力于服务广大学生，再加上本团队实力太弱，请看了源码的大牛不要攻击本产品，如有漏洞，请及时指出，万分感谢！</view>
+<view class='explain'></view>
 </view>
 </view>

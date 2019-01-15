@@ -1,7 +1,6 @@
-package com.example.lostandfind.Repository;
+package com.example.lostandfind.repository;
 
 import com.example.lostandfind.mysql.FinishMysql;
-import com.example.lostandfind.mysql.InfoMysql;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

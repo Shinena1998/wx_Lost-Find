@@ -43,6 +43,7 @@ Page({
     isCard:false,
     detailInfo:{},
     img:'',
+    imgInfo:"",
     hasCardInfo:false,
     items_category:[
       { name: '证件', value: '证件', checked: false },
@@ -179,12 +180,18 @@ Page({
  *获取物品照片 
  */
   uploadImg: function () {
+    
     var that = this
     wx.chooseImage({
       count: 1,
       sizeType:'compressed',
       success: function (res) {
         console.log("a"+res)
+        wx.showToast({
+          title: '正在发送',
+          icon: 'loading',
+          duration: 2500,
+        })
         wx.getImageInfo({
           src: res.tempFilePaths[0],
           success:function(res){
@@ -200,6 +207,7 @@ Page({
             that.data.ImgHeight = res.height
             that.data.ImgWidth = res.width
             console.log(res)
+            that.writeInfo()
           }
         })
 
@@ -261,7 +269,7 @@ Page({
         })
       }  
       }else {
-       this.writeInfo();
+      this.uploadInfo()
       }
   },
   back:function(){
@@ -277,30 +285,36 @@ Page({
     console.log(e);
     this.data.category = e.detail.value;
     var picture = this.data.pictureCssPaths
-    if(!this.data.isUploadPic){
+    //显示证件卡号
+    if(e.detail.value == "证件"){
+      this.setData({
+        isCard: true
+      })
+    }else{
+      this.setData({
+        isCard: false
+      })
+    }
+    if(!this.data.isUploadPic){//防止已上传照片，更换类型变为默认图片
       if(e.detail.value == "证件"){
         this.setData({
           savedFilePath:picture[0],
           picPath:picture[0],
-          isCard:true
         })
       }else if (e.detail.value == "学习") {
         this.setData({
           savedFilePath: picture[1],
           picPath: picture[1],
-          isCard: false
         })
       }else if (e.detail.value == "电子") {
         this.setData({
           savedFilePath: picture[2],
           picPath: picture[2],
-          isCard: false
         })
       }else if (e.detail.value == "生活") {
         this.setData({
           savedFilePath: picture[3],
           picPath: picture[3],
-          isCard: false
         })
       }
       
@@ -327,13 +341,25 @@ Page({
         method:"POST",
         header: app.globalData.header,
         success: function (res) {
+          wx.showToast({
+            title: '上传成功',
+            duration: 1000,
+          })
           console.log(res)
           if(res.statusCode== 200){
+            var info = JSON.parse(res.data)
+            console.log(info.imgInfo)
+            console.log(info.imgPath)
             that.setData({
-              picPath: res.data
+              picPath: info.imgPath,
+              imgInfo:info.imgInfo
             })
-            that.uploadInfo()
-
+            var type={
+              "type":"idea","data":info.imgInfo
+            }
+            if(that.data.category == "证件"){
+              that.getCard(type);
+            }
           }
           console.log("zxc" + that.data.isValuable)
         }, fail: function (res) {
@@ -416,13 +442,19 @@ Page({
    */
   getCard:function(res){
     var that = this
-    console.log(res.detail.value)
+    var info = null
+    if(res.type == "idea"){
+      info=res.data
+    }else{
+      info=res.detail.value
+    }
+    console.log(res)
     wx.request({
       url: app.globalData.domain + '/Card',
       method: "GET",
       header: app.globalData.header,
       data:{
-        card:res.detail.value
+        card:info
       },
       success:function(res){
         console.log(res)

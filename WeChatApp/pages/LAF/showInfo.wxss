@@ -7,7 +7,7 @@ page{
 }
 .title{
   height:5%;
-  background-color:white;
+  background-color:#00ffff;
   display: flex;
   justify-content: center;
   align-items: center;

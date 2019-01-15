@@ -1,25 +1,33 @@
 package com.example.lostandfind.service;
 
-import com.example.lostandfind.Repository.FinishRespository;
-import com.example.lostandfind.Repository.InfoRepository;
+import com.alibaba.fastjson.JSONObject;
+import com.example.lostandfind.repository.FinishRespository;
+import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.mysql.FinishMysql;
 import com.example.lostandfind.mysql.InfoMysql;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SchedulerService {
 
     @Autowired
+    private RedisTemplate<String, InfoMysql> redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
     private InfoRepository infoRepository;
     @Autowired
     private FinishRespository finishRespository;
+    @Autowired
+    private RestTemplate restTemplate;
     private final String IMGFOLDER = "/root/html/img/";//服务器图片存储绝对路径
     private final String PATHPREFIX = "https://yuigahama.xyz/img/";//数据库存储图片域名路径，
 
@@ -53,7 +61,7 @@ public class SchedulerService {
     /**
      * 贵重物品会存在三天时间，三天之后被降级为一般物品
      */
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 2 * * ?")
     public void checkValuable(){
         List<InfoMysql> infoMysqlList = infoRepository.findByABooleanAndIsValuableOrderByTimestampsDesc(true,false);
         infoMysqlList.size();
@@ -101,5 +109,60 @@ public class SchedulerService {
             }
         }
     }
+    /**
+     * 防止redis内存与数据库数据不一致，每天2点更新数据
+     * 每天2点核对一次
+     */
+    @Scheduled(fixedDelay = 86400000)
+    public void checkRedis(){
+        List<InfoMysql> infoMysqlList = infoRepository.getinfo();
+        redisTemplate.delete("infoN");
+        redisTemplate.opsForList().rightPushAll("infoN",infoMysqlList);
+    }
+    /**
+     * 获取ocr access_token
+     */
+    @Scheduled(fixedDelay = 864000000)
+    public void updataOcrToken(){
+        String url="https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=5wS49QStKVHBDLMRQSkGhH5b&client_secret=4oAk4IImFiDd40oOILew0GWMAfG83CM9";
+        JSONObject jsonObject = restTemplate.postForEntity(url,null, JSONObject.class).getBody();
+        System.out.println(jsonObject);
+        if(stringRedisTemplate.hasKey("OcrToken")){
+            stringRedisTemplate.delete("OcrToken");
+            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
+        }else {
+            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
+        }
+    }
 
+//    @Scheduled(fixedDelay = 5000)
+//    public void getOcrInfo(){
+//        String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.c8c8e6c23cb2679481561bd21226164a.2592000.1545727601.282335-14936363";
+//        byte[] data = null;
+//        InputStream in = null;
+//        try{
+////            in = new FileInputStream(imgUrl+imgName);
+//            in = new FileInputStream("/Users/zhangcong/Downloads/234.jpg");
+//            data = new byte[in.available()];
+//            in.read(data);
+//            in.close();
+//        }catch (Exception e){
+//        }
+//        String image = Base64.encode(data);
+//        System.out.println(image);
+//        MultiValueMap<String, String> postParameters = new LinkedMultiValueMap<>();
+//        HttpHeaders headers = new HttpHeaders();
+//        postParameters.add("image",image);
+//        headers.add("Content-Type", "application/x-www-form-urlencoded");
+//        HttpEntity<MultiValueMap<String, String>> r = new HttpEntity<>(postParameters, headers);
+//        JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
+//        System.out.println(jsonObject);
+//        JSONArray jsonArray = jsonObject.getJSONArray("words_result");
+//        StringBuffer sb = new StringBuffer();
+//        for (int i = 0; i < jsonArray.size(); i++) {
+//
+//            sb.append(((JSONObject)jsonArray.get(i)).getString("words"));
+//        }
+//        System.out.println(sb.toString());
+//    }
 }

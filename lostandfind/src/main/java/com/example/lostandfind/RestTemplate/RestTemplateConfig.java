@@ -1,15 +1,18 @@
-package com.example.lostandfind.RestTemplate;
+package com.example.lostandfind.restTemplate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
+@Component
 public class RestTemplateConfig {
     @Bean
     public RestTemplate restTemplate(ClientHttpRequestFactory factory){
+        System.out.println(factory);
         return new RestTemplate(factory);
     }
 

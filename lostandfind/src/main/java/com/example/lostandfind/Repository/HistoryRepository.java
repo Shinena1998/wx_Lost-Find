@@ -1,4 +1,4 @@
-package com.example.lostandfind.Repository;
+package com.example.lostandfind.repository;
 
 import com.example.lostandfind.mysql.HistoryMysql;
 import org.springframework.data.jpa.repository.JpaRepository;

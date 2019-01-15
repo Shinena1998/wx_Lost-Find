@@ -1,22 +1,25 @@
 package com.example.lostandfind.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.lostandfind.Repository.*;
+import com.example.lostandfind.repository.*;
 import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mapper.InfoMapper;
 import com.example.lostandfind.mysql.*;
+import com.example.lostandfind.redis.RedisSave;
 import com.example.lostandfind.service.*;
 import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
-import com.example.lostandfind.utils.Template;
+import com.example.lostandfind.service.Template;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.xml.crypto.Data;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,6 +60,13 @@ public class LafController{
 
     @Autowired
     private FinishRespository finishRespository;
+
+
+    @Autowired
+    private StringRedisTemplate template;
+
+    @Autowired
+    private RedisTemplate<String,InfoMysql> redisTemplate;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -111,8 +120,19 @@ public class LafController{
     @GetMapping(value = "/service/info")
     public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm,
                                       @RequestParam("count") int count){
-        System.out.println(count);
-        return infoRepository.findByABoolean(confirm,50*count);
+//        System.out.println(count);
+//        return new RedisSave().getInfo(redisTemplate);
+        new Template().asd();
+        if(count == 0){
+            if(confirm){
+                return new RedisSave().getValuableInfo(redisTemplate);
+            }else{
+                return new RedisSave().getInfo(redisTemplate);
+            }
+        }else {
+            return infoRepository.findByABoolean(confirm,50*count+200);
+        }
+
     }
     /**s
      * 写入数据信息
@@ -131,6 +151,8 @@ public class LafController{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         infoMysql.setLoststamp(simpleDateFormat.parse(infoMysql.getTime()).getTime()/1000 + 1000);
         infoRepository.save(infoMysql);
+        RedisSave redisSave = new RedisSave();
+        redisSave.saveInfo(infoMysql, redisTemplate.hasKey("infoN"),redisTemplate);
         return ResultUtil.success(infoMysql);
     }
 
@@ -178,46 +200,60 @@ public class LafController{
      * @return
      * @throws Exception
      */
-//    @PostMapping(value = "/uploadImage")
-//    public String uploadPicture(@RequestParam("file") MultipartFile file,
-//                                @RequestParam("height") int height,
-//                                @RequestParam("width") int width,
-//                                @RequestParam("openid") String openid) throws Exception {
-//
-//       System.out.println(height +" "+width + openid);
-//        //获取文件需要上传到的路径
-//        if(file.isEmpty()==true){
-//            return "error";
-//        }else {
-//            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-//            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
-//            Files.write(path,bytes);
-//            return "/pages/img/"+imgName;
-//        }
-//    }
-    /**
-     * 向服务器端传图片
-     */
     @PostMapping(value = "/uploadImage")
-    public String uploadPicture(@RequestParam("file") MultipartFile file,
+    public Object uploadPicture(@RequestParam("file") MultipartFile file,
                                 @RequestParam("height") int height,
                                 @RequestParam("width") int width,
                                 @RequestParam("openid") String openid) throws Exception {
-        //获取文件需要上传到的路径
 
+       System.out.println(height +" "+width + openid);
+        //获取文件需要上传到的路径
         if(file.isEmpty()==true){
             return "error";
         }else {
             String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
             String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("/root/html/img/"+ imgName);
+            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
             Files.write(path,bytes);
-            return "https://yuigahama.xyz/img/"+imgName;
+            HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
+            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
+            JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("imgPath","/pages/img/"+imgName);
+            jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
+            System.out.println(jsonObject1);
+            return jsonObject1;
         }
     }
+    /**
+     * 向服务器端传图片
+     */
+//    @PostMapping(value = "/uploadImage")
+//    public Object uploadPicture(@RequestParam("file") MultipartFile file,
+//                                @RequestParam("height") int height,
+//                                @RequestParam("width") int width,
+//                                @RequestParam("openid") String openid) throws Exception {
+//        //获取文件需要上传到的路径
+//
+//        if(file.isEmpty()==true){
+//            return "error";
+//        }else {
+//            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+//            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get();
+//            Files.write(path,bytes);
+//            HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
+//            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
+//            JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
+//            JSONObject jsonObject1 = new JSONObject();
+//            jsonObject1.put("imgPath","/root/html/img/"+imgName);
+//            jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
+//            System.out.println(jsonObject1);
+//            return jsonObject1;
+//        }
+//    }
 
     @ResponseBody
     @PutMapping(value = "/confirm/{id}")
@@ -362,14 +398,19 @@ public class LafController{
      */
     @ResponseBody
     @GetMapping(value = "/token")
+//    public TokenService makeToken(@RequestParam("openid") String openid){
     public TokenService makeToken(HttpServletRequest request){
-
         HttpSession session = request.getSession();
         TokenService tokenService = new TokenService();
         String token = tokenService.makeToken();
         session.setAttribute("token",token);
         tokenService.setToken(token);
         tokenService.setSession(session.getId());
+//        if(template.hasKey(openid)){
+//
+//        }else{
+//            template.opsForValue().set(openid,token, Duration.ofHours(2));
+//        }
         return tokenService;
     }
     /**
@@ -494,5 +535,29 @@ public class LafController{
             }
         }
         return null;
+    }
+
+    @RequestMapping("/setValue")
+    public String setValue(){;
+//        InfoMysql infoMysql = new InfoMysql();
+//        infoMysql.setFormId("asd");
+//        infoMysql.setLoststamp(1231);
+//        infoMysql.setCategory("asdasd");
+//        redisTemplate.opsForList().rightPush("infoN",infoMysql);
+//        RedisSave redisSave = new RedisSave();
+//        redisSave.saveInfo(infoMysql, redisTemplate.hasKey("infoN"),redisTemplate);
+        List<InfoMysql> infoMysqlList = infoRepository.findAll();
+        redisTemplate.opsForList().rightPushAll("infoN",infoMysqlList);
+        return "成功添加数据";
+    }
+
+    @RequestMapping("/getValue")
+    public List<InfoMysql> getValue() {
+      //redisTemplate.delete("infoN");
+      return redisTemplate.opsForList().range("infoN",0,-1);
+    }
+    @RequestMapping("/deleteValue")
+    public void deleteValue() {
+        redisTemplate.delete("infoN");
     }
 }

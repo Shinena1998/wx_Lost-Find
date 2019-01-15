@@ -24,7 +24,7 @@ import java.util.Properties;
 public class LostandfindApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(LostandfindApplication.class, args);
+         SpringApplication.run(LostandfindApplication.class, args);
     }
     @Configuration
     public class InterceptorConfig implements WebMvcConfigurer {
@@ -35,7 +35,7 @@ public class LostandfindApplication {
          */
         @Override
         public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(new CheckLoginInterceptor()).addPathPatterns("/**");
+            registry.addInterceptor(new CheckLoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/getUserInfo");
         }
     }
     //注册session监听器;

@@ -266,6 +266,7 @@ Page({
     this.setData({
       category:this.data.category,
     })
+    console
   },
   /**
    * count 为页数，一页50条信息
