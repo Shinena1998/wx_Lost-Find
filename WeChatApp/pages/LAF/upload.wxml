@@ -8,8 +8,8 @@
   </label>
 </radio-group> -->
 <view class="radio-group_kind">
-<view class='lose' id='1' bindtap='selectKind' style='font-size:80%;color:{{loseBC}};border-bottom:{{borderL}}'>寻找失物</view>
-<view class='lose' id='2' bindtap='selectKind' style='font-size:80%;color:{{findBC}};border-bottom:{{borderF}}'>寻找失主</view>
+<view class='lose' id='1' bindtap='selectKind' style='font-size:80%;color:{{loseBC}};border-bottom:{{borderL}}'>失物启事</view>
+<view class='lose' id='2' bindtap='selectKind' style='font-size:80%;color:{{findBC}};border-bottom:{{borderF}}'>招领启事</view>
 </view>
 
 <form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">

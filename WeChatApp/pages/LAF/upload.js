@@ -13,7 +13,8 @@ Page({
                     "/pages/img/986803F3-6074-4624-8F2A-2FB638147B3E.png"],
     savedFilePath:"/pages/img/addPic.png ",
     isUploadPic:false,
-    category:"",
+    //失物类型
+    category:null,
     time:"2018-11-2",
     Time:"请输入时间 >",
     TimeColor:'rgb(148, 145, 145)',
@@ -27,6 +28,7 @@ Page({
     anwer:"",
     openId:"",
     theme:'',
+    //照片长宽
     ImgHeight:0,
     ImgWidth:0,
     infoCss: { time: "丢失时间", place: "丢失地点" },
@@ -180,47 +182,53 @@ Page({
  *获取物品照片 
  */
   uploadImg: function () {
-    
-    var that = this
-    wx.chooseImage({
-      count: 1,
-      sizeType:'compressed',
-      success: function (res) {
-        console.log("a"+res)
-        wx.showToast({
-          title: '正在发送',
-          icon: 'loading',
-          duration: 2500,
-        })
-        wx.getImageInfo({
-          src: res.tempFilePaths[0],
-          success:function(res){
-            /**
-             * 图片长宽最大为999，要配合取值
-             */
-           if(res.height > 999){
-              res.height = 999
+    if(this.data.category != null){
+      var that = this
+      wx.chooseImage({
+        count: 1,
+        sizeType: 'compressed',
+        success: function (res) {
+          console.log("a" + res)
+          wx.showToast({
+            title: '正在发送',
+            icon: 'loading',
+            duration: 2500,
+          })
+          wx.getImageInfo({
+            src: res.tempFilePaths[0],
+            success: function (res) {
+              /**
+               * 图片长宽最大为999，要配合取值
+               */
+              if (res.height > 999) {
+                res.height = 999
+              }
+              if (res.width > 999) {
+                res.width = 999
+              }
+              that.data.ImgHeight = res.height
+              that.data.ImgWidth = res.width
+              console.log(res)
+              that.writeInfo()
             }
-            if(res.width > 999){
-              res.width = 999
-            } 
-            that.data.ImgHeight = res.height
-            that.data.ImgWidth = res.width
-            console.log(res)
-            that.writeInfo()
-          }
-        })
+          })
 
-        that.setData({
-          /**
-           * 1.在视图界面显示上传图片
-           * 2.记录上传图片的临时文件路径，以便后面上传至服务器
-           */
-          savedFilePath: res.tempFilePaths[0],
-          isUploadPic:true
-        })
-      }
-    })
+          that.setData({
+            /**
+             * 1.在视图界面显示上传图片
+             * 2.记录上传图片的临时文件路径，以便后面上传至服务器
+             */
+            savedFilePath: res.tempFilePaths[0],
+            isUploadPic: true
+          })
+        }
+      })
+    }else{
+      wx.showToast({
+        title: '请选择失物类型',
+        icon:'none',
+      })
+    } 
   },
   /**
    * 提交用户填写的失物数据
@@ -336,6 +344,7 @@ Page({
         formData:{
           height:that.data.ImgHeight,
           width:that.data.ImgWidth,
+          category:that.data.category,
           openid:app.globalData.openid
         },
         method:"POST",

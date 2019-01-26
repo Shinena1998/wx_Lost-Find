@@ -32,6 +32,7 @@ public class SchedulerService {
     private final String PATHPREFIX = "https://yuigahama.xyz/img/";//数据库存储图片域名路径，
 
     /**
+     * 1 ,2 ,3按顺序执行
      * 一个事件会在一个月内自动过期。
      */
     @Scheduled(cron = "0 0 0 * * ?")
@@ -68,7 +69,7 @@ public class SchedulerService {
         long timestamps = (new Date().getTime())/1000;
         for (int i = 0; i < infoMysqlList.size(); i++) {
             if (timestamps - infoMysqlList.get(i).getTimestamps() > 60 * 60 * 24 * 3) {
-                infoMysqlList.get(i).setaBoolean(false);
+                infoMysqlList.get(i).setValuable(false);
                 infoRepository.save(infoMysqlList.get(i));
             }
         }
@@ -112,28 +113,45 @@ public class SchedulerService {
     /**
      * 防止redis内存与数据库数据不一致，每天2点更新数据
      * 每天2点核对一次
+     * infoN 普通物品
+     * infoV 贵重物品
      */
     @Scheduled(fixedDelay = 86400000)
     public void checkRedis(){
-        List<InfoMysql> infoMysqlList = infoRepository.getinfo();
-        redisTemplate.delete("infoN");
-        redisTemplate.opsForList().rightPushAll("infoN",infoMysqlList);
+        List<InfoMysql> info = infoRepository.getinfo();
+        List<InfoMysql> infoValuable = infoRepository.getValuableinfo();
+        if(info.size() > 0) {
+            if (redisTemplate.hasKey("infoN")) {
+                redisTemplate.delete("infoN");
+                redisTemplate.opsForList().rightPushAll("infoN", info);
+            } else {
+                redisTemplate.opsForList().rightPushAll("infoN", info);
+            }
+        }
+        if(infoValuable.size() > 0) {
+            if (redisTemplate.hasKey("infoV")) {
+                redisTemplate.delete("infoV");
+                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
+            } else {
+                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
+            }
+        }
     }
     /**
      * 获取ocr access_token
      */
-    @Scheduled(fixedDelay = 864000000)
-    public void updataOcrToken(){
-        String url="https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=5wS49QStKVHBDLMRQSkGhH5b&client_secret=4oAk4IImFiDd40oOILew0GWMAfG83CM9";
-        JSONObject jsonObject = restTemplate.postForEntity(url,null, JSONObject.class).getBody();
-        System.out.println(jsonObject);
-        if(stringRedisTemplate.hasKey("OcrToken")){
-            stringRedisTemplate.delete("OcrToken");
-            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
-        }else {
-            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
-        }
-    }
+//    @Scheduled(fixedDelay = 864000000)
+//    public void updataOcrToken(){
+//        String url="https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=5wS49QStKVHBDLMRQSkGhH5b&client_secret=4oAk4IImFiDd40oOILew0GWMAfG83CM9";
+//        JSONObject jsonObject = restTemplate.postForEntity(url,null, JSONObject.class).getBody();
+//        System.out.println(jsonObject);
+//        if(stringRedisTemplate.hasKey("OcrToken")){
+//            stringRedisTemplate.delete("OcrToken");
+//            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
+//        }else {
+//            stringRedisTemplate.opsForValue().set("OcrToken",jsonObject.getString("access_token"));
+//        }
+//    }
 
 //    @Scheduled(fixedDelay = 5000)
 //    public void getOcrInfo(){

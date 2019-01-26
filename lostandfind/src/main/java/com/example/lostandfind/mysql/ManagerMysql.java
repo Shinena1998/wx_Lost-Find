@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Repository
-
 public class ManagerMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

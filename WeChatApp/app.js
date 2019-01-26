@@ -67,7 +67,7 @@ App({
     })
   },
   globalData: {
-    domain:"https://api.yuigahama.xyz",
+    domain:"http://localhost:8080",
     isChangeInfo:false,
     session_key:'',
     userInfo: null,

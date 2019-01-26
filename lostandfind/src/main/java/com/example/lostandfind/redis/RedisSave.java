@@ -14,6 +14,7 @@ public class RedisSave {
 //    private RedisTemplate<String,InfoMysql> redisTemplate;
 
     final static int length = 200;
+    //向Redis添加普通物品
     public String saveInfo(InfoMysql infoMysql,boolean haskey ,RedisTemplate<String,InfoMysql> redisTemplate){
         /**
          * 因为需要一中key value型的数据类型来存储数据，
@@ -33,58 +34,24 @@ public class RedisSave {
 //        redisTemplate.opsForValue().set(infoMysql.getId().toString(),infoMysql, Duration.ofDays(3));
         return "添加成功";
     }
-
-
-    public List<InfoMysql> getInfo(RedisTemplate<String,InfoMysql> redisTemplate){
-        List<InfoMysql> infoMysqlList;
-        infoMysqlList = redisTemplate.opsForList().range("infoN",0,-1);
-//        Iterator<InfoMysql> it = infoMysqlList.iterator();
-//        while (it.hasNext()){
-//            InfoMysql infoMysql = it.next();
-//            if(infoMysql.isaBoolean()){
-//                infoMysqlList.remove(infoMysql);
-//            }
-//        }
-//        if (infoMysqlList != null){
-//            for (InfoMysql infoMysql:infoMysqlList1) {
-//                if(infoMysql.isaBoolean()){
-//                    infoMysqlList.remove(infoMysql);
-//                }
-//            }
-//        }
-        for (int i = infoMysqlList.size()-1; i >= 0; i--) {
-            if (infoMysqlList.get(i).isaBoolean()){
-                infoMysqlList.remove(i);
-            }
-        }
-        return infoMysqlList;
+    //向Redis添加贵重物品
+    public String saveValuableInfo(InfoMysql infoMysql,RedisTemplate<String,InfoMysql> redisTemplate){
+        /**
+         * 因为需要一中key value型的数据类型来存储数据，
+         */
+         redisTemplate.opsForList().rightPush("infoV",infoMysql);
+//        redisTemplate.opsForValue().set(infoMysql.getId().toString(),infoMysql, Duration.ofDays(3));
+        return "添加成功";
     }
+
+    //从Redis获取普通物品
+    public List<InfoMysql> getInfo(RedisTemplate<String,InfoMysql> redisTemplate){
+        return redisTemplate.opsForList().range("infoN",0,-1);
+
+    }
+    //从Redis获取贵重物品
     public List<InfoMysql> getValuableInfo(RedisTemplate<String,InfoMysql> redisTemplate){
-        List<InfoMysql> infoMysqlList;
-        infoMysqlList = redisTemplate.opsForList().range("infoN",0,-1);
-//        Iterator<InfoMysql> it = infoMysqlList.iterator();
-//        while (it.hasNext()){
-//            InfoMysql infoMysql = it.next();
-//            if(!infoMysql.isaBoolean()){
-//                infoMysqlList.remove(infoMysql);
-//            }
-//        }
-//        if (infoMysqlList != null){
-//            for (InfoMysql infoMysql:infoMysqlList1) {
-//                if(!infoMysql.isaBoolean()){
-//
-//                    System.out.println(infoMysql.isaBoolean());
-//                    infoMysqlList.remove(infoMysql);
-//                }
-//            }
-//        }
-        for (int i = infoMysqlList.size()-1; i >= 0; i--) {
-            if (infoMysqlList.get(i).isaBoolean() == false){
-                infoMysqlList.remove(i);
-            }
-        }
-        System.out.println(infoMysqlList.size());
-        return infoMysqlList;
+        return redisTemplate.opsForList().range("infoV",0,-1);
     }
     public void token(RedisTemplate redisTemplate,String openid,String token){
         if(redisTemplate.hasKey(openid)){

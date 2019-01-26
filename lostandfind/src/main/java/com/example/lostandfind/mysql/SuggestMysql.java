@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 @Repository
 public class SuggestMysql {
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
