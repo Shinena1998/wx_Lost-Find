@@ -1,5 +1,4 @@
 
-<view class='title'>{{title}}</view>
 <scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation' wx:if="{{showInfo}}" >
 <view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
 <view class='OneInfo'>
@@ -43,9 +42,32 @@ style="background-image: url({{imgList[index]}})">
 <text class='helpText'>3.如果您丢失了电脑，手机登贵重物品，可发布贵重物品，进入发布信息界面后，点击添加图片右边的红色叹号，即可标记为贵重物品，但须管理员审核通过，审核通过后贵重物品优先显示，并且无视分类，3天后自动降级为普通物品，审核不通过则直接降级为普通物品。</text>
 <text class='helpText'>4.详细物品界面发布者看到自己发布的信息，下边显示结束信息，其他用户显示通知拾主。通知拾主（拾主也就是信息发布者）是用来失主找到失物后，提醒发布者结束信息。</text>
 <text class='helpText'>5.信息搜索中的时间范围搜索是根据用户填写的丢失时间搜索，而不是根据发布信息者的发布时间搜索。</text></view>
+
+</view>
+
+<view class="aboutMeView" wx:if="{{showLAF}}" >
 <view class="info">
 <text style='font-size:150%;text-align:center;color:green'>本人团队介绍</text>
 <text >作者:由比滨结衣</text>
-<view class='explain'></view>
+<view>QQ:1251632747</view>
+<view>github:Shinena1998</view>
+<view class='wx'>微信:<image class="wxcode" src='/pages/img/WeChatCode.png'></image></view>
+<view class='explain'>说明：本项目是团子团队所做，由于本团队所有人所学有限，故该app在前端ui和后端效率上都有严重不足，所以请各位用户积极献出宝贵的建议，您的建议就是我们进步的源泉。并且该项目已在本团队的github上开源，大牛可以自行二次开发，然后通知本团队，本团队会进行相应更新，并附上您的大名。本产品致力于服务广大学生，再加上本团队实力太弱，请看了源码的大牛不要攻击本产品，如有漏洞，请及时指出，万分感谢！</view>
 </view>
 </view>
+
+<scroll-view  scroll-y="true" style='background-color:white;height:95%' wx:if="{{showComment}}" >
+  <view wx:for="{{comment}}" wx:for-item="comment" data-index='{{index}}' wx:key="*this" class='commentView' bindtap='comeIntoInfo' >
+    <image class='commentImg' src='{{comment.userInfo.avatarUrl}}'></image>
+    <view class="commentWord">
+      <view class="commentNT">
+        <text style='font-size:80%;color:#999999'>{{comment.userInfo.nickName}}</text>
+        <text style='font-size:80%;color:#999999'>{{comment.commentInfo.time}}</text>
+      </view>
+      <text style='margin-bottom:2%;display: flex;'>
+        <text style='color:rgb(143, 202, 54)'>{{comment.commentInfo.toName}}</text>
+        <text>{{comment.commentInfo.content}}</text>
+      </text>
+    </view>
+  </view>
+</scroll-view>

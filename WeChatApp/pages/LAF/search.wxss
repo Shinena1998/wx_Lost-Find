@@ -1,6 +1,5 @@
 /* pages/LAF/search.wxss */
 page{
-  background-color:  whitesmoke;
   height:100%;
   width: 100%;
   /* border: 1px solid red; */
@@ -14,7 +13,7 @@ border: none;
   display: flex;
   padding-top: 3%;
   justify-content: space-between;
-  background-color: #00ffff
+  background-color: #69c0ff;
   /* border: 1px solid red */
 }
 .top_search{
@@ -33,7 +32,7 @@ border: none;
   align-items: center;
 }
 .top_left{
-  height: 100%;
+  height: 97%;
   width: 10%;
 }
 .top_middle{
@@ -51,7 +50,7 @@ border: none;
 }
 .top_right{
   width: 10%;
-  height: 100%;
+  height: 98%;
 }
 .top_searchText{
   width: 80%;
@@ -117,7 +116,7 @@ border: none;
 .searchType{
   width: 100%;
   height: 8%;
-  background-color: #00ffff;
+  background-color: #69c0ff;
   padding-top: 1%;
   display: flex;
   justify-content: space-around;
@@ -158,29 +157,28 @@ border: none;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 .labelFor{
   height: 15%;
   text-align: center;
-  margin-top: 5%;
-  margin-right: 5%;
-
+  margin-top: 3%;
+  margin-right: 3%;
 }
 .label_left{
   width: 40rpx;
   border-top-left-radius: 50%;
   border-bottom-left-radius: 50%;
-  background-color: #ffffff;
+  background-color: #f5f5f5;
 }
 .label_middle{
-  background-color: white;
+  background-color: #f5f5f5;
   font-size: 80%;
-  color: rgb(112, 110, 110);
+  color: #595959;
 }
 .label_right{
   width: 40rpx;
-  background-color: white;
+  background-color: #f5f5f5;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
 }
@@ -194,7 +192,7 @@ border: none;
   height: 4%;
   margin-top: 5%;
   font-size: 80%;
-  color: blue;
+  color: black;
   /* border: 1px solid red; */
   display: flex;
   justify-content: space-between;

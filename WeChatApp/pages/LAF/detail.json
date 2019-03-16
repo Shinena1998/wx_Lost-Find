@@ -1,1 +1,6 @@
-{}
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#69c0ff",
+  "navigationBarTitleText": "详细信息",
+  "navigationBarTextStyle": "white"
+}

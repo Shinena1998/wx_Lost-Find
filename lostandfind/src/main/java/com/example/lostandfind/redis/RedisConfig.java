@@ -70,8 +70,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         return template;
     }
     public class Receiver {
-
-
         private CountDownLatch latch;
 
         @Autowired

@@ -45,6 +45,15 @@ App({
                 console.log(res.data)
                 that.globalData.openid = res.data.openid;
                 that.globalData.session_key = res.data.session_key;
+                wx.request({
+                  url: that.globalData.domain + '/openid1/' + that.globalData.openid,
+                  method: 'GET',
+                  header: that.globalData.header,
+                  success: function (res) {
+                    console.log(res.data)
+                    that.globalData.userinfo = res.data[0];
+                  }
+                })
                 /**
                 * 判断用户是否为管理员
                 */
@@ -54,6 +63,7 @@ App({
                   header: that.globalData.header,
                   success: function (res) {
                     console.log(res.data)
+                    that.globalData.finish = true;
                     if (res.data) {
                       that.globalData.isManager = res.data;
                     }
@@ -68,21 +78,28 @@ App({
   },
   globalData: {
     domain:"http://localhost:8080",
+    // domain:'https://api.yuigahama.xyz',
+    finish:false,
     isChangeInfo:false,
     session_key:'',
     userInfo: null,
+    userinfo:null,
     openid:null,
     power:null,
-    info:[],
-    valuable:[],
+    info:[],//一般物品信息
+    valuable:[],//贵重物品
+    school:false,//校园用户
+    normal:false,//普通用户
+    customer:false,//游客
+    comment:null,//评论
     imgList:[],
     checked:null,
     isManager:false,
     infoLostCss: { time: "丢失时间", place: "丢失地点" },
     infoFindCss: { time: "拾取时间", place: "拾取地点" },
-    category:[],
+    category:[],//物品显示类型
     header:{
-      'token':'',
+      'token':null,
       'sessionId':'',
       "content-type": "application/json",
     }

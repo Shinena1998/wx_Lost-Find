@@ -1,43 +1,79 @@
-<view class="title">
-<view class='title_text'><text>详细信息</text></view>
-</view>
+
 <scroll-view scroll-y="true" class="InfoView">
 <view class="info_c">
-<text style='font-size:150%;'>{{detailInfo.theme}}</text>
-<text class='category'>{{detailInfo.category}}</text></view>
-
+  <text style='font-size:150%;'>{{detailInfo.theme}}</text>
+  <text class='category'>{{detailInfo.category}}</text>
+</view>
 <view class="timeView">
-<text class="time">{{detailInfo.time}}</text>
-<text class="time">{{isHasFind}}</text></view>
+  <text class="time">{{detailInfo.time}}</text>
+  <text class="time">{{isHasFind}}</text>
+</view>
 
 <view class='place'>
-<text>{{detailInfo.place}}</text></view>
+  <text>{{detailInfo.place}}</text>
+</view>
 <view class='text'>
-<text >{{detailInfo.infomation}}</text></view>
-
-
-<image style='height:{{imgHeight}}rpx;width:{{imgWidth}}rpx' src = "{{detailInfo.picPath}}"></image>
-
-<view class="content"><view class='contentWay'>
-<image style='height:90%;width:20%;margin-left:3%' src='{{contactWay}}'></image>
-<text style='margin-left:5%;'>{{contact}}</text></view>
-<view class='label_css' bindtap='copy'>
-<view class='label_left'></view>
-<view class='label_middle'>一键复制</view>
-<view class='label_right'></view>
+  <text >{{detailInfo.infomation}}</text>
 </view>
-</view>
+<image style='height:{{imgHeight}}px;width:{{imgWidth}}px' src = "{{detailInfo.picPath}}"></image>
 
+<view class="content">
+  <view class='contentWay'>
+    <image style='height:90%;width:20%;margin-left:3%' src='{{contactWay}}'></image>
+    <text style='margin-left:5%;'>{{contact}}</text>
+  </view>
+  <view class='label_css' bindtap='copy'>
+    <view class='label_left'></view>
+    <view class='label_middle'>一键复制</view>
+    <view class='label_right'></view>
+  </view>
+</view>
+<view >
+  <block wx:if="{{showTabar}}">
+  <view>
+    <text style='font-size:80%;' space='true'>评论 </text>
+    <text style='font-size:70%;color:#999999'>{{commentNum}}</text>
+  </view>
+  <view wx:for="{{comment}}" wx:for-item="comment" data-index='{{index}}' wx:key="*this" class='commentView'>
+    <image class='commentImg' src='{{comment.userInfo.avatarUrl}}'></image>
+    <view class="commentWord">
+      <view class="commentNT">
+        <text style='font-size:80%;'>{{comment.userInfo.nickName}}</text>
+        <text style='font-size:80%;color:#999999'>{{comment.commentInfo.time}}</text>
+      </view>
+      <text style='margin-bottom:2%;display: flex;'>
+        <text style='color:rgb(143, 202, 54)'>{{comment.commentInfo.toName}}</text>
+        <text>{{comment.commentInfo.content}}</text>
+      </text>
+      <view class='menuView'>
+        <view class="menuLeft" bindtap='reply' id='{{index}}'>
+        <text style='font-size:80%;color:#999999'>@他</text>
+        </view> 
+        <view class="menuRight" bindtap='openMenu' id='{{index}}'>
+        <image class='commentMenu' src='/pages/img/menu.png'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  </block>
+</view>
 </scroll-view> 
+<block wx:if="{{showTabar}}">
+<view class='top' style='position: absolute; bottom:{{input_bottom}}'>
+<view class='top_search'>
+<view class='top_sh_left'><image src='/pages/img/comment.png' style= 'padding-left:40%;height:50%;width:50%;'></image></view>
+<input type="text" class="top_searchText" placeholder='{{placeHolder}}' confirm-type="send" bindconfirm="sendComment"  adjust-position='{{false}}' placeholder-class='top_searchTextPlaceholder' focus='{{inputUp}}' cursor-spacing='5'  bindblur='inputDown' value='{{inputInit}}'></input>
+<view class='top_sh_right'></view>
+</view>
+</view>
 
-<view>
-<view wx:if="{{confirm}}">
+<block wx:if="{{confirm}}">
 <view class='finishView'>
 <view class='finish_button_view' bindtap='back'><image class="finishImg" src="/pages/img/return.png"></image>返回</view>
 <view class='finish_button_view' bindtap='finish'><image class="finishImg" src="/pages/img/finish.png"></image>结束信息</view>
 <button class="finishButton" open-type='share'><image class="shareImg" src="/pages/img/share.png"></image>转发给好友</button>
 </view>
-</view>
+</block>
 
 <block wx:else>
 <view class='finishView' >
@@ -46,8 +82,7 @@
 <button class="finishButton" open-type='share'><image class="shareImg" src="/pages/img/share.png"></image>转发给好友</button>
 </view>
 </block>
-</view>
-
+</block>
 
 <!-- <view>
 <view wx:if="{{confirm}}">
@@ -74,7 +109,7 @@
 <view class="modal-dialog" wx:if="{{showModal}}">
 <view class="modal-title"><text>失主留言</text></view>
 
-  <view class='modal-content'><input auto-focus='true' bindblur='message' placeholder='留下你想说的...(小程序bug未生效)'></input></view>
+  <view class='modal-content'><input auto-focus='true' bindblur='message' placeholder='留个言呗'></input></view>
   <view class="modal-footer">
     <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
     <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
@@ -82,5 +117,25 @@
     <form bindsubmit="get_access_token" report-submit='true' class='btn-confirm'>
     <button type="primary" plain='true' form-type="submit">确定</button>
     </form>
+  </view>
+</view>
+
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showMenu}}"  bindtap='closeMenu' id="{{upingMenu}}"></view>
+<view class='menuComtant' animation="{{deleteUp}}" >
+  <view class="deleteMenu" bindtap='deleteComment'>
+    <image style='height:60%;width:8%;' src='/pages/img/delete.png'></image>
+    <text style='font-size:120%;margin-left:2%'>删除</text>
+  </view>
+  <view class="cancelMenu" id="0" bindtap='closeMenu'>
+    <text>取消</text>
+  </view>
+</view>
+<view class='menuComtant' animation="{{reportUp}}" >
+  <view class="deleteMenu" bindtap='deleteComment' >
+    <image style='height:60%;width:8%;' src='/pages/img/report.png'></image>
+    <text style='font-size:120%;margin-left:2%'>举报</text>
+  </view>
+  <view class="cancelMenu" id="1" bindtap='closeMenu'>
+    <text>取消</text>
   </view>
 </view>

@@ -16,10 +16,11 @@ import java.io.InputStream;
 
 @Service
 public class Template {
-//   final static String imgUrl = "/root/html/img";
-    final static String imgUrl = "/Users/zhangcong/WeChatApp/pages/img/";
+    final static String imgUrl = "/root/html/img";
+//    final static String imgUrl = "/Users/zhangcong/WeChatApp/pages/img/";
     @Autowired(required = true)
     private RestTemplateConfig restTemplateConfig;
+    //构造模板信息JSON
     public JSONObject makeTemplateData(String[] infos,String openid ,String formId){
         JSONObject data = new JSONObject();
         int j = 0;
@@ -36,6 +37,7 @@ public class Template {
         jsonObject.put("data",data);
         return jsonObject;
     }
+    //百度ocr识别图片
     public HttpEntity<MultiValueMap<String, String>> getOcrInfo(String imgName){
         byte[] data = null;
         InputStream in = null;
@@ -57,6 +59,7 @@ public class Template {
         HttpEntity<MultiValueMap<String, String>> r = new HttpEntity<>(postParameters, headers);
         return r;
     }
+    //识别ocr返回的字符
     public String processCroInfo(JSONObject jsonObject){
 //        System.out.println(jsonObject);
         JSONArray jsonArray = jsonObject.getJSONArray("words_result");
@@ -83,9 +86,5 @@ public class Template {
             }
         }
         return sb2.toString();
-    }
-    public void asd(){
-//        System.out.println("asd"+restTemplateConfig);
-//        System.out.println(restTemplateConfig.restTemplate(restTemplateConfig.simpleClientHttpRequestFactory()));
     }
 }

@@ -1,1 +1,7 @@
-{}
+{
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#69c0ff",
+    "navigationBarTitleText": "信息圈",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh ": true
+}

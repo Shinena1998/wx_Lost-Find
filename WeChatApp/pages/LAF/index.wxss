@@ -1,42 +1,107 @@
 /**index.wxss**/
 page{
-  background-color: whitesmoke;
   height: 75%;
-  width: 96%;
-  margin-top: 5%;
+  width: 100%;
+  margin-top: 3%;
   margin-bottom: 20%;
-  margin-left: 2%;
-  margin-right: 2%;
-
 }
 .userinfo {
+  width: 96%;
+  padding-left: 2%;
+  padding-right: 2%;
+  background-color: white;
   display: flex;
-  height: 40%;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 5%;
+  height: 12%;
+  flex-direction: row;
   /* border: 1rpx solid;
   border-color: red; */
   background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
 }
-.remind{
-  height: 7%;
-  width: 100%;
-  display: flex;
-  margin-top: 3%;
-  justify-content: space-between;
+.avatarView{
+  height:100rpx;
+  width:120rpx;
+  display:flex;
 }
 .userinfo-avatar {
-  width: 180rpx;
-  height: 180rpx;
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
 }
+.notice{
+  height:20rpx;
+  width:20rpx;
+  background-color:rgb(255, 35, 71);
+  border-radius: 50%;
+}
+.Write_userinfo{
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  font-size: 60%;
+  color: black;
+}
+.userinfo_view{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 2%;
+  width:40%;
+  height: 100%;
+}
 .userinfo-nickname {
-  color:rgb(112, 110, 110);
+  font-size: 80%;
+}
+.userinfo_right{
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.userinfo_right_column{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.userinfo_level{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 70%;
+  color: green;
+}
+.userinfo_time{
+  font-size: 70%;
+}
+.infoImage{
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid red; */
+}
+.thingInfo{
+  margin-top: 3%;
+  width: 96%;
+  height: 30%;
+  margin-left: 2%;
+  margin-right: 2%;
+  background-color: white;
+  /* border: 1px solid red; */
+}
+.remind{
+  background-color: white;
+  height: 10%;
+  width: 96%;
+  display: flex;
+  margin-top: 3%;
+  padding-left: 2%;
+  padding-right: 2%;
+  justify-content: space-between;
 }
 .top{
   height: 8%;
-  width: 100%;
+  width: 96%;
+  padding-left: 2%;
+  padding-right: 2%;
   display: flex;
   margin-top: 3%;
   justify-content: space-between;
@@ -69,14 +134,6 @@ page{
   align-items: center;
   /* border: 1px solid #000; */
 }
-.top_sh_middle{
-  height: 100%;
-  width: 15%;
-  color: black;
-  font-size: 55%;
-  border-radius: 50%;
-  background-color: rgb(255, 72, 0)
-}
 .top_sh_right{
   width: 10%;
   background-color: white;
@@ -102,72 +159,109 @@ page{
 }
 .info{
   width: 100%;
-  height: 20%;
+  height: 50%;
+  margin-top: 3%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   /* border: 1px solid #000; */
 }
    
-.sreachInfo{
-  height:100%;
-  width:50%;
-  background-color: white;
+.evaluateInfo{
+  height:18%;
+  width:89%;
   display:flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 5%;
-}
-.makeInfo{
-  height:100%;
-  width:50%;
+  padding-left: 11%;
+  font-size: 80%;
   background-color: white;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  border-left: 1px solid #ddd;
-  border-radius: 5%;
+  /* border: 1px solid red; */
 }
-.infoImg1{
-  height: 70%;
+.evaluate{
+  height:20%;
+  width:96%;
+  padding-left: 2%;
+  padding-right: 2%;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+.evaluateView{
+  height: 100%;
   width: 30%;
-  /* margin-right: 5%; */
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  /* border: 1px solid red; */
 } 
-.infoImg2{
+.evaluateImage{
+  height: 80%;
+  width: 25%;
+  margin-right: 5%;
+  /* border: 1px solid red; */
+} 
+.evaluate_word{
+  width: 50%;
+  font-size: 100%;
+  /* border: 1px solid red; */
+}
+.close_image{
+  height: 90%;
+  width: 25%;
+}
+.evaluate_remind{
   height: 60%;
-  width: 30%;
-  /* margin-right: 5%; */
-} 
-.infoText{
+  width: 7%;
+  /* border: 1px solid red; */
+}
+.evaluateLevel{
+  width: 50%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+}
+.word{
+  width: 30%;
+}
+.star{
+  width: 20%;
+  height: 70%;
+}
+.advice{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 60%;
+  background-color: white;
+  color: rgb(151, 151, 151);
 }
 .show-btn {
   margin-top: 100rpx;
   color: #22cc22;
 }
-.help{
-  width: 100%;
-  height: 20%;
-  /* border: 1px solid #000; */
-  margin-top: 7%;
-  display: flex;
-}
-.help_text{
-  font-size:70%;
-  width:90%;
-  color: rgb(112, 110, 110);
-  /* border: 1px solid #000; */
-  margin-top: 2%;
-  margin-left: 2%;
-}
 .author{
   width: 100%;
   height: 5%;
-  margin-top: 5%;
+  margin-top: 2%;
   /* border: 1px solid #000; */
   display: flex;
   justify-content: center;
   align-items: center
+}
+.pingjiaView{
+  margin-top: 3%;
+  height:50%;
+  width: 100%;
+}
+.pingjia{
+  height:20%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .modal-mask {
   width: 100%;
@@ -218,16 +312,7 @@ page{
 }
 
 
-.input {
-  width: 80%;
-  height: 82rpx;
-  font-size: 28rpx;
-  line-height: 28rpx;
-  padding: 0 20rpx;
-  box-sizing: border-box;
-  color: #333;
-  border-radius: 16rpx;
-}
+
 
 input-holder {
   color: #666;
@@ -242,7 +327,6 @@ input-holder {
   line-height: 86rpx;
   font-size: 80%
 }
-
 .btn-cancel {
   width: 50%;
   color: #666;
@@ -251,19 +335,147 @@ input-holder {
   border-radius: 10rpx;
   font-size: 80%
 }
-
 .btn-confirm {
   width: 50%;
   border-radius:10rpx;
   font-size: 80%
 }
 
-.modal-image {
-  width: 100%;
-  height: 100%;
+.modalDialog {
+  width: 80%;
+  height: 60%;
   overflow: hidden;
   position: fixed;
-  z-index:9999;
-  top: 0%;
-  left: 0%; 
+  top: 10%;
+  left: 10%; 
+  z-index: 9998;
+  background: white;
+  border-radius: 16rpx;
+}
+.modalTitle {
+  margin-top: 3%;
+  height: 7%;
+  color: #030303;
+  text-align: center;
+}
+.comtentView{
+  height:75%;
+  width:100%;
+}
+.modalComtent{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+  /* border: 1px solid red; */
+}
+.input {
+  height: 50%;
+  font-size: 60%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  color: #333;
+  border-radius: 16rpx;
+  border: 1px solid #999999;
+}
+.modalFooter{
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  width: 100%;
+  /* border: 1px solid red; */
+  border-top: 1px solid #dedede;
+  font-size: 80%
+}
+.btnCancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  color: rgb(5, 5, 5);
+  border-right: 1px solid #dedede;
+  font-size: 100%
+}
+
+
+
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border-radius: 5%;
+  border: 1px solid;
+  border-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%;
+  background-size: 60%;
+  /*图片不填充背景*/
+  background-repeat:no-repeat;
+  /*图片位置偏移量*/
+  background-position: 100% 0%;
+  /* transform: rotate(30deg); 旋转 */
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  color: red;
+  /* border: 1px solid red; */
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.infoPlace{
+  height: 44%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.infoTime{
+  height: 14%;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 50%;
 }

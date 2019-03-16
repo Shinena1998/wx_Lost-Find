@@ -11,11 +11,43 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#00FFFF",
+    "navigationBarBackgroundColor": "#69c0ff",
     "navigationBarTitleText": "失物招领",
     "navigationBarTextStyle":"white"
   },
   "networkTimeout": {
     "request": 3000
-  }
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#69c0ff",
+    "position":"bottom",
+    "list": [
+      {
+        "pagePath": "pages/LAF/index",
+        "text": "首页",
+        "iconPath":"/pages/img/first.png",
+        "selectedIconPath":"/pages/img/firsting.png"
+      },
+      {
+        "pagePath": "pages/LAF/service",
+        "text": "信息圈",
+        "iconPath": "/pages/img/info.png",
+        "selectedIconPath": "/pages/img/infoing.png"
+      },
+      {
+        "pagePath": "pages/LAF/upload",
+        "text": "发布信息",
+        "iconPath": "/pages/img/writer.png",
+        "selectedIconPath": "/pages/img/writing.png"
+      },
+      {
+        "pagePath": "pages/LAF/user",
+        "text": "个人主页",
+        "iconPath": "/pages/img/person.png",
+        "selectedIconPath": "/pages/img/personing.png"
+      }
+    ]
+  },
+  "resizable": true
 }

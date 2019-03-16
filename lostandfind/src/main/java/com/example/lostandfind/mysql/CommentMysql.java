@@ -1,19 +1,20 @@
 package com.example.lostandfind.mysql;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Repository
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
+@NamedEntityGraph(name="comment.all",attributeNodes={@NamedAttributeNode("user"),@NamedAttributeNode("info")})
 public class CommentMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer infoId;
     private String content;
     private String time;
     private String uid;
@@ -21,6 +22,41 @@ public class CommentMysql {
     private String toName;
     private boolean view;
     private boolean toView;
+    private String identity;
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.MERGE},fetch = FetchType.LAZY)
+    @JoinColumn(name="user_num")
+    private UserMysql user;
+
+    @JsonIgnore
+    @ManyToOne(cascade = {CascadeType.MERGE},fetch = FetchType.LAZY)
+    @JoinColumn(name="info_id")
+    private InfoMysql info;
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
+    }
+
+    public InfoMysql getInfo() {
+        return info;
+    }
+
+    public void setInfo(InfoMysql info) {
+        this.info = info;
+    }
+
+    public UserMysql getUser() {
+        return user;
+    }
+
+    public void setUser(UserMysql user) {
+        this.user = user;
+    }
 
     public boolean isView() {
         return view;
@@ -44,14 +80,6 @@ public class CommentMysql {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getInfoId() {
-        return infoId;
-    }
-
-    public void setInfoId(Integer infoId) {
-        this.infoId = infoId;
     }
 
     public String getContent() {

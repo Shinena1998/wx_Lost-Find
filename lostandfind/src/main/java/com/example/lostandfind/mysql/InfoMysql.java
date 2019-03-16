@@ -1,5 +1,10 @@
 package com.example.lostandfind.mysql;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.io.SerializedString;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -8,6 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.lang.invoke.SerializedLambda;
+import java.util.List;
+
 @Repository
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -21,8 +29,9 @@ import javax.validation.constraints.NotNull;
                 @NamedQuery(name="InfoMysql.findByInfoInfomation",
                         query = "select o from InfoMysql o")
         })
-
-public class InfoMysql implements Comparable<InfoMysql>{
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
+@NamedEntityGraph(name="info.all",attributeNodes={@NamedAttributeNode("user"),@NamedAttributeNode("commentMysqlList")})
+public class InfoMysql{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -78,6 +87,29 @@ public class InfoMysql implements Comparable<InfoMysql>{
 
     //
     private String formId;
+
+    @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_num")
+    private UserMysql user;
+
+
+    @OneToMany(mappedBy = "info",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private List<CommentMysql> commentMysqlList;
+
+    public List<CommentMysql> getCommentMysqlList() {
+        return commentMysqlList;
+    }
+
+    public void setCommentMysqlList(List<CommentMysql> commentMysqlList) {
+        this.commentMysqlList = commentMysqlList;
+    }
+
+    public UserMysql getUser() {
+        return user;
+    }
+    public void setUser(UserMysql user) {
+        this.user = user;
+    }
 
     public String getFormId() {
         return formId;
@@ -223,11 +255,8 @@ public class InfoMysql implements Comparable<InfoMysql>{
         this.loststamp = loststamp;
     }
 
-    @Override
-    public int compareTo(InfoMysql o) {
-        //降序
-        //return o.age - this.age;
-        //升序
-        return (int)this.loststamp - (int)o.loststamp;
-    }
+//    @Override
+//    public String toString() {
+//        return "{category:+"+this.category+"}";
+//    }
 }

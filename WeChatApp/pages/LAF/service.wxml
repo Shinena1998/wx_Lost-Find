@@ -1,34 +1,32 @@
-<view class="top">
-<text>信息一览</text>
-</view>
 
-<scroll-view  scroll-x="true">
+
 <view class="label">
-<view ><button size='mini' plain='true' id='0' type='{{type[0]}}' bindtap='category'>证件类</button></view>
-<view><button size='mini' plain='true' id='1' type='{{type[1]}}' bindtap='category'>学习类</button></view>
-<view><button size='mini' plain='true' id='2' type='{{type[2]}}' bindtap='category'>电子类</button></view>
-<view><button size='mini' plain='true' id='3' type='{{type[3]}}' bindtap='category'>生活类</button></view>
+<view><view id='0' type='{{type[0]}}' bindtap='category' style='font-size:100%;color:{{fontColor[0]}};border-bottom:{{borderB[0]}}'>证件</view></view>
+<view><view id='1' type='{{type[1]}}' bindtap='category' style='font-size:100%;color:{{fontColor[1]}};border-bottom:{{borderB[1]}}'>学习</view></view>
+<view><view id='2' type='{{type[2]}}' bindtap='category' style='font-size:100%;color:{{fontColor[2]}};border-bottom:{{borderB[2]}}'>电子</view></view>
+<view><view id='3' type='{{type[3]}}' bindtap='category' style='font-size:100%;color:{{fontColor[3]}};border-bottom:{{borderB[3]}}'>生活</view></view>
 </view>
-</scroll-view>
 
-<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation'>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation' bindscrolltoupper="refresh">
 <view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
-<view class='OneInfo'>
-<view class="infoImgView">
-<image class="infoImg" src = "{{goods.picPath}}"></image>
-</view>
-<view  class="infoText" 
-style="background-image: url({{imgList[index]}})">
-<view class = "infoThemeView" >
-<view class='infoThemeRemindView'>
-<view class='infoKind'><image style="height:80%;width:8%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
-</view>
-<view class='infoTheme'><image style="height:80%;width:8%;margin-right:2%;margin-left:1%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
-</view>
-<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
-<text style="width:100%">{{goods.place}}</text></view>
-<view class="infoTime"><image style="height:110%;width:8%;margin-right:2%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
-</view>
-</view>
+  <view class='OneInfo'>
+    <image class="userImg"  src="{{goods.user.avatarUrl}}" background-size="cover"></image>
+    <view class="userinfo_view">
+        <text class="userinfo-nickname">{{goods.user.nickName}}</text>
+        <view class="Write_userinfo" bindtap='Write_userinfo'><text>{{goods.time}}</text>
+        </view>
+    </view>
+  </view>
+  <view style='margin-left:70rpx;'><text style='margin-right:5%;color:#91d5ff'>#{{goods.kind}}#</text><text>{{goods.infomation}}</text>
+  </view>
+  <block wx:if="{{showImg[index]}}">
+    <image class='infoImg' src="{{goods.picPath}}" lazy-load="true" mode="aspectFill" ></image>
+  </block>
+  <view class="infoPlace">
+    <view class="placeInfo"><image style="height:80%;width:30rpx;"src='/pages/img/place.png'></image><text class="placeWord">{{goods.place}}</text>
+    </view>
+    <view class="commentInfo"><image style="height:80%;width:30rpx;"src='/pages/img/comment.png'></image><text style="margin-left:10rpx;color:#999999">{{goods.commentMysqlList.length}}</text>
+    </view>
+  </view>
 </view>
 </scroll-view>

@@ -10,8 +10,8 @@ import java.util.List;
 
 @Service
 public class RedisSave {
-//    @Autowired 注入失败
-//    private RedisTemplate<String,InfoMysql> redisTemplate;
+    @Autowired
+    private RedisTemplate<String,InfoMysql> redisTemplate;
 
     final static int length = 200;
     //向Redis添加普通物品
@@ -35,7 +35,7 @@ public class RedisSave {
         return "添加成功";
     }
     //向Redis添加贵重物品
-    public String saveValuableInfo(InfoMysql infoMysql,RedisTemplate<String,InfoMysql> redisTemplate){
+    public String saveValuableInfo(InfoMysql infoMysql, RedisTemplate<String,InfoMysql> redisTemplate){
         /**
          * 因为需要一中key value型的数据类型来存储数据，
          */

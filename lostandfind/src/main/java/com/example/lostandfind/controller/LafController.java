@@ -1,23 +1,25 @@
 package com.example.lostandfind.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.repository.*;
 import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mapper.InfoMapper;
 import com.example.lostandfind.mysql.*;
-import com.example.lostandfind.redis.RedisSave;
 import com.example.lostandfind.service.*;
 import com.example.lostandfind.utils.ChangeListUtil;
 import com.example.lostandfind.utils.ResultUtil;
 import com.example.lostandfind.service.Template;
-import com.example.lostandfind.view.CommentView;
-import com.example.lostandfind.view.InfoView;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -49,12 +51,6 @@ public class LafController{
     private InfoMapper infoMapper;
 
     @Autowired
-    private InfoViewRepository infoViewRepository;
-
-    @Autowired
-    private CommentViewRespository commentViewRespository;
-
-    @Autowired
     private CommentRespository commentRespository;
 
     @Autowired
@@ -80,9 +76,9 @@ public class LafController{
 
     @Autowired
     private StringRedisTemplate template;
-
-    @Autowired
-    private RedisTemplate<String,InfoMysql> redisTemplate;
+//
+//    @Autowired
+//    private RedisTemplate<String,InfoMysql> redisTemplate;
 
     @GetMapping(value = "/User")
     public List<UserMysql> UserList() {
@@ -140,25 +136,16 @@ public class LafController{
      * @param count   页号
      * @return
      */
+    @GetMapping(value = "/getValuable")
+    public List<InfoMysql> getValuale(){
+        return infoRepository.findByABooleanAndIsValuableOrderByTimestampsDesc(true,true);
+    }
     @GetMapping(value = "/service/info")
     public List<InfoMysql> searchInfo(@RequestParam("confirm") boolean confirm,
                                       @RequestParam("count") int count){
-//        System.out.println(count);
-//        return new RedisSave().getInfo(redisTemplate);
-        new Template().asd();
-        //count为0表示从redis拿数据
-        if(count == 0){
-            if(confirm){
-                return new RedisSave().getValuableInfo(redisTemplate);
-            }else{
-                return new RedisSave().getInfo(redisTemplate);
-            }
-        }else {
-            return infoRepository.findByABoolean(50*count+200);
-        }
-
+        return new InfoService().pageInfo(count,infoRepository);
     }
-    /**s
+    /**
      * 写入数据信息
      * @param infoMysql
      * @return
@@ -167,21 +154,7 @@ public class LafController{
     @PostMapping(value = "/msg")
 //    public Result addMsg(@Valid InfoMysql infoMysql,BindingResult bindingResult){
     public Result addMsg(@RequestBody InfoMysql infoMysql) throws Exception {
-        InfoService infoService = new InfoService();
-        if (infoService.hasError(infoMysql)) {
-            return ResultUtil.error(12, "填全内容");
-        }
-        infoMysql.setTimestamps((new Date().getTime())/1000);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        infoMysql.setLoststamp(simpleDateFormat.parse(infoMysql.getTime()).getTime()/1000 + 1000);
-        infoRepository.save(infoMysql);
-        RedisSave redisSave = new RedisSave();
-        //待审核贵重物品不向redis添加,只添加普通物品
-        if(infoMysql.isValuable()){
-        }else {
-            redisSave.saveInfo(infoMysql, redisTemplate.hasKey("infoN"),redisTemplate);
-        }
-        return ResultUtil.success(infoMysql);
+        return new InfoService().writeInfo(infoMysql,infoRepository);
     }
 
     /**
@@ -190,7 +163,11 @@ public class LafController{
      */
     @GetMapping(value = "/msg")
     public List<InfoMysql> msgList() {
-        return infoRepository.findAll();
+        int size = 5;
+        int page = 0;
+        Sort sort = new Sort(Sort.Direction.ASC,"id");
+        Pageable pageable = PageRequest.of(page,size,sort);
+        return infoRepository.findByIsValuable(false,pageable);
     }
 
     /**
@@ -228,69 +205,29 @@ public class LafController{
      * @return
      * @throws Exception
      */
-    @PostMapping(value = "/uploadImage")
-    public Object uploadPicture(@RequestParam("file") MultipartFile file,
-                                @RequestParam("height") int height,
-                                @RequestParam("width") int width,
-                                @RequestParam("category") String category,
-                                @RequestParam("openid") String openid) throws Exception {
-
-       System.out.println(height +" "+width + openid);
-        //获取文件需要上传到的路径
-        if(file.isEmpty()==true){
-            return "error";
-        }else {
-            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
-            Files.write(path,bytes);
-            JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("imgPath","/pages/img/"+imgName);
-            if(category.equals("证件")){
-                HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-//            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
-                JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
-                jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
-                System.out.println(jsonObject1);
-            }else{
-                jsonObject1.put("imgInfo","无");
-            }
-            return jsonObject1;
-        }
-    }
-    /**
-     * 向服务器端传图片
-     */
 //    @PostMapping(value = "/uploadImage")
 //    public Object uploadPicture(@RequestParam("file") MultipartFile file,
 //                                @RequestParam("height") int height,
 //                                @RequestParam("width") int width,
 //                                @RequestParam("category") String category,
 //                                @RequestParam("openid") String openid) throws Exception {
-//        //获取文件需要上传到的路径
 //
+//       System.out.println(height +" "+width + openid);
+//        //获取文件需要上传到的路径
 //        if(file.isEmpty()==true){
 //            return "error";
 //        }else {
 //            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-//            String imgName = height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+//            String imgName = "+" + height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
 //            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/root/html/img/"+ imgName);
+//            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
 //            Files.write(path,bytes);
 //            JSONObject jsonObject1 = new JSONObject();
-//            jsonObject1.put("imgPath","https://yuigahama.xyz/img/"+imgName);
-//
-////            HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-////            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-////            JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
-////            jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
-////            System.out.println(jsonObject1);
+//            jsonObject1.put("imgPath","/pages/img/"+imgName);
 //            if(category.equals("证件")){
 //                HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-////            String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
+//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
+////                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
 //                JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
 //                jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
 //                System.out.println(jsonObject1);
@@ -300,6 +237,40 @@ public class LafController{
 //            return jsonObject1;
 //        }
 //    }
+    /**
+     * 向服务器端传图片
+     */
+    @PostMapping(value = "/uploadImage")
+    public Object uploadPicture(@RequestParam("file") MultipartFile file,
+                                @RequestParam("height") int height,
+                                @RequestParam("width") int width,
+                                @RequestParam("category") String category,
+                                @RequestParam("openid") String openid) throws Exception {
+        //获取文件需要上传到的路径
+
+        if(file.isEmpty()==true){
+            return "error";
+        }else {
+            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+            String imgName = "+" + height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/root/html/img/"+ imgName);
+            Files.write(path,bytes);
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("imgPath","https://yuigahama.xyz/img/"+imgName);
+
+            if(category.equals("证件")){
+                HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
+                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
+//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
+                JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
+                jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
+            }else{
+                jsonObject1.put("imgInfo","无");
+            }
+            return jsonObject1;
+        }
+    }
 
     @ResponseBody
     @PutMapping(value = "/confirm/{id}")
@@ -328,20 +299,10 @@ public class LafController{
      *
      * 还要改变
      */
-    @PutMapping(value="/check/{id}")
-    public String doCheck(@PathVariable("id") Integer id,
-                          @RequestBody ConfirmService confirmService){
-        InfoMysql infoMysql =  infoRepository.findById(id).get();
-        infoMysql.setaBoolean(confirmService.isConfirm());
-        //审核未通过将信息添加到普通物品信息,通过添加到贵重物品
-        if(!confirmService.isConfirm()){
-            infoMysql.setValuable(false);
-            new RedisSave().saveInfo(infoMysql, redisTemplate.hasKey("infoN"),redisTemplate);
-        }else {
-            new RedisSave().saveValuableInfo(infoMysql,redisTemplate);
-        }
-        infoRepository.save(infoMysql);
-        return "asd"+confirmService.isConfirm();
+    @PutMapping(value="/check/{id}/{confirm}")
+    public Result doCheck(@PathVariable("id") Integer id,
+                          @PathVariable("confirm") boolean confirm){
+       return new InfoService().passValuable(id,confirm,infoRepository);
     }
     /**
      * 结束事件
@@ -553,7 +514,12 @@ public class LafController{
     @ResponseBody
     @GetMapping(value = "/aboutMeHas")
     public List<FinishMysql> getHasFinish(@RequestParam("openid") String openid){
-        return finishRespository.findByIdentity(openid);
+        return finishRespository.findByIdentityAndTimeOut(openid,false);
+    }
+    @ResponseBody
+    @GetMapping(value = "/timeout")
+    public List<FinishMysql> getTimeout(@RequestParam("openid") String openid){
+        return finishRespository.findByIdentityAndTimeOut(openid,true);
     }
 
     /**
@@ -591,30 +557,6 @@ public class LafController{
         return null;
     }
 
-    @RequestMapping("/setValue")
-    public String setValue(){;
-//        InfoMysql infoMysql = new InfoMysql();
-//        infoMysql.setFormId("asd");
-//        infoMysql.setLoststamp(1231);
-//        infoMysql.setCategory("asdasd");
-//        redisTemplate.opsForList().rightPush("infoN",infoMysql);
-//        RedisSave redisSave = new RedisSave();
-//        redisSave.saveInfo(infoMysql, redisTemplate.hasKey("infoN"),redisTemplate);
-        List<InfoMysql> infoMysqlList = infoRepository.findAll();
-        redisTemplate.opsForList().rightPushAll("infoN",infoMysqlList);
-        return "成功添加数据";
-    }
-
-    @RequestMapping("/getValue")
-    public List<InfoMysql> getValue() {
-      //redisTemplate.delete("infoN");
-      return redisTemplate.opsForList().range("infoN",0,-1);
-    }
-    @RequestMapping("/deleteValue")
-    public void deleteValue() {
-        redisTemplate.delete("infoN");
-    }
-
     //填写个人信息
     @ResponseBody
     @PostMapping("/writePersonInfo")
@@ -629,6 +571,7 @@ public class LafController{
         return personInfo;
     }
     //获取个人信息
+    @ResponseBody
     @GetMapping("/getPersonInfo")
     public PersonInfoMysql getPersonInfo(@RequestParam("openid") String openid) {
         return personInfoRespository.findByOpenid(openid);
@@ -666,54 +609,31 @@ public class LafController{
         return evaluateRespository.findByOpenid(openid);
     }
     //测试物品信息视图
-    @GetMapping("/getInfoView")
-    public List<InfoView> getInfoView(){
-        return infoViewRepository.findAll();
-    }
-    //从视图中得到某个物品的评论
+//    @GetMapping("/getInfoView")
+//    public List<InfoView> getInfoView(){
+//        return infoViewRepository.findAll();
+//    }
+    //从视图中得到某个物品的评论的
     @GetMapping("/getComment")
-    public List<CommentView> getComment(@RequestParam("infoId") Integer infoId){
-        return commentViewRespository.findByToUid("oCQY3418OXiAziUyF2pBHNkTdbKY");
+    public JSONArray getComment(@RequestParam("id") int id){
+        return new CommentService().getComments(id,commentRespository);
     }
     //获得与某个用户相关评论
     @GetMapping("/getPersonComment")
-    public  JSONObject getPersonComment(@RequestParam("openid") String openid) {
-        //得到发布下信息下所有回复
-        List<CommentView> commentViewList = commentViewRespository.findByIdentityOrderByIdAsc(openid);
-        JSONObject jsonObject  = new JSONObject();
-        int view = 0 , to_view = 0;
-        for (int i = commentViewList.size()-1; i >= 0; i--) {
-            if(!commentViewList.get(i).isView()){
-                //删除在发布者物品信息下回复发布者的消息，并且发布者还没看
-                if (commentViewList.get(i).getIdentity().equals(commentViewList.get(i).getToUid())
-                && !commentViewList.get(i).isToView()){
-                    commentViewList.remove(i);
-                }else {
-                    view++;
-                }
-            }else{
-                break;
-            }
-        }
-        //回复评论
-        List<CommentView> reply = commentViewRespository.findByToUid(openid);
-        for (int i = reply.size()-1; i >= 0; i--) {
-            if (!reply.get(i).isToView()){
-                to_view++;
-            }else {
-                break;
-            }
-        }
-        jsonObject.put("info",commentViewList);
-        jsonObject.put("infoNum",view);
-        jsonObject.put("reply",reply);
-        jsonObject.put("replyNum",to_view);
-        return jsonObject;
-//        return reply;
+    public   JSONObject getPersonComment(@RequestParam("openid") String openid) {
+        return new CommentService().getPersonComments(openid,commentRespository);
     }
     //写入评论
-    @PostMapping("/writeComment")
-    public CommentMysql writeComment(@RequestBody CommentMysql commentMysql){
+    @PostMapping("/writeComment/{user_id}/{info_id}")
+    public CommentMysql writeComment(@PathVariable("info_id") Integer info,
+                                     @PathVariable("user_id") Integer user,
+                                     @RequestBody CommentMysql commentMysql){
+        UserMysql userMysql = new UserMysql();
+        userMysql.setNum(user);
+        InfoMysql infoMysql = new InfoMysql();
+        infoMysql.setId(info);
+        commentMysql.setUser(userMysql);
+        commentMysql.setInfo(infoMysql);
         return commentRespository.save(commentMysql);
     }
     //删除评论
@@ -722,29 +642,14 @@ public class LafController{
         commentRespository.deleteById(id);
     }
     /**
-     *将评论未查看标记为查看
+     * 将评论未查看标记为查看
      * 0为@评论
      * 1为相关评论
      */
     @PostMapping("/changePersonComment/{openid}/{num}/{kind}")
-    public void changePersonComment(@PathVariable("openid") String openid,
+    public Result changePersonComment(@PathVariable("openid") String openid,
                                     @PathVariable("num") int num,
                                     @PathVariable("kind") int kind){
-        CommentMysql commentMysql = new CommentMysql();
-        if(kind == 0) {
-            List<CommentView> reply = commentViewRespository.findByToUid(openid);
-            for (int i = reply.size() - 1; i >= reply.size() - num; i--) {
-                commentMysql = commentRespository.findById(reply.get(i).getId()).get();
-                commentMysql.setToView(true);
-                commentRespository.save(commentMysql);
-            }
-        }else if(kind == 1){
-            List<CommentView> about = commentViewRespository.findByIdentityOrderByIdAsc(openid);
-            for (int i = about.size() - 1; i >= about.size() - num; i--) {
-                commentMysql = commentRespository.findById(about.get(i).getId()).get();
-                commentMysql.setView(true);
-                commentRespository.save(commentMysql);
-            }
-        }
+       return new CommentService().changeRead(kind,num,openid,commentRespository);
     }
 }

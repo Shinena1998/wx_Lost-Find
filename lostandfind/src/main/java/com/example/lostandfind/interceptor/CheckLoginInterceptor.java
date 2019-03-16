@@ -24,21 +24,24 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     //在before前
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(request.getRequestURI().equals(url)){
-            return true;
-        }else {
-            SessionUtil sessionUtil = SessionUtil.getInstance();
-            HttpSession session = sessionUtil.getSession(request.getHeader("sessionId"));
-            if(session != null){
-                if(request.getHeader("token").equals(session.getAttribute("token"))){
-                    return true;
-                }else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
+//        if(request.getRequestURI().equals(url)){
+//            return true;
+//        }else {
+
+//            SessionUtil sessionUtil = SessionUtil.getInstance();
+//            HttpSession session = sessionUtil.getSession(request.getHeader("sessionId"));
+//            if(session != null){
+//                if(request.getHeader("token").equals(session.getAttribute("token"))){
+//                    return true;
+//                }else {
+//                    return false;
+//                }
+//            } else {
+//                return false;
+//            }
+//        }
+
+        return true;
 //        if(request.getRequestURI().equals(url)){
 //            return true;
 //        }else {

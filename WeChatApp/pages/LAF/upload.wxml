@@ -1,6 +1,4 @@
-<view class="title" >
-<view class='title_text'><text>填写信息</text></view>
-</view>
+
 <!-- <form class='test'><view class='testas'>sdas</view></form> -->
 <!-- <radio-group class="radio-group_kind" bindchange="radioChangeKind">
   <label class="radio" wx:for="{{items_kind}}" wx:key="{{items_kind}}">
@@ -8,14 +6,15 @@
   </label>
 </radio-group> -->
 <view class="radio-group_kind">
-<view class='lose' id='1' bindtap='selectKind' style='font-size:80%;color:{{loseBC}};border-bottom:{{borderL}}'>失物启事</view>
-<view class='lose' id='2' bindtap='selectKind' style='font-size:80%;color:{{findBC}};border-bottom:{{borderF}}'>招领启事</view>
+<view class='lose' id='1' bindtap='selectKind' style='font-size:100%;color:{{loseBC}};border-bottom:{{borderL}}'>失物启事</view>
+<view class='lose' id='2' bindtap='selectKind' style='font-size:100%;color:{{findBC}};border-bottom:{{borderF}}'>招领启事</view>
 </view>
 
-<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
-<view class='info_tirtle'><input value="" name="theme" placeholder='请输入物品名称...' maxlength='11' placeholder-style='font-size:70%' confirm-type='next'></input>
+<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset" >
+<view class='info_tirtle'><input value="" name="theme" placeholder='请输入物品名称...' maxlength='11' placeholder-style='font-size:90%' confirm-type='next' style='width:100%'></input>
 </view>
 <view class='info_detail'><textarea value="" name="info"placeholder='请补充物品特征...' maxlength='100' placeholder-style='font-size:70%' style='height:100%;width:100%'></textarea></view>
+
 <radio-group class="radio-group_category" bindchange="radioChangeCategory">
   <label class="radio" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
   <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
@@ -44,28 +43,28 @@
 <view class="info_c">{{infoCss.place}}：
 <form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
 <button form-type='submit' style='background-color:transparent;'>
-<input style='-webkit-user-select:auto' value="" name="place" maxlength='18'placeholder='请输入详细地点...' placeholder-style='font-size:70%;text-align:right' style='text-align:right'></input>
+<input style='-webkit-user-select:auto' value="" name="place" maxlength='18'placeholder='请输入详细地点' placeholder-style='font-size:70%;text-align:right' style='text-align:right'></input>
 </button></form></view>
 
 <view class="info_c"><view class='info_content' >联系方式：
 
 <form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <button form-type='submit' style='background-color:transparent;color:green'>
+    <button form-type='submit' style='background-color:transparent;color:green;font-size:80%;'>
       {{array[index]}}>
     </button>
   </picker>
 </form></view>
 <form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
 <button form-type='submit' style='background-color:transparent;'>
-<input style='-webkit-user-select:auto' maxlength='18' placeholder='请输入对应联系方式...' style='text-align:right'  bindblur='contentCss' placeholder-style='font-size:70%;text-align:right' confirm-type='done'></input>
+<input style='-webkit-user-select:auto' maxlength='18' placeholder='点击qq选择类型' style='text-align:right'  bindblur='contentCss' placeholder-style='font-size:70%;text-align:right' confirm-type='done' value="{{contact}}"></input>
 </button></form>
 </view>
 <view class='buttonView'>
-<button  bindtap='back' size="mini">取消</button>
-<button  formType="submit" size="mini">提交</button>
+<button  formType="submit" size="default"  class='button'>提交</button>
 </view>
 </form>
+
 
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{hasCardInfo}}" bindtap='closeInfo'></view>
 <view class="modal-dialog" wx:if="{{hasCardInfo}}">

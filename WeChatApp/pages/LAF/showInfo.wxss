@@ -5,13 +5,6 @@ page{
   width: 100%;
   font-size: 85%;
 }
-.title{
-  height:5%;
-  background-color:#00ffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .infoAll{
   width: 94%;
   height: 85%;
@@ -181,4 +174,51 @@ page{
   margin-top: 5%;
   font-size: 90%;
   color: rgb(94, 94, 94);
+}
+
+.commentImg{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+.commentView{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-top: 2%;
+  margin-bottom: 2%;
+}
+.commentNT{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2%;
+}
+.commentWord{
+  width: 87%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #999999;
+}
+.menuView{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.menuLeft{
+  height: 100%;
+  width: 15%;
+}
+.menuRight{
+  height: 100%;
+  width: 10%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.commentMenu{
+  width: 30%;
+  height: 40rpx;
 }

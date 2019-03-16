@@ -6,12 +6,12 @@ Page({
   data: {
     decode:true,
     msg: [],
-    pictureCssPaths:["/pages/img/199FA2CA-7177-4640-A2F3-B8F7C5FC117E.png ",
-                    "/pages/img/27C36CF5-7208-4527-B3BA-70333A1B09CF.png ",
-                    "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
-                    "/pages/img/3758617A-1DC9-46C4-B092-D49545B70020.png",
-                    "/pages/img/986803F3-6074-4624-8F2A-2FB638147B3E.png"],
     savedFilePath:"/pages/img/addPic.png ",
+    pictureCssPaths: ["/pages/img/199FA2CA-7177-4640-A2F3-B8F7C5FC117E.png",
+      "/pages/img/27C36CF5-7208-4527-B3BA-70333A1B09CF.png",
+      "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
+      "/pages/img/3758617A-1DC9-46C4-B092-D49545B70020.png",
+      "/pages/img/986803F3-6074-4624-8F2A-2FB638147B3E.png"],
     isUploadPic:false,
     //失物类型
     category:null,
@@ -20,8 +20,9 @@ Page({
     TimeColor:'rgb(148, 145, 145)',
     array: ['QQ', '微信', '电话','无'],
     index:0,
-    picPath:"",
+    picPath:"noImage",
     contactWay:"",
+    contant:"",
     place:"",
     information:"",
     question:"",
@@ -36,8 +37,8 @@ Page({
     showModal:false,
     kind:"遗失",
     loseBC:'white',
-    borderL:'5rpx solid #bbb;',
-    findBC:"#ddd",
+    borderL:'5rpx solid #fafafa;',
+    findBC:"#e8e8e8",
     borderF:"",
     pageBackgroundColor:null,
     isValuable:false,
@@ -56,7 +57,7 @@ Page({
     items_kind: [
       { name: '遗失', value: '遗失', checked: false },
       { name: '招领', value: '招领', checked: false },
-    ]
+    ],
   },
   /**
    * 选择信息类型
@@ -67,18 +68,18 @@ Page({
     if(id == 1){
       this.setData({
         loseBC: 'white',
-        borderL: '5rpx solid #bbb;',
-        findBC: "#ddd",
+        borderL: '5rpx solid #fafafa;',
+        findBC: "#e8e8e8",
         borderF: "",
         kind:'遗失',
         infoCss: app.globalData.infoLostCss
       })
     }else if(id ==2 ){
       this.setData({
-        loseBC: '#ddd',
+        loseBC: '#e8e8e8',
         borderL: '',
         findBC: "white",
-        borderF: "5rpx solid #bbb;",
+        borderF: "5rpx solid #fafafa;",
         kind: '招领',
         infoCss: app.globalData.infoFindCss
       })
@@ -90,15 +91,53 @@ Page({
   onLoad: function (options) {
     this.data.openId = app.globalData.openid;
     this.setData({
-      time: app.time
+      time: app.time,
+      Time: app.time
     })
     console.log(app.time)
   },
-
+  toService:function(){
+    wx.switchTab({
+      url: 'service',
+    })
+  },
+  toUser: function () {
+    wx.switchTab({
+      url: 'user',
+    })
+  },
+  toIndex: function () {
+    wx.switchTab({
+      url: 'index',
+    })
+  },
   onReady: function () {
     
   },
   onShow: function () {
+    console.log(app.globalData.school)
+    if (!app.globalData.school) {
+      wx.showModal({
+        title: '请补全信息',
+        content: '点击首页图像右下侧',
+        showCancel: false,
+        success: function () {
+          wx.switchTab({
+            url: 'index',
+          })
+        }
+      })
+    }
+  },
+  onHide:function(){
+    this.formReset();
+    getCurrentPages()[getCurrentPages().length - 1].onLoad()
+  },
+  onUnload:function(){
+    console.log("我卸载了发布界面");
+  },
+  formReset:function(){
+    console.log("我离开了发布界面");
   },
   onPullDownRefresh: function () {
   },
@@ -129,7 +168,12 @@ Page({
     })
     if(this.data.index == 3){
       this.setData({
-        contactWay: '3+失主自取'
+        contactWay: '3+失主自取',
+        contact:"失主自取"
+      })
+    }else{
+      this.setData({
+        contact: ""
       })
     }
   },
@@ -178,6 +222,58 @@ Page({
       TimeColor:null
     })
   },
+  /**
+ * 获取失物类型
+ * 改变默认图片
+ */
+  radioChangeCategory: function (e) {
+    console.log(e);
+    this.data.category = e.detail.value;
+    var picture = this.data.pictureCssPaths
+    if (!this.data.isUploadPic) {//防止已上传照片，更换类型变为默认图片
+      if (e.detail.value == "证件") {
+        this.setData({
+          savedFilePath: picture[0],
+          picPath: picture[0],
+        })
+      } else if (e.detail.value == "学习") {
+        this.setData({
+          savedFilePath: picture[1],
+          picPath: picture[1],
+        })
+      } else if (e.detail.value == "电子") {
+        this.setData({
+          savedFilePath: picture[2],
+          picPath: picture[2],
+        })
+      } else if (e.detail.value == "生活") {
+        this.setData({
+          savedFilePath: picture[3],
+          picPath: picture[3],
+        })
+      }
+    }
+    //显示证件卡号
+    if (e.detail.value == "证件") {
+      this.setData({
+        isCard: true
+      })
+    } else {
+      this.setData({
+        isCard: false
+      })
+    }
+    //发布完消息后切换到相应类型
+    if (e.detail.value == "证件") {
+      app.globalData.category = '0'
+    } else if (e.detail.value == "学习") {
+      app.globalData.category = '1'
+    } else if (e.detail.value == "电子") {
+      app.globalData.category = '2'
+    } else if (e.detail.value == "生活") {
+      app.globalData.category = '3'
+    }
+  },
  /**
  *获取物品照片 
  */
@@ -200,19 +296,12 @@ Page({
               /**
                * 图片长宽最大为999，要配合取值
                */
-              if (res.height > 999) {
-                res.height = 999
-              }
-              if (res.width > 999) {
-                res.width = 999
-              }
               that.data.ImgHeight = res.height
               that.data.ImgWidth = res.width
               console.log(res)
               that.writeInfo()
             }
           })
-
           that.setData({
             /**
              * 1.在视图界面显示上传图片
@@ -229,6 +318,59 @@ Page({
         icon:'none',
       })
     } 
+  },
+  /**
+   * isUploadPic用于记录用户是否上传图片，
+   */
+  writeInfo: function () {
+    var that = this;
+    if (that.data.isUploadPic) {
+      /**
+      * 上传图片，最大10M
+      */
+      wx.uploadFile({
+        url: app.globalData.domain + '/uploadImage',
+        filePath: that.data.savedFilePath,
+        name: 'file',
+        formData: {
+          height: that.data.ImgHeight,
+          width: that.data.ImgWidth,
+          category: that.data.category,
+          openid: app.globalData.openid
+        },
+        method: "POST",
+        header: app.globalData.header,
+        success: function (res) {
+          wx.showToast({
+            title: '上传成功',
+            duration: 1000,
+          })
+          console.log(res)
+          if (res.statusCode == 200) {
+            var info = JSON.parse(res.data)
+            console.log(info.imgInfo)
+            console.log(info.imgPath)
+            that.setData({
+              picPath: info.imgPath,
+              imgInfo: info.imgInfo
+            })
+            var type = {
+              "type": "idea", "data": info.imgInfo
+            }
+            if (that.data.category == "证件") {
+              that.getCard(type);
+            }
+          }
+          console.log("zxc" + that.data.isValuable)
+        }, fail: function (res) {
+          wx.showToast({
+            title: '发布信息失败，请重试',
+          })
+        }
+      })
+    } else {
+      that.uploadInfo()
+    }
   },
   /**
    * 提交用户填写的失物数据
@@ -286,107 +428,10 @@ Page({
     })
   },
   /**
-   * 获取失物类型
-   * 改变默认图片
-   */
-  radioChangeCategory:function(e){
-    console.log(e);
-    this.data.category = e.detail.value;
-    var picture = this.data.pictureCssPaths
-    //显示证件卡号
-    if(e.detail.value == "证件"){
-      this.setData({
-        isCard: true
-      })
-    }else{
-      this.setData({
-        isCard: false
-      })
-    }
-    if(!this.data.isUploadPic){//防止已上传照片，更换类型变为默认图片
-      if(e.detail.value == "证件"){
-        this.setData({
-          savedFilePath:picture[0],
-          picPath:picture[0],
-        })
-      }else if (e.detail.value == "学习") {
-        this.setData({
-          savedFilePath: picture[1],
-          picPath: picture[1],
-        })
-      }else if (e.detail.value == "电子") {
-        this.setData({
-          savedFilePath: picture[2],
-          picPath: picture[2],
-        })
-      }else if (e.detail.value == "生活") {
-        this.setData({
-          savedFilePath: picture[3],
-          picPath: picture[3],
-        })
-      }
-      
-    }
-  },
-  /**
-   * isUploadPic用于记录用户是否上传图片，
-   */
-  writeInfo:function(){
-    var that = this;
-    if(that.data.isUploadPic){
-      /**
-      * 上传图片，最大10M
-      */
-      wx.uploadFile({
-        url: app.globalData.domain+'/uploadImage',
-        filePath: that.data.savedFilePath,
-        name: 'file',
-        formData:{
-          height:that.data.ImgHeight,
-          width:that.data.ImgWidth,
-          category:that.data.category,
-          openid:app.globalData.openid
-        },
-        method:"POST",
-        header: app.globalData.header,
-        success: function (res) {
-          wx.showToast({
-            title: '上传成功',
-            duration: 1000,
-          })
-          console.log(res)
-          if(res.statusCode== 200){
-            var info = JSON.parse(res.data)
-            console.log(info.imgInfo)
-            console.log(info.imgPath)
-            that.setData({
-              picPath: info.imgPath,
-              imgInfo:info.imgInfo
-            })
-            var type={
-              "type":"idea","data":info.imgInfo
-            }
-            if(that.data.category == "证件"){
-              that.getCard(type);
-            }
-          }
-          console.log("zxc" + that.data.isValuable)
-        }, fail: function (res) {
-          wx.showToast({
-            title: '发布信息失败，请重试',
-          })
-        }
-      })
-    }else {
-      that.uploadInfo()
-    }
-    
-  },
-  /**
   * 将所有信息写进数据库
   */
   uploadInfo:function(){
-    console.log()
+    console.log(app.globalData.userinfo)
     var that= this
     wx.request({
       url: app.globalData.domain +'/msg',
@@ -405,6 +450,7 @@ Page({
         aBoolean: false,
         identity: that.data.openId,
         formId:that.data.formId,
+        user: app.globalData.userinfo,
       },
       success: function (res) {
         console.log(res)
@@ -416,18 +462,37 @@ Page({
               icon: "none",
             })
           } else if (res.data.code == 0) {
-            wx.showToast({
-              title: '发布成功',
-              icon:'success',
-              duration:1000,
-              success: function () {
-                setTimeout(function(){
-                  wx.navigateBack({
-                  delta: 1
-                })
-                },1000)
-              }
-            })
+            console.log(that.data.isValuable)
+            if (that.data.isValuable){
+              wx.showToast({
+                title: '等待管理员审核',
+                icon: 'success',
+                duration: 1500,
+                success: function () {
+                  setTimeout(function () {
+                    wx.switchTab({
+                      url: 'index',
+                    })
+                  }, 1500)
+                }
+              })
+            }else{
+              wx.showToast({
+                title: '发布成功',
+                icon: 'success',
+                duration: 1000,
+                success: function () {
+                  setTimeout(function () {
+                    //改变内存数据
+                    app.globalData.info.push(res.data.data)
+                    app.globalData.isChangeInfo = true;
+                    wx.switchTab({
+                      url: 'service',
+                    })
+                  }, 1000)
+                }
+              })
+            }
           }
         }
       },
@@ -438,6 +503,7 @@ Page({
       }
     })   
   },
+  //获取formId
   formSubmit1:function(res){
     console.log(res.detail.formId)
     this.data.formId = this.data.formId + res.detail.formId + '+'

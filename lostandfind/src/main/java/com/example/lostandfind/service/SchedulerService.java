@@ -6,7 +6,6 @@ import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.mysql.FinishMysql;
 import com.example.lostandfind.mysql.InfoMysql;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,15 +18,13 @@ import java.util.*;
 public class SchedulerService {
 
     @Autowired
-    private RedisTemplate<String, InfoMysql> redisTemplate;
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
-    @Autowired
     private InfoRepository infoRepository;
     @Autowired
     private FinishRespository finishRespository;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
     private final String IMGFOLDER = "/root/html/img/";//服务器图片存储绝对路径
     private final String PATHPREFIX = "https://yuigahama.xyz/img/";//数据库存储图片域名路径，
 
@@ -110,33 +107,38 @@ public class SchedulerService {
             }
         }
     }
-    /**
-     * 防止redis内存与数据库数据不一致，每天2点更新数据
-     * 每天2点核对一次
-     * infoN 普通物品
-     * infoV 贵重物品
-     */
-    @Scheduled(fixedDelay = 86400000)
-    public void checkRedis(){
-        List<InfoMysql> info = infoRepository.getinfo();
-        List<InfoMysql> infoValuable = infoRepository.getValuableinfo();
-        if(info.size() > 0) {
-            if (redisTemplate.hasKey("infoN")) {
-                redisTemplate.delete("infoN");
-                redisTemplate.opsForList().rightPushAll("infoN", info);
-            } else {
-                redisTemplate.opsForList().rightPushAll("infoN", info);
-            }
-        }
-        if(infoValuable.size() > 0) {
-            if (redisTemplate.hasKey("infoV")) {
-                redisTemplate.delete("infoV");
-                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
-            } else {
-                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
-            }
-        }
-    }
+//    /**
+//     * 防止redis内存与数据库数据不一致，每天2点更新数据
+//     * 每天2点核对一次
+//     * infoN 普通物品
+//     * infoV 贵重物品
+//     */
+//    @Scheduled(fixedDelay = 86400000)
+//    public void checkRedis(){
+//        List<InfoMysql> info = new InfoService().pageInfo(0,infoRepository);
+//        UserMysql user = info.get(0).getUser();
+//        Gson gson = new Gson();
+//        System.out.println(info.get(0));
+////        System.out.println(gson.toJson(info.get(0)));
+////        List<InfoMysql> infoValuable = infoRepository.findByIsValuableAndABoolean(true,true);
+//        if(info.size() > 0) {
+//            if (redisTemplate.hasKey("infoN")) {
+//                redisTemplate.delete("infoN");
+//                redisTemplate.opsForList().rightPushAll("infoN", info);
+//            } else {
+//                redisTemplate.opsForList().rightPushAll("infoN", info);
+//            }
+//        }
+//        if(infoValuable.size() > 0) {
+//            if (redisTemplate.hasKey("infoV")) {
+//                redisTemplate.delete("infoV");
+//                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
+//            } else {
+//                redisTemplate.opsForList().rightPushAll("infoV", infoValuable);
+//            }
+//        }
+//    }
+
     /**
      * 获取ocr access_token
      */

@@ -1,21 +1,24 @@
 package com.example.lostandfind.mysql;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Repository
 
-@Entity
-public class UserMysql implements Serializable {
+@Entity(name="user")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
+public class UserMysql{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer num;
@@ -44,6 +47,29 @@ public class UserMysql implements Serializable {
 
     private String unionId = null;
 
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private List<CommentMysql> commentList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
+    private List<InfoMysql> infoMysqlList;
+
+    public List<CommentMysql> getCommentList() {
+        return commentList;
+    }
+
+    public List<InfoMysql> getInfoMysqlList() {
+        return infoMysqlList;
+    }
+    public void setInfoMysqlList(List<InfoMysql> infoMysqlList) {
+        this.infoMysqlList = infoMysqlList;
+    }
+
+    public void setCommentList(List<CommentMysql> commentList) {
+        this.commentList = commentList;
+    }
 
     public String getNickName() {
         return nickName;
@@ -108,4 +134,5 @@ public class UserMysql implements Serializable {
     public void setCity(String city) {
         this.city = city;
     }
+
 }

@@ -106,16 +106,15 @@ Page({
     console.log(res)
     var that =this
     wx.request({
-      url: app.globalData.domain +'/check/' + id,
+      url: app.globalData.domain +'/check/' + id + "/" + res,
       header: app.globalData.header,
       method:'PUT',
-      data:{
-        confirm:res,
-      },
       success:function(res){
-        console.log(res);
-        //更新
-        that.search()
+        if(res.statusCode == 200){
+          console.log(res);
+          //更新
+          that.search()
+        }
       }
     })
   },
