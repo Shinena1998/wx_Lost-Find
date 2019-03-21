@@ -44,6 +44,7 @@
 <!-- </view> -->
 <!-- </scroll-view> -->
 
+
 <swiper indicator-dots='true' style='white-space:nowrap;' class="thingInfo" autoplay="true" circular='true'>
 
 <block wx:if="{{showValuable}}">

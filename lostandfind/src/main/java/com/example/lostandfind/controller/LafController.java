@@ -76,6 +76,12 @@ public class LafController{
 
     @Autowired
     private StringRedisTemplate template;
+
+    @Autowired
+    private ReportRepository reportRepository;
+
+    @Autowired
+    private ReportCommentRepository reportCommentRepository;
 //
 //    @Autowired
 //    private RedisTemplate<String,InfoMysql> redisTemplate;
@@ -127,7 +133,7 @@ public class LafController{
      */
     @GetMapping(value = "/valuable")
     public List<InfoMysql> searchValuableInfo(@RequestParam("confirm") boolean confirm){
-        return infoRepository.findByIsValuableAndABoolean(confirm,false);
+        return infoRepository.findByABooleanAndIsValuableOrderByTimestampsDesc(false,confirm);
     }
 
     /**
@@ -157,6 +163,25 @@ public class LafController{
         return new InfoService().writeInfo(infoMysql,infoRepository);
     }
 
+    /**
+     * 写入信息的点击次数
+     * @param jsonObject
+     * @return
+     */
+    @PostMapping(value="/addCount")
+    public int addCount(@RequestBody JSONObject jsonObject){
+        return new InfoService().addCount(jsonObject.getInteger("id"),infoRepository);
+    }
+
+    /**
+     * 删除信息
+     * @param jsonObject
+     * @return
+     */
+    @DeleteMapping(value="/deleteInfo")
+    public boolean deleteInfo(@RequestBody JSONObject jsonObject){
+        return new InfoService().deleteInfo(jsonObject.getInteger("id"),infoRepository);
+    }
     /**
      * 查看数据信息
      * @return
@@ -226,8 +251,10 @@ public class LafController{
 //            jsonObject1.put("imgPath","/pages/img/"+imgName);
 //            if(category.equals("证件")){
 //                HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-////                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
+//                System.out.println("access_token:"+template.opsForValue().get("OcrToken"));
+//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.b556ba6ef395c39b57f5eb5559830823.2592000.1555680730.282335-14936363";
+//
+////                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.155013asdas3314.282335-14936363";
 //                JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
 //                jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
 //                System.out.println(jsonObject1);
@@ -251,18 +278,26 @@ public class LafController{
         if(file.isEmpty()==true){
             return "error";
         }else {
+//            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
+//            String imgName = "+" + height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get("/root/html/img/"+ imgName);
+//            Files.write(path,bytes);
+//            JSONObject jsonObject1 = new JSONObject();
+//            jsonObject1.put("imgPath","https://yuigahama.xyz/img/"+imgName);
             String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
             String imgName = "+" + height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("/root/html/img/"+ imgName);
+            Path path = Paths.get("/Users/zhangcong/WeChatApp/pages/img/"+ imgName);
             Files.write(path,bytes);
             JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("imgPath","https://yuigahama.xyz/img/"+imgName);
+            jsonObject1.put("imgPath","/pages/img/"+imgName);
 
             if(category.equals("证件")){
                 HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.d9cb44b1e4768a4e068fafb052cf7c18.2592000.1550133314.282335-14936363";
+                System.out.println("access_token:"+template.opsForValue().get("OcrToken"));
+//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
+                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.84aa7d8c9edccf297cc361f731e4cd99.2592000.1555730017.282335-14936363";
                 JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
                 jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
             }else{
@@ -441,9 +476,9 @@ public class LafController{
      * 查看用户建议
      */
     @ResponseBody
-    @GetMapping(value = "/suggestion")
-    public List<SuggestMysql> GetSuggestion(){
-        return suggestRepository.findAll();
+    @GetMapping(value = "/getSuggestion")
+    public JSONArray GetSuggestion(){
+        return new SuggestionService().getSuggestion(suggestRepository);
     }
     /**
      * 为了安全，腾讯相关的api不能在前端调用，只能在服务端调用
@@ -652,4 +687,39 @@ public class LafController{
                                     @PathVariable("kind") int kind){
        return new CommentService().changeRead(kind,num,openid,commentRespository);
     }
+
+    //写入举报信息
+    @PostMapping("/report")
+    public String report(@RequestBody JSONObject jsonObject){
+        return new ReportService().writeReport(jsonObject,reportRepository);
+    }
+    //读取举报信息
+    @GetMapping("/getReport")
+    public JSONArray getReport(){
+        return new ReportService().getReport(reportRepository,infoRepository);
+    }
+    @GetMapping("/process")
+    public String process(@RequestParam("decide") boolean decide,
+                          @RequestParam("id") int id,
+                          @RequestParam("operator") int operator){
+        return new ReportService().process(decide,id,operator,reportRepository,infoRepository);
+    }
+
+    //写入举报信息
+    @PostMapping("/reportComment")
+    public String reportC(@RequestBody JSONObject jsonObject){
+        return new ReportCommentService().writeReport(jsonObject,reportCommentRepository);
+    }
+    //读取举报信息
+    @GetMapping("/getReportComment")
+    public JSONArray getReportC(){
+        return new ReportCommentService().getReport(reportCommentRepository,commentRespository);
+    }
+    @GetMapping("/processComment")
+    public String processC(@RequestParam("decide") boolean decide,
+                          @RequestParam("id") int id,
+                          @RequestParam("operator") int operator){
+        return new ReportCommentService().process(decide,id,operator,reportCommentRepository,commentRespository);
+    }
+
 }

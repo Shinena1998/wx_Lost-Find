@@ -1,71 +1,79 @@
-
-<!-- <form class='test'><view class='testas'>sdas</view></form> -->
-<!-- <radio-group class="radio-group_kind" bindchange="radioChangeKind">
-  <label class="radio" wx:for="{{items_kind}}" wx:key="{{items_kind}}">
-  <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
-  </label>
-</radio-group> -->
 <view class="radio-group_kind">
 <view class='lose' id='1' bindtap='selectKind' style='font-size:100%;color:{{loseBC}};border-bottom:{{borderL}}'>失物启事</view>
 <view class='lose' id='2' bindtap='selectKind' style='font-size:100%;color:{{findBC}};border-bottom:{{borderF}}'>招领启事</view>
 </view>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" >
+<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
+  <view class="cu-form-group">
+    <view class='title'>物品名称</view>
+    <input placeholder="请输入物品名称" class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group top" wx:hide="{{modalName==null}}">
+    <view class='title'>详细信息</view>
+    <textarea placeholder="请详细描述信息" maxlength="-1" disabled="{{modalName!=null}}" placeholder-class='placeholder' name="info"></textarea>
+  </view>
 
-<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset" >
-<view class='info_tirtle'><input value="" name="theme" placeholder='请输入物品名称...' maxlength='11' placeholder-style='font-size:90%' confirm-type='next' style='width:100%'></input>
-</view>
-<view class='info_detail'><textarea value="" name="info"placeholder='请补充物品特征...' maxlength='100' placeholder-style='font-size:70%' style='height:100%;width:100%'></textarea></view>
+  <radio-group class="block"  bindchange="radioChangeCategory">
+    <view class="cu-form-group margin-top">
+    <label class="title" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
+    <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
+    </label>
+    </view>
+  </radio-group>
+  <view class="cu-form-group ">
+    <view class="grid col-3 grid-square flex-sub flex flex-wrap  justify-between">
+      <view class="padding-xs bg-img solids" bindtap='uploadImg' style="background-image:url({{savedFilePath}});">
+      </view>
+    <view class="padding-xs  ">
+      贵重物品
+      <switch class='red sm' bindchange='valuable' ></switch>
+    </view>
+    <!-- <view wx:if="{{isValuable}}" class="padding-xs bg-img"  style="background-image:url(/pages/img/valuable.png);">
+      </view> -->
+  </view>
+ 
+  </view>
+  <view class="cu-form-group" wx:if="{{isCard}}">
+    <view class="title" >证件卡号</view>
+    <input placeholder="请输入物品名称" class='radius' name="card" value="{{imgInfo}}"  style='text-align:right' maxlength='18' placeholder='无图请输入准确卡号...' bindinput="getCard" ></input>
+  </view>
 
-<radio-group class="radio-group_category" bindchange="radioChangeCategory">
-  <label class="radio" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
-  <radio value="{{item.value}}" id="{{index}}" checked="{{item.checked}}"/>{{item.name}}
-  </label>
-</radio-group>
 
-<view class="imageView">
-<image bindtap='uploadImg' class="image" placeholder='点击添加图片' src = "{{ savedFilePath}}"></image>
-<view style='height:30%;width:2%;margin-left:8%;'>
-<image class="valuable" bindtap="valuable" src = "/pages/img/BEF8C096-6C4E-43BB-8399-732F84DB8855.png "></image>
-</view>
-<image wx:if="{{isValuable}}" class="valuableImg" src = "/pages/img/valuable.png"></image>
-</view>
-<view class="info_c" wx:if="{{isCard}}">证件卡号：
-<input value="" name="card" value="{{imgInfo}}"bindinput="getCard" maxlength='18'placeholder='无图请输入准确卡号...' placeholder-style='font-size:70%;text-align:right' style='text-align:right'></input></view>
-<view class="info_time">{{infoCss.time}}：
-<form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
-<picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeChange">
-    <button form-type='submit' style='background-color:transparent;padding-top:2.5%;font-size:80%;color:{{TimeColor}}'>
-      {{Time}}
-    </button>
-  </picker>
+  <view class="cu-form-group margin-top">
+    <view class='title'>日期选择</view>
+    <picker mode="date" value="{{Time}}" start="2015-09-01" end="" bindchange="bindTimeChange">
+      <view class="picker">
+        {{Time}}
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group ">
+    <view class='title'>校区选择</view>
+    <picker bindchange="PickerChange" value="{{num}}" range="{{picker}}">
+      <view class="picker">
+        {{num?picker[num]:'请选择校区'}}
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>手机号码</view>
+    <input placeholder="不填写则为失主自取" class='radius' bindblur='contentCss'></input>
+    <view class="cu-capsule radius">
+      <view class='cu-tag bg-blue '>
+        +86
+      </view>
+      <view class="cu-tag line-blue">
+        中国大陆
+      </view>
+    </view>
+  </view>
+
+  <view class="padding flex flex-wrap  justify-around align-center bg-white margin-top">
+    <button class='cu-btn round' form-type="reset">重置</button>
+    <button class='cu-btn round' form-type="submit">提交</button>
+  </view>
 </form>
-</view>
-
-<view class="info_c">{{infoCss.place}}：
-<form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
-<button form-type='submit' style='background-color:transparent;'>
-<input style='-webkit-user-select:auto' value="" name="place" maxlength='18'placeholder='请输入详细地点' placeholder-style='font-size:70%;text-align:right' style='text-align:right'></input>
-</button></form></view>
-
-<view class="info_c"><view class='info_content' >联系方式：
-
-<form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
- <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <button form-type='submit' style='background-color:transparent;color:green;font-size:80%;'>
-      {{array[index]}}>
-    </button>
-  </picker>
-</form></view>
-<form bindsubmit="formSubmit1" report-submit='true' bindreset="formReset">
-<button form-type='submit' style='background-color:transparent;'>
-<input style='-webkit-user-select:auto' maxlength='18' placeholder='点击qq选择类型' style='text-align:right'  bindblur='contentCss' placeholder-style='font-size:70%;text-align:right' confirm-type='done' value="{{contact}}"></input>
-</button></form>
-</view>
-<view class='buttonView'>
-<button  formType="submit" size="default"  class='button'>提交</button>
-</view>
-</form>
-
-
+</scroll-view>
 <view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{hasCardInfo}}" bindtap='closeInfo'></view>
 <view class="modal-dialog" wx:if="{{hasCardInfo}}">
 <view class="modal-title"><text>可能对您有用的信息</text></view>

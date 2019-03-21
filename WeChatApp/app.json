@@ -1,4 +1,4 @@
-{
+ {
   "pages":[
     "pages/LAF/index",
     "pages/LAF/user",
@@ -7,7 +7,8 @@
     "pages/LAF/upload",
     "pages/LAF/detail",
     "pages/LAF/manager",
-    "pages/LAF/search"
+    "pages/LAF/search",
+    "pages/LAF/managerInfo"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -22,6 +23,7 @@
     "color": "#000000",
     "selectedColor": "#69c0ff",
     "position":"bottom",
+    "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/LAF/index",

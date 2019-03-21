@@ -102,23 +102,20 @@ page{
 }
 
 .adviceView{
-  width: 94%;
+  width: 100%;
   height: 50%;
-  margin-top: 3%;
-  margin-left:3%;
-  margin-right:3%;
   display: flex;
   flex-direction: column; 
 }
 .adviceImg{
   height:50%;
-  width:106%;
-  margin-left:-3%;
-  margin-top: -3%; 
+  width:100%;
 }
 .advice{
   height:27%;
-  width:100%;
+  width:94%;
+  margin-left:3%;
+  margin-right:3%;
   margin-top: 3%;
   border-radius: 5%;
   border: 5rpx solid white;
@@ -126,7 +123,9 @@ page{
 .content{
   margin-top:5%; 
   height: 15%;
-  width:100%;
+  width:94%;
+  margin-left:3%;
+  margin-right:3%;
   border-radius: 5%;
   border: 5rpx solid white;
 }

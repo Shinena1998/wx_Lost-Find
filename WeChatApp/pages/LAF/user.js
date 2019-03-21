@@ -22,6 +22,66 @@ Page({
     reply:false,
     about:false,
     system:false,
+    msgList:[
+      {
+      icon: '/pages/img/reply.png',
+      id : 4,
+      badge: 0,
+      name: '@我的',
+      bind:'reply'
+    }, {
+      icon: '/pages/img/about.png',
+      id: 5,
+      badge: 0,
+      name: '关于我的',
+      bind:'about'
+    }, {
+      icon: '/pages/img/system.png',
+      id: 6,
+      badge: 0,
+      name: '系统通知',
+      bind:"system"
+    }],
+    sevList: [
+      {
+        icon: '/pages/img/suggestion.png',
+        id: 2,
+        badge: 0,
+        name: '意见反馈',
+        bind: 'reply'
+      }, {
+        icon: '/pages/img/help.png',
+        id: 3,
+        badge: 0,
+        name: '帮助',
+        bind: 'about'
+      }, {
+        icon: '/pages/img/LAF.png',
+        id: 8,
+        badge: 0,
+        name: '失物招领',
+        bind: "system"
+      }],
+    infoList: [
+      {
+        icon: '/pages/img/editing.png',
+        id: 0,
+        badge: 0,
+        name: '正在发布',
+        bind: 'reply'
+      }, {
+        icon: '/pages/img/finishInfo.png',
+        id: 1,
+        badge: 0,
+        name: '已完成',
+        bind: 'about'
+      }, {
+        icon: '/pages/img/timeout.png',
+        id: 7,
+        badge: 0,
+        name: '已过期',
+        bind: "system"
+      }]
   },
   toService: function () {
     wx.switchTab({
@@ -140,17 +200,15 @@ Page({
     })
     if(app.globalData.comment != null){
       if (app.globalData.comment.replyNum > 0){
-        this.setData({
-          replyNum: app.globalData.comment.replyNum,
-          reply: true,
-        })
+        this.data.msgList[0].badge = app.globalData.comment.replyNum
       }
       if (app.globalData.comment.infoNum > 0){
-        this.setData({
-          aboutNum: app.globalData.comment.infoNum,
-          about: true
-        })
+        this.data.msgList[1].badge = app.globalData.comment.infoNum
       }
+      this.setData({
+        msgList: this.data.msgList,
+        about: true
+      })
     }
   },
   //@我消息
@@ -207,7 +265,10 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("下滑事件")
+    wx.switchTab({
+      url: 'index',
+    })
   },
 
   /**

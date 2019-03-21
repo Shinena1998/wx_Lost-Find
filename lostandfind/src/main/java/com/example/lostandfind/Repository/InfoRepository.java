@@ -40,4 +40,8 @@ public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     //获得贵重物品
     @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
     public List<InfoMysql> findByIsValuableAndABooleanOrderById(boolean b, boolean c);
+
+    //获得举报信息数据
+    @Query(value = "select * from info_mysql where id in ?1",nativeQuery = true)
+    public List<InfoMysql> findidIn(List<Integer> ids);
 }

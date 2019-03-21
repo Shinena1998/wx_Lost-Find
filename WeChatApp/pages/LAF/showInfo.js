@@ -175,6 +175,7 @@ Page({
         mask: true,
       })
     }else {
+      var date = new Date();
       wx.request({
         url: app.globalData.domain + '/suggestion',
         header: app.globalData.header,
@@ -183,11 +184,18 @@ Page({
           nickName: app.globalData.userInfo.nickName,
           openId: app.globalData.openid,
           suggestion: res.detail.value.advice,
-          contactWay: res.detail.value.contactWay
+          contactWay: res.detail.value.contactWay,
+          date: date.toLocaleString()
         },
         success: function (res) {
-          wx.navigateBack({
-            delta:1
+          wx.showToast({
+            title: '提交成功',
+            duration:1500,
+            success:function(){
+              wx.navigateBack({
+                delta: 1
+              })
+            }
           })
         }
       })

@@ -3,6 +3,14 @@ App({
 
   time : new Date().toLocaleDateString().split("/").join("-"),
   onLaunch: function (ops) {
+    wx.getSystemInfo({
+      success: e => {
+        this.globalData.StatusBar = e.statusBarHeight;
+        let custom = wx.getMenuButtonBoundingClientRect();
+        this.globalData.Custom = custom;
+        this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+      }
+    })
     console.log(ops)
     if (ops.scene == 1044) {
       console.log(ops.shareTicket)

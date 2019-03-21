@@ -13,11 +13,13 @@ import org.springframework.util.MultiValueMap;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class Template {
-    final static String imgUrl = "/root/html/img";
-//    final static String imgUrl = "/Users/zhangcong/WeChatApp/pages/img/";
+//    final static String imgUrl = "/root/html/img/";
+    final static String imgUrl = "/Users/zhangcong/WeChatApp/pages/img/";
     @Autowired(required = true)
     private RestTemplateConfig restTemplateConfig;
     //构造模板信息JSON
@@ -39,19 +41,19 @@ public class Template {
     }
     //百度ocr识别图片
     public HttpEntity<MultiValueMap<String, String>> getOcrInfo(String imgName){
+        System.out.println("进入了识别图片");
         byte[] data = null;
         InputStream in = null;
         try{
-//            in = new FileInputStream(imgUrl+imgName);
             in = new FileInputStream(imgUrl+imgName);
             data = new byte[in.available()];
             in.read(data);
             in.close();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         String image = Base64.encodeBase64String(data);
-//        System.out.println(image);
+        System.out.println(image);
         MultiValueMap<String, String> postParameters = new LinkedMultiValueMap<>();
         HttpHeaders headers = new HttpHeaders();
         postParameters.add("image",image);
@@ -66,7 +68,6 @@ public class Template {
         StringBuffer sb = new StringBuffer();
         StringBuffer sb2 = new StringBuffer();
         for (int i = 0; i < jsonArray.size(); i++) {
-
             sb.append(((JSONObject)jsonArray.get(i)).getString("words"));
         }
         System.out.println(sb.toString());

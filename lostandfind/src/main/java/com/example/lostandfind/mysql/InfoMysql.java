@@ -76,6 +76,7 @@ public class InfoMysql{
      */
     private boolean aBoolean;
 
+    private int count;//该信息被查看次数
     /**
      * 失主确认
      */
@@ -88,13 +89,21 @@ public class InfoMysql{
     //
     private String formId;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_num")
     private UserMysql user;
 
 
     @OneToMany(mappedBy = "info",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     private List<CommentMysql> commentMysqlList;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public List<CommentMysql> getCommentMysqlList() {
         return commentMysqlList;

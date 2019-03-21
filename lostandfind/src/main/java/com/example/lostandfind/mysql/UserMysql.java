@@ -1,16 +1,11 @@
 package com.example.lostandfind.mysql;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -55,6 +50,30 @@ public class UserMysql{
     @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     private List<InfoMysql> infoMysqlList;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "userMysqls",fetch = FetchType.LAZY)
+    private List<ReportInfoMysql> reportInfoMysqls;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users",fetch = FetchType.LAZY)
+    private List<ReportCommentMysql> reportCommentMysqls;
+
+    public List<ReportCommentMysql> getReportCommentMysqls() {
+        return reportCommentMysqls;
+    }
+
+    public void setReportCommentMysqls(List<ReportCommentMysql> reportCommentMysqls) {
+        this.reportCommentMysqls = reportCommentMysqls;
+    }
+
+    public List<ReportInfoMysql> getReportInfoMysqls() {
+        return reportInfoMysqls;
+    }
+
+    public void setReportInfoMysqls(List<ReportInfoMysql> reportInfoMysqls) {
+        this.reportInfoMysqls = reportInfoMysqls;
+    }
 
     public List<CommentMysql> getCommentList() {
         return commentList;

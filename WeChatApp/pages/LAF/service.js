@@ -1,10 +1,10 @@
 // pages/weishi/operate.js
 var hasClick = false
 var ins = {}
-var Card = []
-var Money = []
-var Book = []
-var Else = []
+var Card = [] //证件
+var Money = [] // 电子
+var Book = [] //学习
+var Else = [] //生活
 const app = getApp();
 Page({
 
@@ -22,11 +22,16 @@ Page({
     infoCss:{},
     inforCss:[],
     count:0,
-    type: ["default", "default", "default", "default", "default"],
+    showMenu:false,
+    operating:0,
+    upingMenu:0,
+    reportUp:null,
+    deleteUp:null,
     savedFilePath: "/pages/img/FB454FA2-B18D-4316-AFD9-75F565A0CB2A.jpeg",
     //顶部tabar栏显示
     fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)','rgb(112, 110, 110)'],
-    borderB: ['1px solid #69c0ff','','','']
+    borderB: ['5rpx solid #69c0ff','','',''],
+    scrollTop: 5,
   },
   toUpload: function () {
     wx.switchTab({
@@ -53,17 +58,36 @@ Page({
     this.setData({
       userInfo: app.globalData.userInfo
     })
-    console.log("onLoad")
+
     this.getInfo();
+    console.log("onLoad")
   },
   /**
    * 查看失物详细信息
    */
   comein: function (e) {
     console.log(e)
+    var that = this;
     // console.log(this.data.category[e.currentTarget.dataset.index])
     if(app.globalData.school){
-        wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index])
+        wx.setStorageSync('infor', this.data.category[e.currentTarget.id])
+      wx.request({
+        url: app.globalData.domain + '/addCount',
+        method: 'POST',
+        header: app.globalData.header,
+        data: {
+          id: this.data.category[e.currentTarget.id].id,
+        },
+        success: function (res) {//连接成功运行
+          console.log(res)
+          that.changeCount(e.currentTarget.id,res.data)
+        },
+        fail: function (res) {//连接失败执行
+          wx.showToast({ title: '网络错误' })
+        },
+        complete: function (res) {//都执行
+        },
+      })
         wx.navigateTo({
           url: 'detail',
         })
@@ -80,9 +104,23 @@ Page({
       })
     }
   },
+  changeCount:function(index,count){
+    if(app.globalData.category == '0'){
+      Card[index].count = count;
+    } else if (app.globalData.category == '1'){
+      Book[index].count = count;
+    } else if (app.globalData.category == '2') {
+      Money[index].count = count;
+    } else if (app.globalData.category == '3' ) {
+      Else[index].count = count;
+    } 
+    this.data.category[index].count = count;
+    this.setData({
+      category: this.data.category
+    })
+  },
   onReady: function () {
     console.log("onReady")
-    this.data.type[app.globalData.category] = "primary"
   },
   /**
    * app.globalData.isChangeInfo作用是检测在detail中数据是否被更新
@@ -207,6 +245,11 @@ Page({
           Else.unshift(that.data.infor[i])
         }
       }
+      if (app.globalData.category == "") {
+        that.category(0);
+      } else {
+        that.category(app.globalData.category);
+      }
       // /**
       //  * 当第一页的证件类不足四条信息，则无法触发下拉到底部事件，若第二页
       //  * 有证件类信息就不能正常显示，由此推广，如果第一页只要有一种长度小
@@ -224,7 +267,6 @@ Page({
       /**
        *app.globalData.category 调用此函数使标签栏颜色正常
        */
-      that.category(app.globalData.category);
       //没有信息且不是第一页，不能出现到底了提示。
     } else if (res.length == 0 && that.data.count > 1) {
       wx.showToast({
@@ -233,7 +275,11 @@ Page({
       })
       //结束最后一条，返回信息长度为0，但要更新视图层数据
     } else {
-      that.category(app.globalData.category);
+      if (app.globalData.category == "") {
+        that.category(0);
+      }else{
+        that.category(app.globalData.category);
+      }
     }
   },
   /**
@@ -275,30 +321,30 @@ Page({
     }else{
       id = res.currentTarget.id
     }
-    app.globalData.category = res
+    app.globalData.category = id
     if(id == "0"){
       this.data.category=Card
       this.setData({
         fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
-        borderB: ['1px solid #69c0ff', '', '', '']
+        borderB: ['5rpx solid #69c0ff', '', '', '']
       })
     } else if (id == "1"){
       this.data.category =Book
       this.setData({
         fontColor: ["rgb(112, 110, 110)", "#69c0ff", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
-        borderB: ['', '1px solid #69c0ff', '', '']
+        borderB: ['', '5rpx solid #69c0ff', '', '']
       })
     } else if (id == "2") {
       this.data.category=Money
       this.setData({
         fontColor: ["rgb(112, 110, 110)", 'rgb(112, 110, 110)', "#69c0ff",'rgb(112, 110, 110)'],
-        borderB: ['', '', '1px solid #69c0ff', '']
+        borderB: ['', '', '5rpx solid #69c0ff', '']
       })
     } else if (id == "3") {
       this.data.category = Else
       this.setData({
         fontColor: ["rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)',"#69c0ff"],
-        borderB: ['', '', '', '1px solid #69c0ff']
+        borderB: ['', '', '', '5rpx solid #69c0ff']
       })
     }
     this.data.showImg = []
@@ -308,14 +354,15 @@ Page({
       "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
       "/pages/img/3758617A-1DC9-46C4-B092-D49545B70020.png",]
     for (var i = 0; i < this.data.category.length; i++) {
-      if (this.data.category[i].picPath == picture[1] || this.data.category[i].picPath == picture[1] || this.data.category[i].picPath == picture[2] || this.data.category[i].picPath == picture[3]){
+      if (this.data.category[i].picPath == picture[0] || this.data.category[i].picPath == picture[1] || this.data.category[i].picPath == picture[2] || this.data.category[i].picPath == picture[3]){
         this.data.showImg[i] =false
       }else{
         this.data.showImg[i] = true
       }
-      if(this.data.category[i].infomation.length > 34){
-        this.data.category[i].infomation = this.data.category[i].infomation.substr(0,34) + "..."
-      }
+      this.data.category[i].infomation = this.data.category[i].infomation.split("+")[0];
+      // if(this.data.category[i].infomation.length > 34){
+      //   this.data.category[i].infomation = this.data.category[i].infomation.substr(0,34) + "..."
+      // }
     }
     console.log(this.data.category)
     console.log(this.data.showImg)
@@ -337,9 +384,115 @@ Page({
     console.log(this.data.count)
     this.getInfo();
   },
-  refresh:function(){
-    console.log("asd");
-  }
+ 
+  openMenu: function (res) {
+    console.log(res)
+    this.setData({
+      showMenu: true,
+      operating: res.currentTarget.id
+    })
+    if (this.data.category[res.currentTarget.id].identity == app.globalData.openid) {
+      // this.showDeleteMenu()
+      this.showMenu("delete")
+      this.setData({
+        upingMenu: '0'
+      })
+    } else {
+      this.showMenu("report")
+      this.setData({
+        upingMenu: '1'
+      })
+    }
+  },
+  //上拉删除菜单
+  showMenu: function (res) {
+    console.log(res)
+    var animation = wx.createAnimation({
+      duration: 300,
+      delay: 0,
+      timingFunction: 'linear'
+    })
+    animation.translate(0, -175).step({ duration: 300 });
+    if (res == "delete") {
+      this.setData({
+        deleteUp: animation.export(),
+      })
+    } else if (res == "report") {
+      this.setData({
+        reportUp: animation.export(),
+      })
+    }
+  },
+  //下拉菜单
+  closeMenu: function (res) {
+    console.log(res)
+    this.setData({
+      showMenu: false,
+    })
+    var animation = wx.createAnimation({
+      duration: 300,
+      delay: 0,
+      timingFunction: 'linear'
+    })
+    animation.translate(0, 175).step({ duration: 300 });
+    if (res.currentTarget.id == "0") {
+      this.setData({
+        deleteUp: animation.export(),
+      })
+    } else if (res.currentTarget.id == "1") {
+      this.setData({
+        reportUp: animation.export(),
+      })
+    }
+  },
+  deleteInfo:function(res){
+    console.log(res)
+    res.currentTarget.id = "0"
+    this.closeMenu(res)
+    var that = this
+    var id = that.data.category[that.data.operating].id
+    wx.request({
+      url: app.globalData.domain + '/deleteInfo',
+      method: 'DELETE',
+      header: app.globalData.header,
+      data:{id:id},
+      success: function (res) {
+       console.log(res)
+      }
+    })
+  },
+  reportInfo:function(res){
+    this.closeMenu(res)
+    var id = this.data.category[this.data.operating].id;
+    var openid = app.globalData.userinfo.num;
+    wx.request({
+      url: app.globalData.domain + '/report',
+      method: 'POST',
+      header: app.globalData.header,
+      data: {
+         reportid: id,
+         userid: openid,
+         },
+      success: function (res) {
+        console.log(res)
+      }
+    })
+  },
+  scrollFn(e) {
+    // 防抖，优化性能
+    // 当滚动时，滚动条位置距离页面顶部小于设定值时，触发下拉刷新
+    // 通过将设定值尽可能小，并且初始化scroll-view组件竖向滚动条位置为设定值。来实现下拉刷新功能，但没有官方的体验好
+    clearTimeout(this.timer)
+    console.log(e)
+    if (e.detail.scrollTop < this.data.scrollTop) {
+      this.timer = setTimeout(() => {
+        this.refresh()
+      }, 350)
+    }
+  },
+  refresh: function () {
+    console.log("asdsdada");
+  },
 })
 // {
 //   time: "2019-01-18", kind: "遗失", infomation: 'QdakjdAajd卡的开始能打开呢看快递那上课看的看书看看到卡死你打开看到卡少女打卡卡死你大可是你的卡萨诺看到卡少女的爱上你看到静安寺肯德基阿萨德你看', place: '地狱狗', picPath: 'noImage'

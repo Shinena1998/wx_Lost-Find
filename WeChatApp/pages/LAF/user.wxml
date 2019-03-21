@@ -2,86 +2,57 @@
       <image class="userinfo-avatar" src="{{userPic}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{username}}</text>
 </view>
-<view class="comment">
-  <view class='logo'>消息</view>
-  <view class="contantView">
-    <view class="contant" bindtap='reply' id="4" >
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/reply.png'></image>
-        <text class="num" wx:if="{{reply}}">{{replyNum}}</text>
-      </view>
-      <text class='contantWord'>@我的</text>
-    </view>
-    <view class='contant' bindtap='about' id="5">
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/about.png'></image>
-        <text class="num" wx:if="{{about}}">{{aboutNum}}</text>
-      </view>
-      <text class='contantWord'>关于我的</text>
-    </view>
-    <view class='contant' bindtap='system' id="6">
-      <view class="imgView">
-        <image class="contantImg" src='/pages/img/system.png'></image>
-        <text class="num" wx:if="{{system}}">{{systemNum}}</text>
-      </view>
-      <text class='contantWord'>系统通知</text>
-    </view> 
-  </view>
-</view>
 
-<view class="comment">
-  <view class='logo'>信息</view>
-  <view class="contantView">
-    <view class="contant" bindtap='showInfo' id="0">
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/editing.png'></image>
-        <text class="num" wx:if="{{reply}}">{{replyNum}}</text>
-      </view>
-      <text class='contantWord'>正在发布</text>
-    </view>
-    <view class='contant' bindtap='showInfo' id="1">
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/finishInfo.png'></image>
-        <text class="num" wx:if="{{about}}">{{aboutNum}}</text>
-      </view>
-      <text class='contantWord'>已完成</text>
-    </view>
-    <view class='contant' bindtap='showInfo' id="7">
-      <view class="imgView">
-        <image class="contantImg" src='/pages/img/timeout.png'></image>
-        <text class="num" wx:if="{{system}}">{{systemNum}}</text>
-      </view>
-      <text class='contantWord'>已过期</text>
-    </view> 
+<scroll-view  scroll-y="true" class="scroll-Y" enable-back-to-top='true' scroll-with-animation="true" >
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class='action'>
+    <text class='icon-title text-blue '></text> 消息
   </view>
 </view>
-
-<view class="comment">
-  <view class='logo'>服务</view>
-  <view class="contantView">
-    <view class="contant" bindtap='showAboutMe' id="2" >
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/suggestion.png'></image>
-        <text class="num" wx:if="{{reply}}">{{replyNum}}</text>
+<view class="cu-list grid col-3 no-border">
+  <view class="cu-item" wx:for="{{msgList}}" wx:key>
+    <view bindtap='{{item.bind}}' id="{{item.id}}">
+       <image class='contantImg' src='{{item.icon}}'></image>
+      <view class="cu-tag badge" wx:if="{{item.badge!=0}}">
+        <block wx:if="{{item.badge!=1}}">{{item.badge>99?'99+':item.badge}}</block> 
       </view>
-      <text class='contantWord'>意见反馈</text>
     </view>
-    <view class='contant' bindtap='showAboutMe' id="3">
-      <view class="imgView">
-        <image class='contantImg' src='/pages/img/help.png'></image>
-        <text class="num" wx:if="{{about}}">{{aboutNum}}</text>
-      </view>
-      <text class='contantWord'>帮助</text>
-    </view>
-    <view class='contant' bindtap='showAboutMe' id="8">
-      <view class="imgView">
-        <image class="contantImg" src='/pages/img/LAF.png'></image>
-        <text class="num" wx:if="{{system}}">{{systemNum}}</text>
-      </view>
-      <text class='contantWord'>失物招领</text>
-    </view> 
+    <text>{{item.name}}</text>
   </view>
 </view>
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class='action'>
+    <text class='icon-title text-blue '></text> 信息
+  </view>
+</view>
+<view class="cu-list grid col-3 no-border">
+  <view class="cu-item" wx:for="{{infoList}}" wx:key>
+    <view bindtap='showInfo' id="{{item.id}}">
+       <image class='contantImg' src='{{item.icon}}'></image>
+      <view class="cu-tag badge" wx:if="{{item.badge!=0}}">
+        <block wx:if="{{item.badge!=1}}">{{item.badge>99?'99+':item.badge}}</block> 
+      </view>
+    </view>
+    <text>{{item.name}}</text>
+  </view>
+</view>
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class='action'>
+    <text class='icon-title text-blue '></text> 服务
+  </view>
+</view>
+<view class="cu-list grid col-3 no-border">
+  <view class="cu-item" wx:for="{{sevList}}" wx:key>
+    <view bindtap='showAboutMe' id="{{item.id}}">
+       <image class='contantImg' src='{{item.icon}}'></image>
+      <view class="cu-tag badge" wx:if="{{item.badge!=0}}">
+        <block wx:if="{{item.badge!=1}}">{{item.badge>99?'99+':item.badge}}</block> 
+      </view>
+    </view>
+    <text>{{item.name}}</text>
+  </view>
+</view>
+</scroll-view>
 <!-- <view class="info_v" bindtap='showNotFinish' id='0'>
 <view class="info_t"><view class='info_imgV'><image   class="info_img" src='/pages/img/not.png '></image> 未结束信息</view><text value=""  placeholder-style='font-size:70%;text-align:right'>{{labelNot}}</text></view>
 </view>

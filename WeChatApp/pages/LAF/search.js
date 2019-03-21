@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+   
     array: ['名称', '时间', '地点', '详情'],
     labelList: ['学生证', '身份证', '公交卡', '洗澡卡', '水杯', '雨伞', '手机', '钥匙','眼镜','大物','高数'],
     storyList:new Array(),
@@ -29,7 +30,7 @@ Page({
     strColor:"white",
     borderS: '5rpx solid #bbb;',
     timeColor:'#ddd',
-    borderT:''
+    borderT:'',
   },
   /**
    * 选择搜索类型
@@ -57,6 +58,7 @@ Page({
       })
     }
   },
+  
   bindTimeStartChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
@@ -442,5 +444,6 @@ Page({
     this.data.text = this.data.storyList[res.currentTarget.dataset.index]
     this.data.index = this.data.indexList[res.currentTarget.dataset.index]
     this.search(this.data.text, this.data.index  )
-  }
+  },
+ 
 })

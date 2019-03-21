@@ -387,6 +387,30 @@ Page({
             }
           }
         })
+        if (that.data.showValuable) {
+          that.getValuable();
+        }
+        wx.request({
+          url: app.globalData.domain + '/getPersonComment',
+          method: 'GET',
+          header: app.globalData.header,
+          data: {
+            openid: app.globalData.openid,
+          },
+          success: function (res) {
+            console.log(res)
+            app.globalData.comment = res.data;
+            if (res.data.infoNum + res.data.replyNum > 0) {
+              that.setData({
+                notice: true,
+              })
+            } else {
+              that.setData({
+                notice: false,
+              })
+            }
+          }
+        })
       }
     },50) 
     setInterval(function () {
@@ -447,41 +471,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () { 
-    var that =this
-    var id = setInterval(function(){
-      if (app.globalData.power != null && app.globalData.finish) {
-        clearInterval(id)
-        console.log(app.globalData.openid)
-        if (that.data.showValuable){
-          that.getValuable();
-        }
-        wx.request({
-          url: app.globalData.domain + '/getPersonComment',
-          method: 'GET',
-          header: app.globalData.header,
-          data: {
-            openid:app.globalData.openid,
-          },
-          success:function(res){
-            console.log(res)
-            app.globalData.comment = res.data;
-            if(res.data.infoNum+res.data.replyNum > 0){
-              that.setData({
-                notice:true,
-              })
-            }else{
-              that.setData({
-                notice: false,
-              })
-            }
-          }
-        })
-      }
-    },50)
+    var util = require('../../utils/util.js')
+    var that =this    
     setInterval(function () {
-      var date = new Date();
       that.setData({
-        date: date.toLocaleString(),
+        date: util.formatTime(new Date),
       })
     }, 1000) 
   },
@@ -514,6 +508,7 @@ Page({
         /**
         * 因为app.globalData.category是json包
         */
+
         if (res.data.length > 0){
           that.setData({
             valuable: that.data.valuable,
@@ -549,7 +544,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    
+    console.log("下拉刷新")
   },
 
   /**
@@ -740,5 +735,22 @@ Page({
         url: 'user',
       })
     }
-  }
+  },
+  Date:function (fmt) { //author: meizz   
+    var o = {
+      "M+": this.getMonth() + 1,                 //月份   
+      "d+": this.getDate(),                    //日   
+      "h+": this.getHours(),                   //小时   
+      "m+": this.getMinutes(),                 //分   
+      "s+": this.getSeconds(),                 //秒   
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+      "S": this.getMilliseconds()             //毫秒   
+    };
+    if (/(y+)/.test(fmt))
+      fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp("(" + k + ")").test(fmt))
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+  } 
 })

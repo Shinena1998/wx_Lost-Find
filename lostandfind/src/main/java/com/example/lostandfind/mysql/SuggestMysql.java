@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class SuggestMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private int id;
 
     private String nickName;
 
@@ -23,6 +23,16 @@ public class SuggestMysql {
 
     private String contactWay;
 
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getContactWay() {
         return contactWay;
     }
@@ -31,12 +41,8 @@ public class SuggestMysql {
         this.contactWay = contactWay;
     }
 
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNickName() {

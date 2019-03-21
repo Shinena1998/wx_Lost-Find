@@ -24,6 +24,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     //在before前
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("这是拦截器");
 //        if(request.getRequestURI().equals(url)){
 //            return true;
 //        }else {
@@ -60,6 +61,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
        //logger.info("postHandle");在before后
+        System.out.println("这是postHandle");
     }
 
     @Override

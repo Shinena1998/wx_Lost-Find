@@ -10,8 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 public interface CommentRespository extends JpaRepository<CommentMysql,Integer> {
-    @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
-    public List<CommentMysql> findById(int id);
 //    @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
     public List<CommentMysql> findByInfoOrderByIdDesc(InfoMysql info);
 //    @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)

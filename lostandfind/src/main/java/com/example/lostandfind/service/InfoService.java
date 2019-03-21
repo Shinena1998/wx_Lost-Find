@@ -52,6 +52,7 @@ public class InfoService {
         if (infoService.hasError(infoMysql)) {
             return ResultUtil.error(12, "填全内容");
         }
+        infoMysql.setCount(0);
         infoMysql.setTimestamps((new Date().getTime())/1000);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         infoMysql.setLoststamp(simpleDateFormat.parse(infoMysql.getTime()).getTime()/1000 + 1000);
@@ -62,8 +63,26 @@ public class InfoService {
     @Transactional
     public Result passValuable(int id, boolean confirm, InfoRepository infoRepository){
         InfoMysql infoMysql =  infoRepository.findById(id).get();
-        infoMysql.setaBoolean(confirm);
+        if(confirm){
+            infoMysql.setaBoolean(confirm);
+        }else{
+            infoMysql.setValuable(confirm);
+        }
         infoRepository.save(infoMysql);
         return ResultUtil.success();
+    }
+
+    public int addCount(int id, InfoRepository infoRepository){
+        InfoMysql infoMysql = infoRepository.findById(id).get();
+        int count = infoMysql.getCount();
+        infoMysql.setCount(++count);
+        infoRepository.save(infoMysql);
+        return count;
+    }
+
+    public boolean deleteInfo(int id, InfoRepository infoRepository){
+        InfoMysql infoMysql = infoRepository.findById(id).get();
+        infoRepository.delete(infoMysql);
+        return true;
     }
 }

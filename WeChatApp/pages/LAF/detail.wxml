@@ -16,7 +16,6 @@
   <text >{{detailInfo.infomation}}</text>
 </view>
 <image style='height:{{imgHeight}}px;width:{{imgWidth}}px' src = "{{detailInfo.picPath}}"></image>
-
 <view class="content">
   <view class='contentWay'>
     <image style='height:90%;width:20%;margin-left:3%' src='{{contactWay}}'></image>
@@ -62,7 +61,7 @@
 <view class='top' style='position: absolute; bottom:{{input_bottom}}'>
 <view class='top_search'>
 <view class='top_sh_left'><image src='/pages/img/comment.png' style= 'padding-left:40%;height:50%;width:50%;'></image></view>
-<input type="text" class="top_searchText" placeholder='{{placeHolder}}' confirm-type="send" bindconfirm="sendComment"  adjust-position='{{false}}' placeholder-class='top_searchTextPlaceholder' focus='{{inputUp}}' cursor-spacing='5'  bindblur='inputDown' value='{{inputInit}}'></input>
+<input type="text" class="top_searchText" placeholder='{{placeHolder}}' confirm-type="send" bindconfirm="sendComment"  adjust-position='true' placeholder-class='top_searchTextPlaceholder' focus='{{inputUp}}' cursor-spacing='5'  bindblur='inputDown' value='{{inputInit}}'></input>
 <view class='top_sh_right'></view>
 </view>
 </view>
@@ -131,7 +130,7 @@
   </view>
 </view>
 <view class='menuComtant' animation="{{reportUp}}" >
-  <view class="deleteMenu" bindtap='deleteComment' >
+  <view class="deleteMenu" bindtap='reportComment' >
     <image style='height:60%;width:8%;' src='/pages/img/report.png'></image>
     <text style='font-size:120%;margin-left:2%'>举报</text>
   </view>

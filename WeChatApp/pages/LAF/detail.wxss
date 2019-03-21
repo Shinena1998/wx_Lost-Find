@@ -4,6 +4,7 @@ page{
   margin-right: 3%;
   width: 94%;
   font-size: 80%;
+  background-color: white;
 }
 button::after{
 border: none;

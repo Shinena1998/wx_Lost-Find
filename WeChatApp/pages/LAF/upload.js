@@ -19,6 +19,7 @@ Page({
     Time:"请输入时间 >",
     TimeColor:'rgb(148, 145, 145)',
     array: ['QQ', '微信', '电话','无'],
+    picker: ['曲江', '金花', '莲湖'],
     index:0,
     picPath:"noImage",
     contactWay:"",
@@ -58,6 +59,7 @@ Page({
       { name: '遗失', value: '遗失', checked: false },
       { name: '招领', value: '招领', checked: false },
     ],
+    num:0,//校区选择
   },
   /**
    * 选择信息类型
@@ -130,29 +132,19 @@ Page({
     }
   },
   onHide:function(){
-    this.formReset();
-    getCurrentPages()[getCurrentPages().length - 1].onLoad()
-  },
-  onUnload:function(){
-    console.log("我卸载了发布界面");
-  },
-  formReset:function(){
-    console.log("我离开了发布界面");
   },
   onPullDownRefresh: function () {
   },
   /**
    * 设置重要事件
    */
-  valuable: function () {
-    if(this.data.pageBackgroundColor == null){
+  valuable: function (e) {
+    if (e.detail.value){
       this.setData({
-        pageBackgroundColor:'rgb(255, 72, 0)',
         isValuable:true
       });
     }else {
       this.setData({
-        pageBackgroundColor: null,
         isValuable: false
       });
     }
@@ -183,32 +175,45 @@ Page({
    */
   contentCss: function (res) {
     console.log(res.detail.value)
-    var qq = /^\d{8,10}$/
-    var phone = /^1\d{10}$/
-    var wechat = /^\w{1,}$/
+    // var qq = /^\d{8,10}$/
+    // var phone = /^1\d{10}$/
+    // var wechat = /^\w{1,}$/
+    // var content = res.detail.value
+    // if (this.data.index == 0 && (!qq.test(content)) ){
+    //   wx.showToast({
+    //     title: '请检查输入qq号',
+    //     icon: 'none',
+    //     duration: 1000,
+    //   })
+    // } else if (this.data.index == 1 && (!wechat.test(content))) {
+    //   wx.showToast({
+    //     title: '请检查输入微信号',
+    //     icon: 'none',
+    //     duration: 1000,
+    //   })
+    // }else if (this.data.index == 2 && (!phone.test(content)) ){
+    //   wx.showToast({
+    //     title: '请检查输入电话号码',
+    //     icon: 'none',
+    //     duration: 1000,
+    //   })
+    // } else if (this.data.index == 3){
+      
+    // }else {
+    //   this.data.contactWay = this.data.index+"+"+content;
+    // }
     var content = res.detail.value
-    if (this.data.index == 0 && (!qq.test(content)) ){
-      wx.showToast({
-        title: '请检查输入qq号',
-        icon: 'none',
-        duration: 1000,
-      })
-    } else if (this.data.index == 1 && (!wechat.test(content))) {
-      wx.showToast({
-        title: '请检查输入微信号',
-        icon: 'none',
-        duration: 1000,
-      })
-    }else if (this.data.index == 2 && (!phone.test(content)) ){
+    var phone = /^1\d{10}$/
+    if(content != "" && !phone.test(content)){
       wx.showToast({
         title: '请检查输入电话号码',
         icon: 'none',
         duration: 1000,
       })
-    } else if (this.data.index == 3){
-      
-    }else {
-      this.data.contactWay = this.data.index+"+"+content;
+    } else if (content != "" && phone.test(content)) {
+      this.data.contactWay = "2+" + content;
+    } else if (content == ""){
+      this.data.contactWay = "3+失主自取";
     }
     console.log(this.data.contactWay)
   },
@@ -221,6 +226,15 @@ Page({
       Time: e.detail.value,
       TimeColor:null
     })
+  },
+  PickerChange(e) {
+    console.log(e);
+    var p = this.data.picker[e.detail.value];
+    this.setData({
+      num: e.detail.value,
+      place: p
+    })
+    console.log(this.data.place)
   },
   /**
  * 获取失物类型
@@ -386,7 +400,6 @@ Page({
     this.setData({
       information:value.info,
       theme:value.theme,
-      place:value.place
     })
     if(this.data.information == ""){
       this.data.information = "无"
@@ -399,25 +412,26 @@ Page({
     }
     console.log(this.data.information)
     console.log(value.place+this.data.category)
-    if (this.data.kind == "" || this.data.theme == "" || this.data.category == "" 
-      || this.data.Time == "请输入时间 >" || this.data.place == ""
-      || this.data.contactWay == "" ||
-      (this.data.contactWay == '3+失主自取' && this.data.index != 3) ){
+    if (this.data.kind == "" || this.data.theme == "" || this.data.category == ""  || this.data.place == "" ){
       /**
        * 联系方式选择无会自动将联系方式填为失主自取，此时如果改变联系方式为qq或其他，
        * 则会直接通过，提交表单，故在此拦截这种不合理的提交方式
        */
-      if (this.data.contactWay == '3+失主自取' && this.data.index != 3){
-        wx.showToast({
-          title: "请检查联系方式",
-          icon: "none",
-        })
-      }else {
-        wx.showToast({
-          title: "请填全信息",
-          icon: "none",
-        })
-      }  
+      // if (this.data.contactWay == '3+失主自取' && this.data.index != 3){
+      //   wx.showToast({
+      //     title: "请检查联系方式",
+      //     icon: "none",
+      //   })
+      // }else {
+      //   wx.showToast({
+      //     title: "请填全信息",
+      //     icon: "none",
+      //   })
+      // }  
+      wx.showToast({
+        title: "请填全信息",
+        icon: "none",
+      })
       }else {
       this.uploadInfo()
       }
@@ -484,6 +498,7 @@ Page({
                 success: function () {
                   setTimeout(function () {
                     //改变内存数据
+                    res.data.data.commentMysqlList = []
                     app.globalData.info.push(res.data.data)
                     app.globalData.isChangeInfo = true;
                     wx.switchTab({

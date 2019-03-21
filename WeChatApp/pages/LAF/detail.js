@@ -279,6 +279,7 @@ Page({
         toName:that.data.toName,
         view:view,
         toView:false,
+        identity:app.globalData.openid
       },
       success:function(res){
         console.log(res)
@@ -289,7 +290,7 @@ Page({
         info.commentInfo.content = data.content;
         info.commentInfo.id = data.id;
         info.commentInfo.time = data.time;
-        info.commentInfo.identity = data.identity;
+        info.commentInfo.uid = data.uid;
         info.commentInfo.toName = data.toName;
         info.commentInfo.toUid = data.toUid;
         info.userInfo.avatarUrl = data.avatarUrl;
@@ -304,7 +305,7 @@ Page({
       showMenu:true,
       operating:res.currentTarget.id
     })
-    if (this.data.comment[res.currentTarget.id].commentInfo.uid == app.globalData.openid){
+    if (this.data.comment[res.currentTarget.id].commentInfo.uid != app.globalData.openid){
       // this.showDeleteMenu()
       this.showMenu("delete")
       this.setData({
@@ -375,6 +376,29 @@ Page({
         that.setData({
           comment:that.data.comment
         })
+      }
+    })
+  },
+  //举报评论
+  reportComment:function(res){
+    console.log(res)
+    res.currentTarget.id = "1"
+    this.closeMenu(res)
+    var that = this
+    var id = that.data.comment[that.data.operating].commentInfo.id
+    var openid = app.globalData.userinfo.num;
+    var user_id = that.data.comment[that.data.operating].userInfo.num;
+    wx.request({
+      url: app.globalData.domain + '/reportComment',
+      method: 'POST',
+      header: app.globalData.header,
+      data: {
+        reportid: id,
+        userid: openid,
+        user_id:user_id
+      },
+      success: function (res) {
+        console.log(res)
       }
     })
   },

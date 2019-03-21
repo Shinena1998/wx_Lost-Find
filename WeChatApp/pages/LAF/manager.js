@@ -10,15 +10,63 @@ Page({
     category:[],
     infor:[],
     suggestion:[],
+    reportInfo:[],
+    reportComment:[],
     showCheck:true,
+    showReport:false,
+    shwoAdvice:false,
+    //顶部tabar栏显示
+    fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
+    borderB: ['5rpx solid #69c0ff', '', '', ''],
+    code: false,
+    remind:"",
+    id:0,
   },
-
+  category: function (res) {
+    /**
+     * 因为执行wx.navigateBack命令由detail返回service界面执行onshow（）方法，所以
+     * 要时时记录标签的值，返回时正确跳转到之前的标签，不变化app.globalData.category
+     * 的话。 从detail返回service界面标签永远是从index进入service的标签。
+     * inAboutMe 这能在我的界面显示提醒图标
+     */
+    var id =  res.currentTarget.id
+    if (id == "0") {
+      this.setData({
+        fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
+        borderB: ['5rpx solid #69c0ff', '', '', '']
+      })
+      this.setData({
+        showCheck: true,
+        showReport:false,
+        showAdvice:false
+      })
+    } else if (id == "1") {
+      this.setData({
+        fontColor: ["rgb(112, 110, 110)", "#69c0ff", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
+        borderB: ['', '5rpx solid #69c0ff', '', '']
+      })
+      this.setData({
+        showCheck: false,
+        showReport: true,
+        showAdvice: false
+      })
+      this.report()
+    } else if (id == "2") {
+      this.setData({
+        fontColor: ["rgb(112, 110, 110)", 'rgb(112, 110, 110)', "#69c0ff", 'rgb(112, 110, 110)'],
+        borderB: ['', '', '5rpx solid #69c0ff', '']
+      })
+      this.setData({
+        showCheck:false,
+        showReport: false,
+        showAdvice: true
+      })
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this
-    this.search();
   },
   /**
    * 获取重要事件数据
@@ -47,9 +95,119 @@ Page({
       },
     })  
   },
-  showCheck:function(){
+  //管理员处理贵重信息
+  comeIntoValuable: function (e) {
+    console.log(e)
+    var index = e.currentTarget.dataset.index;
+    wx.setStorageSync("info", this.data.category[index])
+    wx.setStorageSync("showType", false)
+    wx.navigateTo({
+      url: 'managerInfo',
+    })
+  },
+  //获取举报信息
+  report:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getReport',
+      method: 'GET',
+      header: app.globalData.header,
+      success: function (res) {//连接成功运行
+        console.log(res.data)
+        that.setData({
+          reportInfo: res.data,
+        })
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '系统错误' })
+      },
+      complete: function (res) {//都执行
+      },
+    })
+  },
+  //管理员处理举报信息
+  comeIntoInfo:function(e){
+    console.log(e)
+    var index = e.currentTarget.dataset.index;
+    wx.setStorageSync("info", this.data.reportInfo[1][index])
+    wx.setStorageSync("showType",true)
+    wx.navigateTo({
+      url: 'managerInfo',
+    })
+  },
+  
+  //获取举报评论
+  reportComment: function () {
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getReportComment',
+      method: 'GET',
+      header: app.globalData.header,
+      success: function (res) {//连接成功运行
+        console.log(res.data)
+        that.setData({
+          reportComment: res.data,
+        })
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '系统错误' })
+      },
+      complete: function (res) {//都执行
+      },
+    })
+  },
+  //管理员决定举报评论
+  commentReport: function (e) {
+    this.hideModal("close");
+    var that = this
+    var decide = this.data.code
+    var commentid = this.data.reportComment[0][this.data.id].reportId
+    wx.request({
+      url: app.globalData.domain + '/processComment',
+      method: 'GET',
+      data: {
+        decide: decide,
+        id: commentid,
+        operator: app.globalData.userinfo.num
+      },
+      header: app.globalData.header,
+      success: function (res) {//连接成功运行
+        console.log(res.data)
+        wx.showToast({
+          title: res.data,
+          duration: 1500,
+          success: function () {
+            that.onShow();
+          }
+        })
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '系统错误' })
+      },
+      complete: function (res) {//都执行
+      },
+    })
+  },
+  showModal1(e) {
+    console.log(e);
     this.setData({
-      showCheck:true
+      modalName: "agree",
+      code: false,
+      remind: "你的操作不会删除该信息",
+      id:e.target.id
+    })
+  },
+  showModal2(e){
+    this.setData({
+      modalName: "agree",
+      code: true,
+      remind: "你的操作将会删除该信息",
+      id: e.target.id
+    })
+  },
+  hideModal(e) {
+    this.setData({
+      modalName: null
     })
   },
   /**
@@ -63,6 +221,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.search();
+    this.getSuggestion();
+    this.report();
+    this.reportComment()
   },
 
   /**
@@ -139,12 +301,9 @@ Page({
    * 获取用户建议
    */
   getSuggestion:function(){
-    this.setData({
-      showCheck:false
-    })
     var that = this
     wx.request({
-      url: app.globalData.domain +'/suggestion',
+      url: app.globalData.domain +'/getSuggestion',
       method:"GET",
       header:app.globalData.header,
       success:function(res){

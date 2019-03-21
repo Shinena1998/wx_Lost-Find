@@ -18,17 +18,28 @@ page{
   display: flex;
   flex-direction:row;
   justify-content:space-around;
-  align-items: center;
   width:100%;
-  height:5%;
+  height:80rpx;
   padding-bottom: 1%;
   border-bottom:1rpx solid;
   border-color: wheat;
   background-color: white;
 }
+.label_c{
+  font-size:100%;
+  height:80rpx;
+  padding:0 20rpx;
+  margin:0 10rpx;
+  display: flex;
+  align-items: center;
+}
+.commentMenu{
+  width: 22rpx;
+  height: 40rpx;
+}
 .infoAll{
   width: 100%;
-  height: 94%;
+  height: 91%;
   margin-top: 1%;
 }
 .infoView{
@@ -199,4 +210,44 @@ page{
 .finishImg{
   height: 50%;
   width: 40%;
+}
+
+
+
+.menuComtant{
+  width: 100%;
+  height: 175rpx;
+  position: fixed;
+  bottom: -175px;
+  background-color: whitesmoke;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.deleteMenu{
+  display: flex;
+  height: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.cancelMenu{
+  display: flex;
+  height: 40%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.modal-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
 }
