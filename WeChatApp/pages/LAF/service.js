@@ -12,6 +12,15 @@ Page({
    * 页面的初始数据
    */
   data: {
+    userInfo: {},
+    StatusBar: app.globalData.StatusBar,
+    CustomBar: app.globalData.CustomBar,
+    Custom: app.globalData.Custom,
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    TabCur: 1,
+    scrollLeft: 0,
+    pass:false,
     showImg:[],//图片占位
     userInfo:{},
     session_key:"",
@@ -32,11 +41,24 @@ Page({
     fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)','rgb(112, 110, 110)'],
     borderB: ['5rpx solid #69c0ff','','',''],
     scrollTop: 5,
+    reportReason: ["垃圾广告","话题不相关","色情", "人身攻击", "违法信息", "其他",],
+    reason:"",
   },
   toUpload: function () {
-    wx.switchTab({
-      url: 'upload',
-    })
+    if (!app.globalData.normal) {
+      wx.showModal({
+        title: '请填写个人信息',
+        content: '点击左上角图片',
+        showCancel: false,
+        success: function () {
+          
+        }
+      })
+    }else{
+      wx.navigateTo({
+        url: 'upload',
+      })
+    }
   },
   toUser: function () {
     wx.switchTab({
@@ -53,15 +75,50 @@ Page({
    * 获取重要信息及第一页信息
    */
   onLoad: function (options) {
-    console.log(app.globalData.normal)
-    
     this.setData({
-      userInfo: app.globalData.userInfo
+      userInfo: app.globalData.userinfo
     })
 
-    this.getInfo();
+    this.getPersonInfo()
+    this.getValuable();
     console.log("onLoad")
   },
+  getValuable: function () {
+    var that = this
+    /**
+    * 获取重要信息
+    */
+    wx.request({
+      url: app.globalData.domain + '/getValuable',
+      method: 'GET',
+      header: app.globalData.header,
+      success: function (res) {
+        console.log(res)
+        app.globalData.info = app.globalData.info.concat(res.data)
+        // for (var i = 0; i < res.data.length; i++) {
+        //   that.data.valuable.push(res.data[i]);
+        //   /**
+        //    * 重要信息标志
+        //    */
+        //   that.data.imgList.push('https://yuigahama.xyz/icon/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.GdtfZS12NqUF254c4b5b884095adb13a1a52905b6ca6.png')
+        // }
+        console.log(app.globalData.valuable)
+        /**
+        * 因为app.globalData.category是json包
+        */
+
+        that.setData({
+          valuable: that.data.valuable,
+          imgList: that.data.imgList,
+        })
+        that.getInfo()
+      },
+      fail: function (res) {//连接失败执行
+        wx.showToast({ title: '网络错误' })
+      },
+    })
+  },
+  /**
   /**
    * 查看失物详细信息
    */
@@ -93,13 +150,10 @@ Page({
         })
     }else{
       wx.showModal({
-        title: '请补全信息',
-        content: '点击首页图像右下侧',
+        title: '请填写个人信息',
+        content: '点击左上角图片',
         showCancel: false,
         success: function () {
-          wx.switchTab({
-            url: 'index',
-          })
         }
       })
     }
@@ -122,6 +176,11 @@ Page({
   onReady: function () {
     console.log("onReady")
   },
+  search: function (e) {
+    wx.navigateTo({
+      url: 'search',
+    })
+  },
   /**
    * app.globalData.isChangeInfo作用是检测在detail中数据是否被更新
    * 如果更新，在本页面也进行数据更新，否则数据不变
@@ -142,17 +201,24 @@ Page({
     }
     if(app.globalData.isChangeInfo){
       app.globalData.isChangeInfo = false
-      Card = []
-      Money = []
-      Book = []
-      Else = []
-      this.data.valuable = []
-      this.data.imgList = []
+      this.onPullDownRefresh();
+      // Card = []
+      // Money = []
+      // Book = []
+      // Else = []
+      // this.data.valuable = []
+      // this.data.imgList = []
+      // this.setData({
+      //   valuable: app.globalData.valuable,
+      //   imgList: app.globalData.imgList,
+      //   notice:app.globalData.notice,
+      // })
+      // this.classify(app.globalData.info)
+    }
+    if (app.globalData.name != "请在首页填写"){
       this.setData({
-        valuable: app.globalData.valuable,
-        imgList: app.globalData.imgList,
+        pass:true
       })
-      this.classify(app.globalData.info)
     }
   },
   /**
@@ -213,9 +279,15 @@ Page({
       },
       success: function (res) {//连接成功运行
         console.log(res.data)
-        app.globalData.info=app.globalData.info.concat(res.data);
+        app.globalData.info = app.globalData.info.concat(res.data);
         console.log(app.globalData.info)
-        that.classify(res.data);
+        //第一次普通信息和贵重信息
+        if(that.data.count == 0){
+          that.classify(app.globalData.info);
+        }else{
+          //之后新信息
+          that.classify(res.data);
+        }
       },
       fail: function (res) {//连接失败执行
         wx.showToast({ title: '网络错误' })
@@ -236,13 +308,13 @@ Page({
       console.log(that.data.infor)
       for (var i = 0; i < that.data.infor.length; i++) {
         if (that.data.infor[i].category == "证件") {
-          Card.unshift(that.data.infor[i])
+          Card.push(that.data.infor[i])
         } else if (that.data.infor[i].category == "学习") {
-          Book.unshift(that.data.infor[i])
+          Book.push(that.data.infor[i])
         } else if (that.data.infor[i].category == "电子") {
-          Money.unshift(that.data.infor[i])
+          Money.push(that.data.infor[i])
         } else if (that.data.infor[i].category == "生活") {
-          Else.unshift(that.data.infor[i])
+          Else.push(that.data.infor[i])
         }
       }
       if (app.globalData.category == "") {
@@ -281,12 +353,23 @@ Page({
         that.category(app.globalData.category);
       }
     }
+    if(this.data.pull){
+      this.data.pull = false
+      setTimeout(function () {
+        // complete
+        wx.hideLoading()
+        wx.stopPullDownRefresh() //停止下拉刷新
+      }, 1000);
+    }
+    
   },
   /**
    * 进入新页面后初始化数据
    * service->detail
    */
   onHide:function(){
+    this.hideModal1()
+    app.globalData.notice = false
   },
   /**
    * 返回旧页面初始化数据
@@ -297,12 +380,26 @@ Page({
     Money = []
     Book = []
     Else = []
+    this.data.category = []
     this.data.valuable = []
     this.data.count = 0;
     this.data.imgList = []
+    app.globalData.info = []
   },
   onPullDownRefresh: function () {
-    console.log("refresh")
+    this.data.pull = true
+    wx.showLoading({
+      title: '刷新中...',
+    })
+    // wx.showNavigationBarLoading() //在标题栏中显示加载
+    this.onUnload()
+    this.onLoad()
+    //模拟加载
+    // setTimeout(function () {
+    //   // complete
+    //   wx.hideNavigationBarLoading() //完成停止加载
+    //   wx.stopPullDownRefresh() //停止下拉刷新
+    // }, 1500);
   },
   /**
    * 根据显示不同内容使相应标签变色并给category赋值
@@ -347,6 +444,7 @@ Page({
         borderB: ['', '', '', '5rpx solid #69c0ff']
       })
     }
+    this.data.category = this.data.valuable.concat(this.data.category)
     this.data.showImg = []
     //默认照片则不显示
     var picture =  ["/pages/img/199FA2CA-7177-4640-A2F3-B8F7C5FC117E.png",
@@ -386,12 +484,13 @@ Page({
   },
  
   openMenu: function (res) {
+    wx.hideTabBar()
     console.log(res)
     this.setData({
       showMenu: true,
       operating: res.currentTarget.id
     })
-    if (this.data.category[res.currentTarget.id].identity == app.globalData.openid) {
+    if (this.data.category[res.currentTarget.id].identity != app.globalData.openid) {
       // this.showDeleteMenu()
       this.showMenu("delete")
       this.setData({
@@ -425,6 +524,8 @@ Page({
   },
   //下拉菜单
   closeMenu: function (res) {
+
+    wx.showTabBar()
     console.log(res)
     this.setData({
       showMenu: false,
@@ -446,7 +547,7 @@ Page({
     }
   },
   deleteInfo:function(res){
-    console.log(res)
+    console.log("asdasd")
     res.currentTarget.id = "0"
     this.closeMenu(res)
     var that = this
@@ -458,40 +559,185 @@ Page({
       data:{id:id},
       success: function (res) {
        console.log(res)
+       wx.showToast({
+         title: '删除成功',
+       })
+       that.onPullDownRefresh()
       }
     })
   },
   reportInfo:function(res){
-    this.closeMenu(res)
-    var id = this.data.category[this.data.operating].id;
-    var openid = app.globalData.userinfo.num;
-    wx.request({
-      url: app.globalData.domain + '/report',
-      method: 'POST',
-      header: app.globalData.header,
-      data: {
-         reportid: id,
-         userid: openid,
-         },
-      success: function (res) {
-        console.log(res)
-      }
-    })
-  },
-  scrollFn(e) {
-    // 防抖，优化性能
-    // 当滚动时，滚动条位置距离页面顶部小于设定值时，触发下拉刷新
-    // 通过将设定值尽可能小，并且初始化scroll-view组件竖向滚动条位置为设定值。来实现下拉刷新功能，但没有官方的体验好
-    clearTimeout(this.timer)
-    console.log(e)
-    if (e.detail.scrollTop < this.data.scrollTop) {
-      this.timer = setTimeout(() => {
-        this.refresh()
-      }, 350)
+    var that = this
+    if(this.data.reason == ""){
+      wx.showToast({
+        title: '请选择举报理由',
+        icon:"none"
+      })
+    }else{
+      console.log(res)
+      this.hideModal(res)
+      var id = this.data.category[this.data.operating].id;
+      var openid = app.globalData.userinfo.num;
+      var reason = this.data.reason;
+      wx.request({
+        url: app.globalData.domain + '/report',
+        method: 'POST',
+        header: app.globalData.header,
+        data: {
+          reportid: id,
+          userid: openid,
+          reason:reason,
+        },
+        success: function (res) {
+          wx.showToast({
+            title: res.data,
+            icon: "none"
+          })
+        }
+      })
     }
+  },
+  reportReasonChange: function (e) {
+    console.log(e);
+    this.data.reason = e.detail.value;
   },
   refresh: function () {
     console.log("asdsdada");
+  },
+  showModal(e) {
+    this.setData({
+      modalName: "report"
+    })
+  },
+  hideModal(e) {
+    this.setData({
+      modalName: null
+    })
+    e.currentTarget.id  = 1;
+    this.closeMenu(e)
+  },
+  showModal1(e) {
+    this.setData({
+      modalName: "viewModal",
+      pass:false
+    })
+  },
+  hideModal1(e) {
+    this.setData({
+      modalName: null,
+      pass: true
+    })
+  },
+  submitInfo: function () {
+    this.setData({
+      depart: this.data.depart,
+      classes: this.data.classes,
+      num: this.data.num,
+      phone: this.data.phone,
+      name: this.data.name
+    })
+    var that = this
+    setTimeout(function () {
+      if (that.data.depart == "" || that.data.classes == "" ||
+        that.data.num == "" || that.data.name == "" ||
+        that.data.phone == "") {
+        wx.showToast({
+          title: '请填全信息',
+          icon: 'none'
+        })
+      } else {
+        wx.request({
+          url: app.globalData.domain + '/writePersonInfo',
+          method: 'POST',
+          header: app.globalData.header,
+          data: {
+            user: app.globalData.userinfo,
+            depart: that.data.depart,
+            classes: that.data.classes,
+            num: that.data.num,
+            phone: that.data.phone,
+            name: that.data.name
+          },
+          success: function (res) {
+            if (res.statusCode == 200) {
+              wx.showToast({
+                title: '填写成功',
+                success: function () {
+                  that.hideModal1();
+                }
+              })
+              app.globalData.personinfo = res.data
+              app.globalData.name = that.data.name
+              app.globalData.school = true
+            }
+          }
+        })
+      }
+    }, 100)
+  },
+  getPersonInfo: function () {
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPersonInfo',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+      },
+      success: function (res) {
+        console.log("personInfo")
+        console.log(res)
+        if (res.data.name != null) {
+          that.setData({
+            PersonInfo: false,
+            depart: res.data.depart,
+            classes: res.data.classes,
+            num: res.data.num,
+            phone: res.data.phone,
+            name: res.data.name
+          })
+          app.globalData.name = res.data.name
+          app.globalData.personinfo = res.data
+        }
+      }
+    })
+  },
+  personInfo: function (res) {
+    this.data.formId = this.data.formId + res.detail.formId + '+'
+    this.submitInfo()
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/writeFormId',
+      method: 'POST',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+        formId: this.data.formId
+      },
+      success: function (res) {
+      }
+    })
+  },
+  formSubmit1: function (res) {
+    this.data.count = this.data.count + 1;
+    if (this.data.count < 5) {
+      this.data.formId = this.data.formId + res.detail.formId + '+'
+    } else {
+      this.data.formId = res.detail.formId + '+';
+      this.data.count = 1
+    }
+    console.log(this.data.formId)
+  },
+  toManager: function () {
+    if (app.globalData.isManager) {
+      wx.navigateTo({
+        url: 'manager',
+      })
+    } else {
+      wx.switchTab({
+        url: 'user',
+      })
+    }
   },
 })
 // {

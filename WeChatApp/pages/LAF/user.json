@@ -3,5 +3,6 @@
   "navigationBarBackgroundColor": "#69c0ff",
   "navigationBarTitleText": "个人主页",
   "navigationBarTextStyle": "white",
-  "enablePullDownRefresh": true
+  "disableScroll": true,
+  "navigationStyle": "custom"
 }

@@ -4,9 +4,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    write:false,
+    fullname:"无",
+    showName:false,
     decode:true,
     msg: [],
-    savedFilePath:"/pages/img/addPic.png ",
+    filePath:'',
+    savedFilePath:"/pages/img/addPic.png",
     pictureCssPaths: ["/pages/img/199FA2CA-7177-4640-A2F3-B8F7C5FC117E.png",
       "/pages/img/27C36CF5-7208-4527-B3BA-70333A1B09CF.png",
       "/pages/img/87911B73-D05B-4A54-AFAF-BC667C6E4964.png",
@@ -18,7 +22,7 @@ Page({
     time:"2018-11-2",
     Time:"请输入时间 >",
     TimeColor:'rgb(148, 145, 145)',
-    array: ['QQ', '微信', '电话','无'],
+    array: ['电话', '微信', 'QQ','无'],
     picker: ['曲江', '金花', '莲湖'],
     index:0,
     picPath:"noImage",
@@ -60,6 +64,7 @@ Page({
       { name: '招领', value: '招领', checked: false },
     ],
     num:0,//校区选择
+    count:0,
   },
   /**
    * 选择信息类型
@@ -74,7 +79,8 @@ Page({
         findBC: "#e8e8e8",
         borderF: "",
         kind:'遗失',
-        infoCss: app.globalData.infoLostCss
+        infoCss: app.globalData.infoLostCss,
+        showName:false,
       })
     }else if(id ==2 ){
       this.setData({
@@ -83,7 +89,8 @@ Page({
         findBC: "white",
         borderF: "5rpx solid #fafafa;",
         kind: '招领',
-        infoCss: app.globalData.infoFindCss
+        infoCss: app.globalData.infoFindCss,
+        showName:true
       })
     }
   },
@@ -92,11 +99,17 @@ Page({
    */
   onLoad: function (options) {
     this.data.openId = app.globalData.openid;
+    var util = require('../../utils/util.js')
+    var date = util.formatTime(new Date).split(" ")[0].split("/").join("-")
     this.setData({
-      time: app.time,
-      Time: app.time
+      time: date,
+      Time: date
     })
     console.log(app.time)
+    this.setData({
+      contactWay:"0+"+app.globalData.personinfo.phone,
+      contact: app.globalData.personinfo.phone
+    })
   },
   toService:function(){
     wx.switchTab({
@@ -161,11 +174,13 @@ Page({
     if(this.data.index == 3){
       this.setData({
         contactWay: '3+失主自取',
-        contact:"失主自取"
+        contact:"失主自取",
+        write:true
       })
     }else{
       this.setData({
-        contact: ""
+        contact: "",
+        write:false
       })
     }
   },
@@ -175,45 +190,32 @@ Page({
    */
   contentCss: function (res) {
     console.log(res.detail.value)
-    // var qq = /^\d{8,10}$/
-    // var phone = /^1\d{10}$/
-    // var wechat = /^\w{1,}$/
-    // var content = res.detail.value
-    // if (this.data.index == 0 && (!qq.test(content)) ){
-    //   wx.showToast({
-    //     title: '请检查输入qq号',
-    //     icon: 'none',
-    //     duration: 1000,
-    //   })
-    // } else if (this.data.index == 1 && (!wechat.test(content))) {
-    //   wx.showToast({
-    //     title: '请检查输入微信号',
-    //     icon: 'none',
-    //     duration: 1000,
-    //   })
-    // }else if (this.data.index == 2 && (!phone.test(content)) ){
-    //   wx.showToast({
-    //     title: '请检查输入电话号码',
-    //     icon: 'none',
-    //     duration: 1000,
-    //   })
-    // } else if (this.data.index == 3){
-      
-    // }else {
-    //   this.data.contactWay = this.data.index+"+"+content;
-    // }
-    var content = res.detail.value
+    var qq = /^\d{8,10}$/
     var phone = /^1\d{10}$/
-    if(content != "" && !phone.test(content)){
+    var wechat = /^\w{1,}$/
+    var content = res.detail.value
+    if (this.data.index == 2 && (!qq.test(content)) ){
+      wx.showToast({
+        title: '请检查输入qq号',
+        icon: 'none',
+        duration: 1000,
+      })
+    } else if (this.data.index == 1 && (!wechat.test(content))) {
+      wx.showToast({
+        title: '请检查输入微信号',
+        icon: 'none',
+        duration: 1000,
+      })
+    }else if (this.data.index == 0 && (!phone.test(content)) ){
       wx.showToast({
         title: '请检查输入电话号码',
         icon: 'none',
         duration: 1000,
       })
-    } else if (content != "" && phone.test(content)) {
-      this.data.contactWay = "2+" + content;
-    } else if (content == ""){
-      this.data.contactWay = "3+失主自取";
+    } else if (this.data.index == 3){
+      
+    }else {
+      this.data.contactWay = this.data.index+"+"+content;
     }
     console.log(this.data.contactWay)
   },
@@ -299,10 +301,9 @@ Page({
         sizeType: 'compressed',
         success: function (res) {
           console.log("a" + res)
-          wx.showToast({
+          wx.showLoading({
             title: '正在发送',
-            icon: 'loading',
-            duration: 2500,
+            mask: true,
           })
           wx.getImageInfo({
             src: res.tempFilePaths[0],
@@ -314,16 +315,18 @@ Page({
               that.data.ImgWidth = res.width
               console.log(res)
               that.writeInfo()
+              
+            }, fail: function (e) {
+              console.log(e)
             }
           })
           that.setData({
-            /**
-             * 1.在视图界面显示上传图片
-             * 2.记录上传图片的临时文件路径，以便后面上传至服务器
-             */
-            savedFilePath: res.tempFilePaths[0],
-            isUploadPic: true
+            isUploadPic: true,
+            filePath: res.tempFilePaths[0]
           })
+          console.log(res.tempFilePaths[0])
+        },fail:function(e){
+          console.log(e)
         }
       })
     }else{
@@ -344,7 +347,7 @@ Page({
       */
       wx.uploadFile({
         url: app.globalData.domain + '/uploadImage',
-        filePath: that.data.savedFilePath,
+        filePath: that.data.filePath,
         name: 'file',
         formData: {
           height: that.data.ImgHeight,
@@ -355,6 +358,7 @@ Page({
         method: "POST",
         header: app.globalData.header,
         success: function (res) {
+          wx.hideLoading()
           wx.showToast({
             title: '上传成功',
             duration: 1000,
@@ -364,7 +368,11 @@ Page({
             var info = JSON.parse(res.data)
             console.log(info.imgInfo)
             console.log(info.imgPath)
-            that.setData({
+            that.setData({/**
+             * 1.在视图界面显示上传图片
+             * 2.因为background-image只支持base64和http
+             */
+              savedFilePath: info.imgPath,
               picPath: info.imgPath,
               imgInfo: info.imgInfo
             })
@@ -390,6 +398,10 @@ Page({
    * 提交用户填写的失物数据
    */
   formSubmit: function (e) {
+    wx.showLoading({
+      title: '正在提交',
+      mask: true,
+    })
     this.data.formId = this.data.formId + e.detail.formId + '+'
     this.setData({
       formId: this.data.formId
@@ -401,6 +413,11 @@ Page({
       information:value.info,
       theme:value.theme,
     })
+    if(this.data.showName){
+      if(value.fullname != ""){
+        this.data.fullname = value.fullname
+      }
+    }
     if(this.data.information == ""){
       this.data.information = "无"
     }
@@ -446,9 +463,12 @@ Page({
   */
   uploadInfo:function(){
     console.log(app.globalData.userinfo)
+    if(this.data.contactWay == ""){
+      this.data.contactWay = "3+失主自取"
+    }
     var that= this
     wx.request({
-      url: app.globalData.domain +'/msg',
+      url: app.globalData.domain +'/msg/'+this.data.fullname,
       method: "POST",
       header: app.globalData.header,
       data: {
@@ -468,6 +488,7 @@ Page({
       },
       success: function (res) {
         console.log(res)
+        wx.hideLoading();
         if (res.statusCode == 200) {
           if (res.data.code == 12) {
             console.log("asd" + that.data.openId)
@@ -484,8 +505,9 @@ Page({
                 duration: 1500,
                 success: function () {
                   setTimeout(function () {
-                    wx.switchTab({
-                      url: 'index',
+                    app.globalData.isChangeInfo = true;
+                    wx.navigateBack({
+                      delta: 1,
                     })
                   }, 1500)
                 }
@@ -498,11 +520,13 @@ Page({
                 success: function () {
                   setTimeout(function () {
                     //改变内存数据
-                    res.data.data.commentMysqlList = []
-                    app.globalData.info.push(res.data.data)
+                    // if (app.globalData.info.length > 0){
+                    //   res.data.data.commentMysqlList = []
+                    //   app.globalData.info.push(res.data.data)
+                    // }
                     app.globalData.isChangeInfo = true;
-                    wx.switchTab({
-                      url: 'service',
+                    wx.navigateBack({
+                      delta:1,
                     })
                   }, 1000)
                 }
@@ -520,11 +544,13 @@ Page({
   },
   //获取formId
   formSubmit1:function(res){
-    console.log(res.detail.formId)
-    this.data.formId = this.data.formId + res.detail.formId + '+'
-    this.setData({
-      formId:this.data.formId
-    })
+    this.data.count = this.data.count+1;
+    if (this.data.count < 5){
+      this.data.formId = this.data.formId + res.detail.formId + '+'
+    }else{
+      this.data.formId = res.detail.formId + '+';
+      this.data.count = 1
+    }
     console.log(this.data.formId)
   },
   /**
@@ -585,6 +611,11 @@ Page({
     this.setData({
       detailInfo: {},
       hasCardInfo: false
+    })
+  },
+  returnS:function(){
+    wx.navigateBack({
+      delta: 1,
     })
   }
 })

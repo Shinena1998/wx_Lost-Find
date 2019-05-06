@@ -1,6 +1,7 @@
-
+<image src='/pages/img/bizhi.jpg' class="bizhi" wx:if="{{endload}}"></image>
 <view style='height:100%;width100%'>
-<view class="userinfo">
+<block wx:if="{{indexView}}">
+<!-- <view class="userinfo">
    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
       <view class='avatarView' bindtap="toManager">
@@ -24,15 +25,14 @@
       </view>
       </view>
     </block>
-</view>
-<view class='top'>
+</view> -->
+<!-- <view class='top'>
 <view class='top_search'>
 <view class='top_sh_left'><image src='/pages/img/timg.png' style= 'padding-left:40%;height:50%;width:60%;'></image></view>
-<!-- <input type="text" class="top_searchText" placeholder='搜索需要信息' bindtap='search' placeholder-class='top_searchTextPlaceholder'></input> -->
 <view class="top_searchText" bindtap='search'> <text class="top_searchTextPlaceholder">搜索需要信息</text></view>
 <view class='top_sh_right'></view>
 </view>
-</view>
+</view> -->
 
 <!-- <scroll-view scroll-x="true" scroll-into-view="{{toIndex}}"class="thingInfo" style='white-space:nowrap;' bindscroll="firstInfo"> -->
 <!-- <view class="thingInfoView"> -->
@@ -49,13 +49,13 @@
 
 <block wx:if="{{showValuable}}">
 <swiper-item>
-<image style='width:100%;height:100%' src='/pages/img/yuigahama.png '></image>
+<image style='width:100%;height:100%' src='/pages/img/timg.jpeg '></image>
 </swiper-item>
 <swiper-item>
-<image style='width:100%;height:100%' src='/pages/img/yuigahama1.png '></image>
+<image style='width:100%;height:100%' src='/pages/img/timg1.jpeg '></image>
 </swiper-item>
 <swiper-item>
-<image style='width:100%;height:100%' src='/pages/img/yuigahama3.png '></image>
+<image style='width:100%;height:100%' src='/pages/img/timg2.jpeg '></image>
 </swiper-item>
 </block>
 <block wx:else>
@@ -83,10 +83,49 @@ style="background-image: url({{imgList[index]}})">
 </block>
 </swiper>
 
+<text></text>
+
 <view class="remind">
-<view style='display:flex;width:100%;height:90%;align-items:center'>
-<image class="logoLeft" src='/pages/img/2D03FA95-7694-4BDB-AEF0-37F7E9DD853A.png'></image>
-<text class="logoRight" >{{remind}}</text></view></view>
+  <view style='display:flex;width:100%;height:100%;align-items:center'>
+    <image class="logoLeft" src='/pages/img/notice.png'></image>
+    <!-- <text class="logoRight"  style='color:#ff7a45;font-size:24rpx'>{{remind}}</text> -->
+    <scroll-view class="container">
+      <view class="scrolltxt">
+        <view class="marquee_box">
+          <view class="marquee_text" style="transform:translateX(-{{marqueeDistance}}px)">
+            <text>{{remind}}</text>
+            <text style="margin-right:{{marquee_margin}}px;"></text>
+            <text style="margin-right:{{marquee_margin}}px;">{{remind}}</text>   
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<view class="cu-list menu {{menuBorder?'sm-border':''}} {{menuCard?'card-menu margin-top':''}} margin-top" >
+  <view class="cu-item {{menuArrow?'arrow':''}}" bindtap='toNews'>
+    <view class='content'>
+      <text class='icon-newshot '></text>
+      <text style='font-size:28rpx'>权益周报</text>
+    </view>
+    <view class='action'>
+        <text class='icon-right text-grey'></text> 
+    </view>
+  </view>
+  <view class="cu-item {{menuArrow?'arrow':''}}" bindtap='toThanks'>
+    <view class='content'>
+      <text class='icon-friend '></text>
+      <text style='font-size:28rpx'>感谢墙</text>
+    </view>
+    <view class='action'>
+        <text class='icon-right text-grey'></text> 
+    </view>
+  </view>
+</view>
+
+<!-- <image src="/pages/img/BB7D134A40545F087CDCFB7E0B0F4987.jpg " class="shouzhang"></image> -->
+
 
 <view class="info">
 <view class='evaluate' bindtap='openEva'>
@@ -94,69 +133,82 @@ style="background-image: url({{imgList[index]}})">
 <image class='evaluateImage' src='/pages/img/evaluate.png'></image>
 <text class='evaluate_word'>评价</text>
 </view>
-<image class='evaluate_remind' src='/pages/img/{{openEva}}.png'></image>
+<!-- <image class='evaluate_remind' src='/pages/img/{{openEva}}.png'></image> -->
+<text class='{{openEva}} text-grey'></text> 
 </view>
 <block wx:if='{{evaluate}}'>
 <view class='evaluateInfo'>
 <text class="word">用户界面</text>
 <view class="evaluateLevel">
 <view wx:for="{{uiList}}" bindtap='ui' wx:for-item="ui" data-index='{{index}}' wx:key="name" class="star">
-<image style='width:100%;height:100%' src="/pages/img/evaluateStar{{ui}}.png "></image>
+<!-- <image style='width:100%;height:100%' src="/pages/img/evaluateStar{{ui}}.png "></image> -->
+<text class='icon {{ui}}  text-orange'></text>
 </view>
 </view>
-<text style='font-size:80%;padding-left:2%;'>{{ui}}</text>
+<text style='font-size:80%;padding-left:2%;color:#8c8c8c'>{{ui}}</text>
 </view>
 
 <view class='evaluateInfo'>
 <text class="word">用户体验</text>
 <view class="evaluateLevel">
 <view wx:for="{{feelList}}" bindtap='feel' wx:for-item="feel" data-index='{{index}}' wx:key="name" class="star">
-<image style='width:100%;height:100%' src="/pages/img/evaluateStar{{feel}}.png "></image> 
+<!-- <image style='width:100%;height:100%' src="/pages/img/evaluateStar{{feel}}.png "></image>  -->
+<text class='icon {{feel}}  text-orange'></text>
 </view>
 </view>
-<text style='font-size:80%;padding-left:2%;'>{{feel}}</text>
+<text style='font-size:80%;padding-left:2%;color:#8c8c8c'>{{feel}}</text>
 </view>
 
 <view class='evaluateInfo'>
 <text class="word">有用程度</text>
 <view class="evaluateLevel">
 <view wx:for="{{useList}}" bindtap='use' wx:for-item="use" data-index='{{index}}' wx:key="name" class="star" >
-<image style='width:100%;height:100%' src="/pages/img/evaluateStar{{use}}.png "></image> 
+<!-- <image style='width:100%;height:100%' src="/pages/img/evaluateStar{{use}}.png "></image>  -->
+<text class='icon {{use}}  text-orange'></text>
 </view>
 </view>
-<text style='font-size:80%;padding-left:2%;'>{{use}}</text>
+  <text style='font-size:80%;padding-left:2%;color:#8c8c8c'>{{use}}</text>
 </view>
 <view class='evaluateInfo'>
 <text class="word">加载速度</text>
 <view class="evaluateLevel">
 <view wx:for="{{loadList}}" bindtap='load' wx:for-item="load" data-index='{{index}}' wx:key="name" class="star" >
-<image style='width:100%;height:100%' src="/pages/img/evaluateStar{{load}}.png "></image> 
+<!-- <image style='width:100%;height:100%' src="/pages/img/evaluateStar{{load}}.png "></image>  -->
+<text class='icon {{load}}  text-orange'></text>
 </view>
 </view>
-<text style='font-size:80%;padding-left:2%;'>{{load}}</text>
+<text style='font-size:80%;padding-left:2%;color:#8c8c8c'>{{load}}</text>
 </view>
 <text class="advice">如果您有具体建议，请点击个人主页->意见反馈</text>
 </block>
 </view>
 
-<view class='author'>
+<!-- <view class='author'>
 <image src='/pages/img/34223B0D-CCBB-4951-94D4-45C621108F30.png' style='width:8%;height:100%'></image>
 <text style='font-size:80%;color:rgb(112, 110, 110)'>:由比滨结衣</text>
 <image src='/pages/img/FF5E47A8-9C0D-445B-AE0B-707B1CC75938.png' style='width:7%;height:100%;margin-left:5%'></image>
 <text style='font-size:90%;color:rgb(112, 110, 110); text-align:center'>:Shinena1998</text>
-</view>
-</view>
+</view> -->
 
-<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
-<view class="modal-dialog" wx:if="{{showModal}}">
-<view class="modal-title"><text>声明与条款</text></view>
-  <view class='modal-content'>为了能够确定寻物或是招领发起者的身份，小程序需要确定用户标识，您是否同意授权？</view>
-  <view class='modal-content1'><text class="btn-cancel">* 头像，昵称，openid等</text></view>
-  <view class="modal-footer">
-    <!-- <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view> -->
-    <text class="btn-cancel" bindtap="onCancel" type="default" plain='true'>取消</text>
-    <!-- <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view> -->
-    <button class='btn-confirm' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>同意并继续</button>
+</block>
+</view>
+<view class="cu-modal {{modalName=='login'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>微信登录</view>
+      <view class='action' bindtap='hideModal'>
+        <text class='icon-close text-red'></text>
+      </view>
+    </view>
+    <view class='padding-xl'>
+      登录小程序后可使用更多功能
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class='action'>
+        <button class='cu-btn line-green text-green' bindtap='hideModal'>取消</button>
+        <button class='cu-btn bg-green margin-left' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>登录</button>
+      </view>
+    </view>
   </view>
 </view>
 

@@ -6,6 +6,15 @@ Page({
    * 页面的初始数据
    */
   data: {
+    stop:0,
+    marqueePace: 1,//滚动速度
+    marqueeDistance: 0,//初始滚动距离
+    marquee_margin: 30,
+    size: 15,
+    interval: 20, // 时间间隔
+    notice:false,
+    indexView:false,
+    endload:true,
     date:null,
     image_show: false,
     showModal: false,
@@ -14,7 +23,7 @@ Page({
     suggestion:"",
     logoLeft: "/pages/img/logo.png",
     logoRight:"/pages/img/2014062374843457.png",
-    remind:"申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之",
+    remind:"申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之    本平台只负责信息传递，失物的保管及完整性由当事人（拾物者）自行负责     发布失物或寻物信息请注意您的个人信息泄漏，由此造成的手机骚扰等损失本平台不负任何责任    当有失主已确认失物时，双方自行商讨归还失物，发布消息者及时结束消息    信息的真实性由发布者自行负责，本平台不负任何责任     通过本平台发布的信息发生任何意外均与本平台无关",
     userInfo:{},
     docode:true,
     hasUserInfo: false,
@@ -25,11 +34,11 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     //评价
     evaluate:false,
-    openEva: 'open',//评价图片转化
-    uiList: ['N', 'N', 'N', 'N', 'N'],
-    feelList: ['N', 'N', 'N', 'N', 'N'],
-    useList: ['N', 'N', 'N', 'N', 'N'],
-    loadList: ['N', 'N', 'N', 'N', 'N'],
+    openEva: 'icon-right',//评价图片转化
+    uiList: ['icon--star', 'icon--star', 'icon--star', 'icon--star', 'icon--star'],
+    feelList: ['icon--star', 'icon--star', 'icon--star', 'icon--star', 'icon--star'],
+    useList: ['icon--star', 'icon--star', 'icon--star', 'icon--star', 'icon--star'],
+    loadList: ['icon--star', 'icon--star', 'icon--star', 'icon--star', 'icon--star'],
     ui:' ',
     feel:' ',
     use:' ',
@@ -52,124 +61,22 @@ Page({
   }, 
   //补全信息
   Write_userinfo:function(){
-    if (this.data.showInfo) {
-      this.setData({
-        showInfo: false,
-      })  
-    } else {
-      this.setData({
-        showInfo: true,
-      })
-    }
-  },
-  depart: function (e) {
-    if (e.detail.value != "") {
-      this.data.depart = e.detail.value
-    } else {
-      wx.showToast({
-        title: '院系不能为空',
-        icon: 'none'
-      })
-    }
-  },
-  classes: function (e) {
-    if (e.detail.value != "") {
-      this.data.classes = e.detail.value
-    } else {
-      wx.showToast({
-        title: '班级不能为空',
-        icon: 'none'
-      })
-    }
-  },
-  num: function (e) {
-    var num = /^\d{10}$/
-    if (num.test(e.detail.value)){
-      this.data.num = e.detail.value
-    }else{
-      wx.showToast({
-        title: '请检查学号是否正确',
-        icon:'none'
-      })
-    }
-  },
-  name: function (e) {
-    if (e.detail.value != "") {
-      this.data.name = e.detail.value
-    } else {
-      wx.showToast({
-        title: '姓名不能为空',
-        icon: 'none'
-      })
-    }
-  },
-  phone: function (e) {
-    var phone = /^1\d{10}$/
-    if (phone.test(e.detail.value)) {
-      this.data.phone = e.detail.value
-    } else {
-      wx.showToast({
-        title: '请检查电话是否正确',
-        icon: 'none'
-      })
-    }
-  },
-  submitInfo:function(){
-    this.setData({
-      depart: this.data.depart,
-      classes: this.data.classes,
-      num: this.data.num,
-      phone: this.data.phone,
-      name: this.data.name
+    wx.navigateTo({
+      url: 'showInfo',
     })
-    var that = this
-    setTimeout(function (){
-      if (that.data.depart == "" || that.data.classes == "" ||
-        that.data.num == "" || that.data.name == "" ||
-        that.data.phone == "") {
-        wx.showToast({
-          title: '请填全信息',
-          icon: 'none'
-        })
-      } else {
-        wx.request({
-          url: app.globalData.domain + '/writePersonInfo',
-          method:'POST',
-          header: app.globalData.header,
-          data:{
-            openid: app.globalData.openid,
-            depart:that.data.depart,
-            classes:that.data.classes,
-            num:that.data.num,
-            phone:that.data.phone,
-            name:that.data.name
-          },
-          success:function(res){
-            if(res.statusCode == 200){
-              wx.showToast({
-                title: '填写成功',
-                success:function(){
-                  that.Write_userinfo();
-                }
-              })
-              app.globalData.school = true
-            }
-          }
-        })
-      }
-    },100)
+    wx.setStorageSync("index", 11)
   },
   //评价
   openEva:function(){
     if (this.data.evaluate){
       this.setData({
         evaluate:false,
-        openEva:'open'
+        openEva:'icon-right'
       })
     }else{
       this.setData({
         evaluate: true,
-        openEva: 'close'
+        openEva: 'icon-unfold'
       })
     }
   },
@@ -182,10 +89,10 @@ Page({
       index = e;
     }
     for (var i = 0; i <= index; i++) {
-      this.data.uiList[i] = 'H';
+      this.data.uiList[i] = 'icon--star-active';
     }
     for (var i = index + 1; i < 5; i++) {
-      this.data.uiList[i] = 'N';
+      this.data.uiList[i] = 'icon--star';
     }
     this.setData({
       uiList: this.data.uiList,
@@ -201,10 +108,10 @@ Page({
       index = e;
     }
     for (var i = 0; i <= index; i++) {
-      this.data.feelList[i] = 'H';
+      this.data.feelList[i] = 'icon--star-active';
     }
     for (var i = index + 1; i < 5; i++) {
-      this.data.feelList[i] = 'N';
+      this.data.feelList[i] = 'icon--star';
     }
     this.setData({
       feelList: this.data.feelList,
@@ -221,10 +128,10 @@ Page({
       index = e;
     }
     for (var i = 0; i <= index; i++) {
-      this.data.useList[i] = 'H';
+      this.data.useList[i] = 'icon--star-active';
     }
     for (var i = index + 1; i < 5; i++) {
-      this.data.useList[i] = 'N';
+      this.data.useList[i] = 'icon--star';
     }
     this.setData({
       useList: this.data.useList,
@@ -240,10 +147,10 @@ Page({
       index = e;
     }
     for (var i = 0; i <= index; i++) {
-      this.data.loadList[i] = 'H';
+      this.data.loadList[i] = 'icon--star-active';
     }
     for (var i = index + 1; i < 5; i++) {
-      this.data.loadList[i] = 'N';
+      this.data.loadList[i] = 'icon--star';
     }
     this.setData({
       loadList: this.data.loadList,
@@ -251,9 +158,9 @@ Page({
     })
   },
   submitEva:function(id,index){
-    console.log(id + ""+index)
+    console.log(id + "" + app.globalData.openid+" "+index)
     wx.request({
-      url: app.globalData.domain + '/writeEvaluate/' + id + '/' + app.globalData.openid+"/"+index,
+      url: app.globalData.domain + '/writeEvaluate/' + id + '/' + app.globalData.userinfo.num+"/"+index,
       method: 'POST',
       header: app.globalData.header,
       success:function(res){
@@ -276,6 +183,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.hideTabBar()
     // wx.request({
     //   url: app.globalData.domain + '/getInfoView',
     //   method: 'GET',
@@ -300,6 +208,7 @@ Page({
     var remindList = ["申明：无论您是拾者还是失主，请务必认真阅读以下须知谨慎待之","本平台只负责信息传递，失物的保管及完整性由当事人（拾物者）自行负责", "发布失物或寻物信息请注意您的个人信息泄漏，由此造成的手机骚扰等损失本平台不负任何责任", "当有失主已确认失物时，双方自行商讨归还失物，发布消息者及时结束消息", "信息的真实性由发布者自行负责，本平台不负任何责任","通过本平台发布的信息发生任何意外均与本平台无关"]
     var count = 0
     console.log('asd'+app.globalData.power)
+    
     /**
      * 因为在开发者工具上是先执行app，然后在执行index
      * 但在手机上是并发执行，两个页面的请求互相竞争，所以有时就会token
@@ -308,146 +217,222 @@ Page({
      * 之所以不用setTimeout是因为请求完毕和网速有关系，所以花费时间不确定，直接设置
      * 估计值有可能偏差太大，而循环定时器只会有小于等于50ms的延迟
      */
+    var ids = 0;
     var id = setInterval(function(){
-      if (app.globalData.power != null && app.globalData.finish) {
+      if (app.globalData.userinfo != null && app.globalData.finish) {
         clearInterval(id)
+        clearInterval(ids)
+        that.getPersonComment();
+        that.getEvaluate();
+        that.getPersonInfo();
+        that.getInformCount();
         that.setData({
-          showModal: !app.globalData.power,
-        })
-        //获得用户私人信息
-        wx.request({
-          url: app.globalData.domain + '/getPersonInfo',
-          method: 'GET',
-          header: app.globalData.header,
-          data: {
-            openid:app.globalData.openid,
-          },
-          success:function(res){
-            console.log("personInfo")
-            console.log(res)
-            if(res.data != ''){
-              that.setData({
-                PersonInfo: false,
-                depart: res.data.depart,
-                classes: res.data.classes,
-                num: res.data.num,
-                phone: res.data.phone,
-                name: res.data.name
-              })
-            } 
-            //不用else if原因是确定权限等级，if顺序是为了保证显示当前用户最大身份
-            if (app.globalData.power){
-              that.setData({
-                status: "普通用户"//仅授权
-              })
-              app.globalData.normal = true
-            }
-            if (res.data.openid != null) {
-              that.setData({
-                status: "校园用户"//填写校园信息
-              })
-              app.globalData.school = true;
-            }
-            if (app.globalData.isManager) {
-              that.setData({
-                status: "管理员"
-              })
-              app.globalData.school = true;
-            }
-            // else {
-            //   that.setData({
-            //     status: "游客"
-            //   })
-            //   app.globalData.customer = true
-            // }
-          }
-        })
-        wx.request({
-          url: app.globalData.domain + '/getEvaluate',
-          method: 'GET',
-          header: app.globalData.header,
-          data: {
-            openid: app.globalData.openid,
-          },
-          success:function(res){
-            console.log(res)
-            if(res.data != ""){
-              if(res.data.uiL > -1){
-                that.ui(res.data.uiL);
-              }
-              if (res.data.useL > -1) {
-                that.use(res.data.useL);
-              }
-              if (res.data.feelL > -1) {
-                that.feel(res.data.feelL);
-              }
-              if (res.data.loadL > -1) {
-                that.load(res.data.loadL);
-              }
-            }
-          }
-        })
-        if (that.data.showValuable) {
-          that.getValuable();
-        }
-        wx.request({
-          url: app.globalData.domain + '/getPersonComment',
-          method: 'GET',
-          header: app.globalData.header,
-          data: {
-            openid: app.globalData.openid,
-          },
-          success: function (res) {
-            console.log(res)
-            app.globalData.comment = res.data;
-            if (res.data.infoNum + res.data.replyNum > 0) {
-              that.setData({
-                notice: true,
-              })
-            } else {
-              that.setData({
-                notice: false,
-              })
-            }
-          }
+          userInfo: app.globalData.userinfo,
+          hasUserInfo: true
         })
       }
     },50) 
-    setInterval(function () {
-        count = (count + 1)%6
-        that.setData({
-          remind:remindList[count]
-        })
-      }, 2500)
-    /**
-    * 获取用户session_key,以及判断用户是否已经登录过
-    */
-    wx.getUserInfo({
-      success: res => {
-        console.log('授权用户')
-        /**
-         * 记录用户基本信息
-         */
-        app.globalData.userInfo = res.userInfo
+    setTimeout(function(){
+        ids = setInterval(function () {
+        if (app.globalData.power == false && app.globalData.finish) {
+          clearInterval(ids)
+          that.showModal()
+          that.setData({
+            endload: false
+          })
+        }
+      }, 50)
+      wx.showTabBar()
+      that.setData({
+        endload: false,
+        indexView:true
+      })
+    },2000)
+    // setInterval(function () {
+    //     count = (count + 1)%6
+    //     that.setData({
+    //       remind:remindList[count]
+    //     })
+    //   }, 2500)
+  },
+  scrolltxt: function () {
+    var that = this;
+    var length = that.data.length;//滚动文字的宽度
+    var windowWidth = that.data.windowWidth;//屏幕宽度
+    if (length > windowWidth) {
+      var interval = setInterval(function () {
+        var maxscrollwidth = length + that.data.marquee_margin;//滚动的最大宽度，文字宽度+间距，如果需要一行文字滚完后再显示第二行可以修改marquee_margin值等于windowWidth即可
+        var crentleft = that.data.marqueeDistance;
+        if (crentleft < maxscrollwidth) {//判断是否滚动到最大宽度
+          that.setData({
+            marqueeDistance: crentleft + that.data.marqueePace
+          })
+        }
+        else {
+          //console.log("替换");
+          that.setData({
+            marqueeDistance: 0 // 直接重新滚动
+          });
+          clearInterval(interval);
+          that.scrolltxt();
+        }
+      }, that.data.interval);
+      that.data.stop = interval;
+    }
+    else {
+      that.setData({ marquee_margin: "1000" });//只显示一条不滚动右边间距加大，防止重复显示
+    }
+  },
+  getInformCount:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getSystemCount',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        id:app.globalData.userinfo.num,
+        reported: app.globalData.openid,
+      },
+      success: function (res) {
+        console.log(res.data)
+        app.globalData.informCount = res.data;
+        if (res.data > 0) {
+          that.setData({
+            notice: true,
+          })
+        } 
+      }
+    })
+  },
+  getPersonComment:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPersonComment',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        openid: app.globalData.openid,
+      },
+      success: function (res) {
         console.log(res)
-        that.data.encryptedData = res.encryptedData
-        that.data.iv = res.iv;
-
-        //可以将 res 发送给后台解码出 unionId
-        that.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true,
-        })
-        app.globalData.userInfo = this.data.userInfo
-        // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-        // 所以此处加入 callback 以防止这种情况
-        if (this.userInfoReadyCallback) {
-          this.userInfoReadyCallback(res)
+        app.globalData.comment = res.data;
+        if (res.data.infoNum + res.data.replyNum > 0) {
+          that.setData({
+            notice: true,
+          })
+        } 
+      }
+    })
+  },
+  getEvaluate:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getEvaluate',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        openid: app.globalData.userinfo.num,
+      },
+      success: function (res) {
+        console.log(res)
+        if (res.data != "") {
+          if (res.data.uiL > -1) {
+            that.ui(res.data.uiL);
+          }
+          if (res.data.useL > -1) {
+            that.use(res.data.useL);
+          }
+          if (res.data.feelL > -1) {
+            that.feel(res.data.feelL);
+          }
+          if (res.data.loadL > -1) {
+            that.load(res.data.loadL);
+          }
         }
       }
     })
   },
-
+  //获得用户私人信息
+  getPersonInfo:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPersonInfo',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+      },
+      success: function (res) {
+        console.log("personInfo")
+        console.log(res)
+        if (res.data.name != null) {
+          that.setData({
+            PersonInfo: false,
+            depart: res.data.depart,
+            classes: res.data.classes,
+            num: res.data.num,
+            phone: res.data.phone,
+            name: res.data.name
+          })
+          app.globalData.name = res.data.name
+          that.getPushContent()
+        }
+        that.getLevel(res.data.user.name)
+        // else {
+        //   that.setData({
+        //     status: "游客"
+        //   })
+        //   app.globalData.customer = true
+        // }
+      }
+    })
+  },
+  getPushContent:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPushCount',
+      method: 'GET',
+      header: app.globalData.header,
+      data:{
+        name:app.globalData.name,
+        look:false
+      },
+      success: function (res) {
+        console.log("推送信息")
+        console.log(res)
+        if (res.data > 0) {
+          app.globalData.pushCount = res.data
+          that.setData({
+            notice: true,
+          })
+        } 
+      }
+    })
+  },
+  getLevel:function(openid){
+    var that = this
+    //不用else if原因是确定权限等级，if顺序是为了保证显示当前用户最大身份
+    if (app.globalData.power) {
+      that.setData({
+        status: "普通用户"//仅授权
+      })
+      
+      app.globalData.normal = true
+    }
+    if (openid != null) {
+      that.setData({
+        status: "校园用户"//填写校园信息
+      })
+      app.globalData.school = true;
+    }
+    if (app.globalData.isManager) {
+      that.setData({
+        status: "管理员"
+      })
+      app.globalData.school = true;
+    }
+    app.globalData.status = that.data.status;
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -478,6 +463,25 @@ Page({
         date: util.formatTime(new Date),
       })
     }, 1000) 
+    if (app.globalData.school) {
+      that.setData({
+        status: "校园用户",//填写校园信息,
+        PersonInfo: false,
+      })
+    }
+    if (app.globalData.isManager) {
+      that.setData({
+        status: "管理员"
+      })
+    }
+    var length = that.data.remind.length * that.data.size;//文字长度
+    var windowWidth = wx.getSystemInfoSync().windowWidth;// 屏幕宽度
+    //console.log(length,windowWidth);
+    that.setData({
+      length: length,
+      windowWidth: windowWidth
+    });
+    that.scrolltxt();// 第一个字消失后立即从右边出现
   },
 
   /**
@@ -486,53 +490,24 @@ Page({
    * 从数据库获取信息只会在本页面和service翻页时进行，其他所有操作均直接操作app中的
    * info以及valuable，对内存直接操作，不在从新到数据库获取新数据。
    */
-  getValuable: function () {
-    var that = this
-    /**
-    * 获取重要信息
-    */
-    wx.request({
-      url: app.globalData.domain + '/getValuable',
-      method: 'GET',
-      header: app.globalData.header,
-      success: function (res) {
-        console.log(res)
-        for (var i = 0; i < res.data.length; i++) {
-          that.data.valuable.unshift(res.data[i]);
-        /**
-         * 重要信息标志
-         */
-          that.data.imgList.push('https://yuigahama.xyz/icon/wxc8c90d2d684c76a0.o6zAJs263NmdprVcUBgFb2i-nBmM.GdtfZS12NqUF254c4b5b884095adb13a1a52905b6ca6.png')
-        }
-        console.log(app.globalData.valuable)
-        /**
-        * 因为app.globalData.category是json包
-        */
-
-        if (res.data.length > 0){
-          that.setData({
-            valuable: that.data.valuable,
-            imgList: that.data.imgList,
-            showValuable:false,
-          })
-        }else{
-          that.setData({
-            showValuable:true
-          })
-        }
-      },
-      fail: function (res) {//连接失败执行
-        wx.showToast({ title: '网络错误' })
-      },
+  onHide: function () {
+    app.globalData.notice = this.data.notice
+    console.log("index隐藏")
+    console.log(this.data.stop)
+    //防止页面被隐藏后，还在循环，切换回来造成卡顿，所以隐藏停止轮询
+    clearInterval(this.data.stop);
+    // this.scrolltxt();
+  },
+  toThanks:function(){
+    wx.navigateTo({
+      url: 'thanks',
     })
   },
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
+  toNews: function () {
+    wx.navigateTo({
+      url: 'news',
+    })
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */
@@ -565,41 +540,24 @@ Page({
    */
  getUserInfo: function (e) {
     var that = this
-    that.data.encryptedData = e.detail.encryptedData;
-    that.data.iv = e.detail.iv;
-    /**
-    * 判断用户是否为新用户
-    */
-   wx.request({
-     url: app.globalData.domain +'/openid/' + app.globalData.openid,
-     method: "GET",
-     header: app.globalData.header,
-     complete: function (res) {
-       /**
-        * 用户为新用户，则将用户写入数据库
-        */
-        console.log("新用户")
-        console.log(res)
-       if (res.data) {
-         that.decodeEncryptedData()
-       }
-     }
-   })
-    app.globalData.normal = true
-    console.log("普通用户")
-    that.setData({
-      status: "普通用户"
-    })
-    app.globalData.userInfo = e.detail.userInfo
-    if(e.detail.userInfo != null){
-      app.globalData.power = true;
+    if(e.detail.rawData != null){
+      that.data.encryptedData = e.detail.encryptedData;
+      that.data.iv = e.detail.iv;
+      that.decodeEncryptedData();
+      app.globalData.normal = true
+      console.log("普通用户")
+      that.setData({
+        status: "普通用户"
+      })
+      if (e.detail.userInfo != null) {
+        app.globalData.power = true;
+      }
+      this.setData({
+        userInfo: e.detail.userInfo,
+        hasUserInfo: true
+      })
     }
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-    app.globalData.userInfo = this.data.userInfo
-    this.hideModal();
+    this.hideModal()
   },
   // /**
   //  * 进入查看界面
@@ -664,6 +622,7 @@ Page({
               province: res.data.province
             },
             success: function (res) {
+              app.globalData.userinfo = res.data.data
             }
           })
         }
@@ -685,15 +644,21 @@ Page({
   /**
   * 隐藏模态对话框
   */
-  hideModal: function () {
-    this.setData({
-      showModal: false
-    });
-  },
   hideModal2: function () {
     this.setData({
       showModal2: false
     });
+  },
+  showModal(e) {
+    this.setData({
+      modalName: "login"
+    })
+  },
+  hideModal:function(e) {
+    console.log(e)
+    this.setData({
+      modalName:"asda"
+    })
   },
   /**
    * 对话框取消按钮点击事件
@@ -722,7 +687,6 @@ Page({
     })
     var that = this
     setTimeout(function(){
-      
     },1000)
   },
   toManager:function(){
@@ -736,21 +700,4 @@ Page({
       })
     }
   },
-  Date:function (fmt) { //author: meizz   
-    var o = {
-      "M+": this.getMonth() + 1,                 //月份   
-      "d+": this.getDate(),                    //日   
-      "h+": this.getHours(),                   //小时   
-      "m+": this.getMinutes(),                 //分   
-      "s+": this.getSeconds(),                 //秒   
-      "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
-      "S": this.getMilliseconds()             //毫秒   
-    };
-    if (/(y+)/.test(fmt))
-      fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-      if (new RegExp("(" + k + ")").test(fmt))
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-  } 
 })

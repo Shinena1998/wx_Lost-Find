@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
@@ -16,6 +17,9 @@ public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
 
     //得到重要物品
     public List<InfoMysql> findByIsValuableAndABoolean(boolean b,boolean c);
+    //贵重物品个数
+    @Query(value = "select COUNT(*) from info_mysql where is_valuable=true and a_boolean=false",nativeQuery = true)
+    int valuableCount();
     //得到证件类
     public List<InfoMysql> findByCategory(String category);
 
@@ -34,14 +38,25 @@ public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     //获取贵重物品
     @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
     public List<InfoMysql> findByABooleanAndIsValuableOrderByTimestampsDesc(boolean aBoolean , boolean valuable);
+
+    //测试
+    @Query(value = "select * from info_mysql where a_boolean=true and is_valuable=true",nativeQuery = true)
+    public List<InfoMysql> test();
     //获得普通物品
     @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
-    public List<InfoMysql> findByIsValuable(boolean va, Pageable pageable);
+    public List<InfoMysql> findByIsValuableOrABooleanOrderByIdDesc(boolean va,boolean ab , Pageable pageable);
     //获得贵重物品
     @EntityGraph(value = "info.all" , type= EntityGraph.EntityGraphType.FETCH)
     public List<InfoMysql> findByIsValuableAndABooleanOrderById(boolean b, boolean c);
 
     //获得举报信息数据
     @Query(value = "select * from info_mysql where id in ?1",nativeQuery = true)
-    public List<InfoMysql> findidIn(List<Integer> ids);
+    public List<InfoMysql> findidIn(Set<Integer> ids);
+
+    //获得搜索数据
+    @Query(value = "select * from info_mysql where id in ?1",nativeQuery = true)
+    public List<InfoMysql> searchInfo(Set<Integer> ids);
+
+    @Query(value = "select count(id) from  info_mysql where identity=?1",nativeQuery = true)
+    int infoCount(String openid);
 }

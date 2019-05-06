@@ -4,12 +4,15 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 
 import com.example.lostandfind.mysql.InfoMysql;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Component;
 @EnableCaching
 @Component
 public class RedisConfig extends CachingConfigurerSupport {
+    private static final Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
@@ -32,7 +36,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic("chat"));
-
         return container;
     }
 
@@ -51,11 +54,8 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public StringRedisTemplate StringRedisTemplate(RedisConnectionFactory connectionFactory) {
-        return new StringRedisTemplate(connectionFactory);
-    }
-    @Bean
     public RedisTemplate<String, InfoMysql> RedisTemplate(RedisConnectionFactory connectionFactory) {
+        logger.info("redis被加入到bean");
         RedisTemplate<String,InfoMysql> template = new RedisTemplate<String,InfoMysql>();
         Jackson2JsonRedisSerializer<InfoMysql> j2 = new Jackson2JsonRedisSerializer<InfoMysql>(InfoMysql.class);
         //value值得序列化采用fastJsonRedisSerializer
@@ -64,7 +64,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         //key值得序列化采用StringRedisSerializer
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
-
         template.setConnectionFactory(connectionFactory);
 
         return template;
@@ -73,7 +72,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         private CountDownLatch latch;
 
         @Autowired
-        public Receiver(CountDownLatch latch) {
+        private Receiver(CountDownLatch latch) {
             this.latch = latch;
         }
 

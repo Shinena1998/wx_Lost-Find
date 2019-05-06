@@ -1,9 +1,23 @@
 <view class="userinfo">
       <image class="userinfo-avatar" src="{{userPic}}" background-size="cover"></image>
-      <text class="userinfo-nickname">{{username}}</text>
+      <view class="perinfo">
+        <text class="userinfo-nickname">{{username}}</text>
+        <text class="userinfo-nickname" style='font-size:60%'>{{name}}</text>
+        <text class="userinfo-nickname" style='font-size:70%'>{{status}}</text>
+      </view>   
 </view>
 
 <scroll-view  scroll-y="true" class="scroll-Y" enable-back-to-top='true' scroll-with-animation="true" >
+<view class="cu-list grid col-3 no-border" style='padding:0px'>
+  <view class="cu-item" wx:for="{{simpleList}}" wx:key>
+    <view >
+       <text>{{item.grade}}</text>
+    </view>
+    <text>{{item.name}}</text>
+  </view>
+</view>
+
+
 <view class="cu-bar bg-white solid-bottom margin-top">
   <view class='action'>
     <text class='icon-title text-blue '></text> 消息
@@ -23,6 +37,14 @@
 <view class="cu-bar bg-white solid-bottom margin-top">
   <view class='action'>
     <text class='icon-title text-blue '></text> 信息
+  </view>
+  <view class='action' >
+  <view bindtap='showPush'>
+    <button class='cu-btn bg-blue shadow' data-target="gridModal" >推送信息</button>
+      <view class="cu-tag badge" wx:if="{{pushCount!=0}}" style='top:4rpx;right:14rpx;'>
+        <block wx:if="{{pushCount!=1}}">{{pushCount>99?'99+':pushCount}}</block> 
+      </view>
+    </view>
   </view>
 </view>
 <view class="cu-list grid col-3 no-border">

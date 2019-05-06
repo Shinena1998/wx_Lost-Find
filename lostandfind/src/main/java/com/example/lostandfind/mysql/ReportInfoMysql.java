@@ -27,6 +27,8 @@ public class ReportInfoMysql {
 
     private int operator; //那位管理员操作
 
+    private String reason;//举报理由
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="report_user",joinColumns = @JoinColumn(name="report_report_id"),
     inverseJoinColumns = @JoinColumn(name="user_id"))
@@ -71,5 +73,13 @@ public class ReportInfoMysql {
 
     public void setOperator(int operator) {
         this.operator = operator;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

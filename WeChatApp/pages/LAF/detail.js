@@ -4,8 +4,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showText: false,
     detailInfo:{},
     message:"",
+    content:"",
     access_token:'',
     formId:'',
     nickName:'',
@@ -18,10 +20,11 @@ Page({
     contact:"",
     contactWay:"",
     backType:true,
-    contactList: ['/pages/img/QQ.png ',
-                  '/pages/img/WeChat.png',
-                  '/pages/img/number.png',
+    contactList: ['/pages/img/phone.png ',
+                  '/pages/img/weixin.png',
+                  '/pages/img/QQ.png',
                   '/pages/img/no.png'],
+    wayList:["拨打","复制","复制","复制"],
     isHasFind:'未找到失主',
     //评论
     commentNum:0,
@@ -40,6 +43,50 @@ Page({
     toName:'noName',//回复人姓名
     showTabar:true,//显示已完成或者过期信息不显示评论以及下边菜单
     windowWidth:0,//屏幕宽度
+    reportReason: ["垃圾广告","话题不相关","色情", "人身攻击", "违法信息", "其他",],
+    reason:"",
+    collectCss:"text-gray",
+    collectIcon: "icon-favor",
+    collect:'收藏'
+  },
+  collectInfo:function(){
+    if(this.data.collectCss == "text-gray"){
+      this.setData({
+        collectCss:"text-orange",
+        collectIcon:"icon-favorfill",
+        collect:"已收藏"
+      })
+      wx.request({
+        url: app.globalData.domain + '/addCollect',
+        method: 'POST',
+        header: app.globalData.header,
+        data: {
+          num:app.globalData.userinfo.num,
+          info:this.data.detailInfo
+        },
+        success: function (e) {
+          console.log(e)
+        }
+      })
+    }else{
+      this.setData({
+        collectCss: "text-gray",
+        collectIcon: "icon-favor",
+        collect:'收藏'
+      })
+      wx.request({
+        url: app.globalData.domain + '/removeCollect',
+        method: 'GET',
+        header: app.globalData.header,
+        data: {
+          num: app.globalData.userinfo.num,
+          infoId: this.data.detailInfo.id
+        },
+        success: function (e) {
+          console.log(e)
+        }
+      })
+    }
   },
   /**
    * 返回
@@ -65,8 +112,10 @@ Page({
         this.data.detailInfo = JSON.parse(options.data),
         this.data.backType = false
     }else{
+      console.log("asd")
       console.log(wx.getStorageSync("infor"))
       this.data.detailInfo = wx.getStorageSync("infor"),
+      this.hasLook()
       wx.removeStorageSync("infor")
       //显示已完成或者过期信息不显示评论以及下边菜单
       if (this.data.detailInfo.timeOut != null){
@@ -113,7 +162,8 @@ Page({
     console.log(this.data.contactList[parseInt(StrList[0])])
     this.setData({
       contactWay:this.data.contactList[parseInt(StrList[0])],
-      contact:StrList[1]
+      contact:StrList[1],
+      way: this.data.wayList[parseInt(StrList[0])]
     })
     /**
      * 图片名格式 height width timestamp openid.type
@@ -154,7 +204,6 @@ Page({
         /**
          * 删除标记标记
          */
-        console.log("sadsd")
         this.remind(false);
         this.setData({
           isshow: false,
@@ -163,20 +212,49 @@ Page({
       }
     }
   },
+  hasLook:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/hasCollect',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        num: app.globalData.userinfo.num,
+        infoId: this.data.detailInfo.id
+      },
+      success: function (e) {
+        console.log(e)
+        if (e.data == app.globalData.userinfo.num){
+          that.setData({
+            collectCss: "text-orange",
+            collectIcon: "icon-favorfill",
+            collect: "已收藏"
+          })
+        }
+      }
+    })
+  },
   /**
    * 一键复制联系方式
    */
-  copy:function(){
-    wx.setClipboardData({
-      data: this.data.contact,
-      success: function (res) {
-        wx.getClipboardData({
-          success: function (res) {
-            console.log(res.data) // data
-          }
-        })
-      }
-    })
+  copy:function(e){
+    console.log(e)
+    if(e.target.dataset.target == "拨打"){
+      wx.makePhoneCall({
+        phoneNumber:this.data.contact,
+      })
+    }else{
+      wx.setClipboardData({
+        data: this.data.contact,
+        success: function (res) {
+          wx.getClipboardData({
+            success: function (res) {
+              console.log(res.data) // data
+            }
+          })
+        }
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -258,8 +336,7 @@ Page({
     var that = this;
     this.data.contant = res.detail.value
     console.log(app.globalData.userinfo)
-    var time = new Date();
-    time.toLocaleString()
+    var util = require('../../utils/util.js')
     var user_id = app.globalData.userinfo.num
     var info_id = that.data.detailInfo.id
     var view = false;
@@ -273,7 +350,7 @@ Page({
       header: app.globalData.header,
       data:{
         content:res.detail.value,
-        time: time.toLocaleString(),
+        time: util.formatTime(new Date),
         uid:app.globalData.openid,
         toUid:that.data.toUid,
         toName:that.data.toName,
@@ -284,8 +361,8 @@ Page({
       success:function(res){
         console.log(res)
         var data = res.data;
-        data.avatarUrl = app.globalData.userInfo.avatarUrl;
-        data.nickName = app.globalData.userInfo.nickName;
+        data.avatarUrl = app.globalData.userinfo.avatarUrl;
+        data.nickName = app.globalData.userinfo.nickName;
         var info = {commentInfo:{},userInfo:{}};
         info.commentInfo.content = data.content;
         info.commentInfo.id = data.id;
@@ -305,7 +382,7 @@ Page({
       showMenu:true,
       operating:res.currentTarget.id
     })
-    if (this.data.comment[res.currentTarget.id].commentInfo.uid != app.globalData.openid){
+    if (this.data.comment[res.currentTarget.id].commentInfo.uid == app.globalData.openid){
       // this.showDeleteMenu()
       this.showMenu("delete")
       this.setData({
@@ -379,28 +456,41 @@ Page({
       }
     })
   },
+
+  reportReasonChange: function (e) {
+    console.log(e);
+    this.data.reason = e.detail.value;
+  },
   //举报评论
   reportComment:function(res){
-    console.log(res)
-    res.currentTarget.id = "1"
-    this.closeMenu(res)
     var that = this
-    var id = that.data.comment[that.data.operating].commentInfo.id
-    var openid = app.globalData.userinfo.num;
-    var user_id = that.data.comment[that.data.operating].userInfo.num;
-    wx.request({
-      url: app.globalData.domain + '/reportComment',
-      method: 'POST',
-      header: app.globalData.header,
-      data: {
-        reportid: id,
-        userid: openid,
-        user_id:user_id
-      },
-      success: function (res) {
-        console.log(res)
-      }
-    })
+    if (this.data.reason == "") {
+      wx.showToast({
+        title: '请选择举报理由',
+        icon: "none"
+      })
+    }else{
+      res.currentTarget.id = "1"
+      this.hideModal(res)
+      var that = this
+      var id = that.data.comment[that.data.operating].commentInfo.id
+      var openid = app.globalData.userinfo.num;
+      var user_id = that.data.comment[that.data.operating].userInfo.num;
+      wx.request({
+        url: app.globalData.domain + '/reportComment',
+        method: 'POST',
+        header: app.globalData.header,
+        data: {
+          reportid: id,
+          userid: openid,
+          user_id: user_id,
+          reason:this.data.reason
+        },
+        success: function (res) {
+          console.log(res)
+        }
+      })
+    }
   },
   //回复消息
   reply:function(res){
@@ -567,9 +657,19 @@ Page({
   message:function(res){
     console.log("ads")
     console.log(this.data.detailInfo)
-    this.data.message = app.globalData.userInfo.nickName+":"+res.detail.value
+    this.data.content = res.detail.value
+    this.data.message = app.globalData.userinfo.nickName+":"+res.detail.value
+  },
+  showModal1(e) {
     this.setData({
-
+      modalName: "message",
+      showText:true
+    })
+  },
+  hideModal1(e) {
+    this.setData({
+      modalName: null,
+      showText: false
     })
   },
   /**
@@ -577,9 +677,6 @@ Page({
    */
   get_access_token:function(res){
     var that = this
-    that.setData({
-      formId: res.detail.formId
-    })
     wx.request({
       url: app.globalData.domain +'/get_access_token',
       method: "GET",
@@ -624,17 +721,18 @@ Page({
     })
     if (this.data.message == "") {
       this.setData({
-        message: app.globalData.userInfo.nickName + ":谢谢"
+        message: app.globalData.userinfo.nickName + ":谢谢"
       })
+    }
+    if(this.data.detailInfo.kind == "招领"){
+      this.data.type = "捡到失物的人发来消息，请及时联系";
+    }else{
+      this.data.type = "失主通过此条信息找到失物"
     }
     var that = this
     console.log(that.data.detailInfo.id)
-    /**
-     * 添加标记
-     */
-    that.remind(true);
-    var time = new Date();
-    var current = time.toLocaleDateString() + time.toLocaleTimeString();
+    var util = require('../../utils/util.js')
+    var that = this
     wx.request({
       url: app.globalData.domain +'/sendTemplateInfo',
       method:'GET',
@@ -644,9 +742,12 @@ Page({
         accessToken:that.data.access_token,
         openid:that.data.detailInfo.identity,
         category: that.data.detailInfo.category,
-        current:current,
-        nickName:app.globalData.userInfo.nickName,
-        message:that.data.message
+        current: util.formatTime(new Date),
+        nickName:app.globalData.userinfo.nickName,
+        message:that.data.message,
+        img: app.globalData.userinfo.avatarUrl,
+        content:that.data.content,
+        type:that.data.type
       },
       success:function(res){
         if(res.data == false){
@@ -691,6 +792,18 @@ Page({
       }
     })
     
+  },
+  showModal(e) {
+    this.setData({
+      modalName: "report"
+    })
+  },
+  hideModal(e) {
+    this.setData({
+      modalName: null
+    })
+    e.currentTarget.id = 1;
+    this.closeMenu(e)
   },
   affirm:function(){
 

@@ -1,12 +1,23 @@
 package com.example.lostandfind.redis;
 
+import com.example.lostandfind.LostandfindApplication;
+import com.example.lostandfind.mysql.GradeMysql;
 import com.example.lostandfind.mysql.InfoMysql;
+import com.example.lostandfind.repository.GradeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RedisSave {
@@ -60,5 +71,25 @@ public class RedisSave {
             redisTemplate.opsForValue().set(openid,token, Duration.ofHours(2));
         }
     }
+    private static final Logger logger = LoggerFactory.getLogger(RedisSave.class);
 
+//    @Autowired
+//    private GradeRepository gradeRepository;
+////    @Autowired
+////    private RedisTemplate stringRedisTemplate;
+////    @PostConstruct
+////    public void loadGrade(){
+////        GradeMysql gradeMysql = gradeRepository.findById(1).get();
+////        Map<String,Integer> map = new HashMap<>();
+////        map.put("rInfoAddGrade",gradeMysql.getrInfoAddGrade());
+////        map.put("rInfoReduceGrade",gradeMysql.getrInfoReduceGrade());
+////        map.put("rCommentAddGrade",gradeMysql.getrCommentAddGrade());
+//        map.put("rCommentReduceGrade",gradeMysql.getrCommentReduceGrade());
+//        map.put("pushInfoGrade",gradeMysql.getPushInfoGrade());
+//        map.put("remindInfoGrade",gradeMysql.getRemindInfoGrade());
+//        map.put("finishInfoGrade",gradeMysql.getFinishInfoGrade());
+//        stringRedisTemplate.opsForValue().set("rInfoAddGrade","asd");
+////        stringRedisTemplate.opsForHash().put("grade","finishInfoGrade",gradeMysql.getFinishInfoGrade());
+//        logger.info("初始化执行函数，通过"+stringRedisTemplate.opsForValue().get("rInfoAddGrade"));
+//    }
 }

@@ -1,31 +1,33 @@
 package com.example.lostandfind.mysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Repository
-@Entity
+@Entity(name="person")
 public class PersonInfoMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String openid;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_num")
+    private UserMysql user;
+
     private String depart;
     private String classes;
     private String num;
     private String name;
     private String phone;
 
-    public String getOpenid() {
-        return openid;
+    public UserMysql getUser() {
+        return user;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setUser(UserMysql user) {
+        this.user = user;
     }
 
     public String getDepart() {

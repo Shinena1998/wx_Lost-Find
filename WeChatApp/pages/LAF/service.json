@@ -3,5 +3,8 @@
     "navigationBarBackgroundColor": "#69c0ff",
     "navigationBarTitleText": "信息圈",
     "navigationBarTextStyle": "white",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": true,
+    "usingComponents": {},
+    "navigationStyle": "custom",
+    "disableScroll": true
 }

@@ -56,5 +56,6 @@ public class UserAspect {
 
     @AfterReturning(returning = "object",pointcut = "log()")
     public void doAfterRetuening(Object object){
+
     }
 }

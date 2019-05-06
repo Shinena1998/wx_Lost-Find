@@ -27,7 +27,7 @@ style="background-image: url({{imgList[index]}})">
 <view class="adviceView" >
 <image class='adviceImg' src='/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png'></image>
 <textarea name="advice" class="advice" placeholder='请输入您的建议或意见...' placeholder-style='font-size:100%'confirm-type='done'></textarea>
-<textarea name="contactWay" class='content' placeholder='有需要的话，请留下您的联系方式...' placeholder-style='font-size:100%'confirm-type='done'></textarea>
+<textarea name="contactWay" class='content1' placeholder='有需要的话，请留下您的联系方式...' placeholder-style='font-size:100%'confirm-type='done'></textarea>
 </view>
 <button  style='width:60%;margin-top:3%;'formType="submit" type='primary'>提交</button>
 </form>
@@ -42,7 +42,6 @@ style="background-image: url({{imgList[index]}})">
 <text class='helpText'>3.如果您丢失了电脑，手机登贵重物品，可发布贵重物品，进入发布信息界面后，点击添加图片右边的红色叹号，即可标记为贵重物品，但须管理员审核通过，审核通过后贵重物品优先显示，并且无视分类，3天后自动降级为普通物品，审核不通过则直接降级为普通物品。</text>
 <text class='helpText'>4.详细物品界面发布者看到自己发布的信息，下边显示结束信息，其他用户显示通知拾主。通知拾主（拾主也就是信息发布者）是用来失主找到失物后，提醒发布者结束信息。</text>
 <text class='helpText'>5.信息搜索中的时间范围搜索是根据用户填写的丢失时间搜索，而不是根据发布信息者的发布时间搜索。</text></view>
-
 </view>
 
 <view class="aboutMeView" wx:if="{{showLAF}}" >
@@ -56,7 +55,7 @@ style="background-image: url({{imgList[index]}})">
 </view>
 </view>
 
-<scroll-view  scroll-y="true" style='background-color:white;height:95%' wx:if="{{showComment}}" >
+<scroll-view  scroll-y="true" style='background-color:white;height:95%;' wx:if="{{showComment}}" >
   <view wx:for="{{comment}}" wx:for-item="comment" data-index='{{index}}' wx:key="*this" class='commentView' bindtap='comeIntoInfo' >
     <image class='commentImg' src='{{comment.userInfo.avatarUrl}}'></image>
     <view class="commentWord">
@@ -70,4 +69,58 @@ style="background-image: url({{imgList[index]}})">
       </text>
     </view>
   </view>
+</scroll-view>
+
+
+<scroll-view  scroll-y="true" class="systemAll" enable-back-to-top='true' scroll-with-animation="true" wx:if="{{showSystem}}" >
+<view class="cu-timeline" wx:for="{{systemInfo}}" data-index='{{index}}'  wx:key wx:for-item="info" style='padding-left:15rpx'>
+  <view class="cu-time">{{info.time}}</view>
+  <view class="cu-item">
+    <view class="content">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-cyan">{{info.title}}</view>
+      </view>
+      <view class='margin-top'>{{info.content}}</view>
+    </view>
+  </view>
+</view>
+</scroll-view>
+
+<scroll-view  scroll-y="true" style='height:100%;width:100%' enable-back-to-top='true' scroll-with-animation="true" wx:if="{{showPerson}}" >
+  <view class="cu-form-group">
+    <view class='title'>学院</view>
+    <input bindblur='depart' placeholder='比如:计算机科学工程学院' value='{{depart}}' class='radius'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>班级</view>
+    <input bindblur='classes' placeholder='比如:计161' value='{{classes}}' class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>学号</view>
+    <input bindblur='num'placeholder='10位数字' value='{{num}}' class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>电话</view>
+    <input bindblur='phone' placeholder='11位数字' value='{{phone}}'class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>姓名</view>
+    <input bindblur='name' placeholder='您的真实姓名' value='{{name}}' class='radius' name='theme'></input>
+  </view>
+  <form bindsubmit="personInfo" report-submit='true'>
+   <view class="padding flex flex-wrap  justify-around align-center bg-white margin-top">
+      <button class='cu-btn round' bindtap='back'>返回</button>
+      <button class='cu-btn round' form-type="submit">
+          <form bindsubmit="formSubmit1" report-submit='true'>
+          <button class='cu-btn round' form-type="submit" style='padding:0px'>
+          <form bindsubmit="formSubmit1" report-submit='true'>
+          <button class='cu-btn round' form-type="submit" style='padding:0px'>
+          <form bindsubmit="formSubmit1" report-submit='true'>
+          <button class='cu-btn round' form-type="submit" style='padding:0px'>
+          <form bindsubmit="formSubmit1" report-submit='true'>
+          <button class='cu-btn round' form-type="submit" style='padding:0px'>
+          提交</button></form></button></form></button></form></button></form>
+      </button>
+  </view>
+  </form>
 </scroll-view>

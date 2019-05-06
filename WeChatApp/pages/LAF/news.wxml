@@ -1,0 +1,5 @@
+<text class='icon-back_android upload' bindtap='back' ></text>
+<text class='icon-back left text-gray' bindtap='left' ></text>
+<text class='icon-right right text-gray' bindtap='right' ></text>
+<image style='height:{{imgHeight}}px;width:{{imgWidth}}px' src="{{path}}"></image>
+

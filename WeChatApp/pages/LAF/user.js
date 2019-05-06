@@ -22,6 +22,20 @@ Page({
     reply:false,
     about:false,
     system:false,
+    simpleList:[
+      {
+        grade:100,
+        name:"信誉分"
+      },
+      {
+        grade: 3,
+        name: "发布"
+      },
+      {
+        grade: 2,
+        name: "找回"
+      },
+    ],
     msgList:[
       {
       icon: '/pages/img/reply.png',
@@ -40,7 +54,7 @@ Page({
       id: 6,
       badge: 0,
       name: '系统通知',
-      bind:"system"
+      bind:"showAboutMe"
     }],
     sevList: [
       {
@@ -76,10 +90,10 @@ Page({
         name: '已完成',
         bind: 'about'
       }, {
-        icon: '/pages/img/timeout.png',
-        id: 7,
+        icon: '/pages/img/collect.png',
+        id: 10,
         badge: 0,
-        name: '已过期',
+        name: '已收藏',
         bind: "system"
       }]
   },
@@ -125,6 +139,12 @@ Page({
    */
   showAboutMe: function (e) {
     console.log(e.currentTarget.id)
+    if(e.currentTarget.id == 6){
+      this.data.msgList[2].badge = 0,
+      this.setData({
+        msgList: this.data.msgList
+      })
+    }
     wx.setStorageSync('index', e.currentTarget.id)
     wx.navigateTo({
       url: 'showInfo',
@@ -140,26 +160,37 @@ Page({
     wx.navigateTo({
       url: 'showInfo',
     })
-    // if (this.data.showAdvice) {
-    //   this.setData({
-    //     showAdvice: false,
-    //     labelAdvice: '〉'
-    //   })
-    // } else {
-    //   this.setData({
-    //     showAdvice: true,
-    //     labelAdvice: '﹀'
-    //   })
-    // }
     console.log(this.data.showAdvice)
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.data.msgList[2].badge = app.globalData.informCount
     this.setData({
-      username: app.globalData.userInfo.nickName,
-      userPic: app.globalData.userInfo.avatarUrl,
+      username: app.globalData.userinfo.nickName,
+      userPic: app.globalData.userinfo.avatarUrl,
+      name: app.globalData.name,
+      status: app.globalData.status,
+      pushCount:app.globalData.pushCount,
+      msgList:this.data.msgList
+    })
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/infoCount',
+      method: 'GET',
+      header: app.globalData.header,
+      data:{
+        openid:app.globalData.openid,
+      },
+      success: function (res) {//连接成功运行
+        console.log(res)
+        that.data.simpleList[1].grade = res.data.info;
+        that.data.simpleList[2].grade = res.data.finish
+        that.setData({
+          simpleList: that.data.simpleList
+        })
+      },
     })
   },
 
@@ -226,6 +257,13 @@ Page({
       url: 'showInfo',
     })
   },
+  showPush:function(){
+    wx.setStorageSync('index', 9)
+    wx.navigateTo({
+      url: 'showInfo',
+    })
+    console.log(this.data.showHasFinish)
+  },
   //关于评论
   about: function (e) {
     wx.setStorageSync('index', e.currentTarget.id)
@@ -249,6 +287,7 @@ Page({
     this.setData({
       replyNum: 0,
       aboutNum: 0,
+      pushCount:0,
       reply: false,
       about: false,
     })

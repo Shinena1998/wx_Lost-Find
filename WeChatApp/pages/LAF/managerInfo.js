@@ -106,7 +106,8 @@ Page({
   },
 
   //管理员决定
-  infoReport:function(e){
+  infoReport: function (e) {
+    var util = require('../../utils/util.js')
     this.hideModal("close");
     var decide = this.data.code
     wx.request({
@@ -115,7 +116,8 @@ Page({
       data:{
         decide:decide,
         id:this.data.id,
-        operator:app.globalData.userinfo.num
+        operator: app.globalData.userinfo.num,
+        time: util.formatTime(new Date),
       },
       header: app.globalData.header,
       success: function (res) {//连接成功运行
@@ -186,6 +188,7 @@ Page({
             title: res.data.msg,
             duration: 1500,
             success: function () {
+              app.globalData.isChangeInfo = true;
               wx.navigateBack({
                 delta: 1
               })

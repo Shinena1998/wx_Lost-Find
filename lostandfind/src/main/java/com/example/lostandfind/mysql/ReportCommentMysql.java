@@ -14,7 +14,11 @@ public class ReportCommentMysql {
     private boolean process;//管理员是否处理举报
 
     private int count;//该信息被举报次数；
+
     private int operator; //那位管理员操作
+
+    private String reason;//举报理由
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserMysql user;//发布信息的用户
@@ -70,5 +74,13 @@ public class ReportCommentMysql {
 
     public void setUsers(List<UserMysql> users) {
         this.users = users;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

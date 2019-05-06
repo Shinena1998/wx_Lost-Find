@@ -494,7 +494,7 @@ checkbox.white[checked] .wx-checkbox-input, radio.white[checked] .wx-radio-input
 }
 
 .shadow-lg {
-  box-shadow: 0rpx 40rpx 100rpx 0rpx rgba(0, 0, 0, 0.07);
+  box-shadow: 0rpx 40rpx 100rpx 0rpx rgba(0, 0, 0, 0.3);
 }
 
 .shadow-warp {
@@ -1505,7 +1505,6 @@ button.icon.lg {
   height: 64rpx;
   font-size: 24rpx;
   color: #666;
-  flex: 1;
   display: flex;
   align-items: center;
   margin: 0 20rpx;
@@ -3255,7 +3254,10 @@ scroll-view.cu-steps .cu-item {
   background-color: #0081ff;
   color: #fff;
 }
-
+.bg-blue1{
+  background-color: #69c0ff;
+  color: #fff;
+}
 .bg-purple {
   background-color: #6739b6;
   color: #fff;

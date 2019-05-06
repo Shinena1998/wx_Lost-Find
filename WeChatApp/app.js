@@ -11,7 +11,7 @@ App({
         this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
       }
     })
-    console.log(ops)
+    console.log(this.globalData.Custom)
     if (ops.scene == 1044) {
       console.log(ops.shareTicket)
     }
@@ -33,64 +33,77 @@ App({
     wx.login({
       success: res => {
         var result = res
-        //获取token
         wx.request({
-          url: that.globalData.domain + '/token',
+          url: that.globalData.domain + '/getUserInfo',
+          method: 'GET',
+          header: that.globalData.header,
+          data: {
+            code: result.code
+          },
           success: function (res) {
-            console.log(res)
-            that.globalData.header.token = res.data.token,
-            that.globalData.header.sessionId = res.data.session
-            // 发送 res.code 到后台换取 openId, sessionKey, unionId
+            console.log('231')
+            console.log(res.data)
+            that.globalData.openid = res.data.openid;
+            that.globalData.session_key = res.data.session_key;
+            //获取token
             wx.request({
-              url: that.globalData.domain + '/getUserInfo',
-              method: 'GET',
-              header: that.globalData.header,
-              data: {
-                code: result.code
+              url: that.globalData.domain + '/token',
+              data:{
+                openid:res.data.openid,
               },
               success: function (res) {
-                console.log('231')
-                console.log(res.data)
-                that.globalData.openid = res.data.openid;
-                that.globalData.session_key = res.data.session_key;
+                console.log(res)
+                that.globalData.header.token = res.data.token,
+                  that.globalData.header.openid = res.data.openid
+                // 发送 res.code 到后台换取 openId, sessionKey, unionId
                 wx.request({
                   url: that.globalData.domain + '/openid1/' + that.globalData.openid,
                   method: 'GET',
                   header: that.globalData.header,
                   success: function (res) {
                     console.log(res.data)
-                    that.globalData.userinfo = res.data[0];
-                  }
-                })
-                /**
-                * 判断用户是否为管理员
-                */
-                wx.request({
-                  url: that.globalData.domain + '/manager/' + that.globalData.openid,
-                  method: 'POST',
-                  header: that.globalData.header,
-                  success: function (res) {
-                    console.log(res.data)
-                    that.globalData.finish = true;
-                    if (res.data) {
-                      that.globalData.isManager = res.data;
+                    if (res.data.length > 0) {
+                      that.globalData.power = true;
+                      that.globalData.userinfo = res.data[0];
                     }
+                    /**
+                    * 判断用户是否为管理员
+                    */
+                    wx.request({
+                      url: that.globalData.domain + '/manager/' + that.globalData.openid,
+                      method: 'POST',
+                      header: that.globalData.header,
+                      success: function (res) {
+                        console.log(res.data)
+                        that.globalData.finish = true;
+                        if (res.data) {
+                          that.globalData.isManager = res.data;
+                        }
+                      }
+                    })
                   }
                 })
               }
             })
           }
         })
+        
       }
     })
   },
   globalData: {
     domain:"http://localhost:8080",
     // domain:'https://api.yuigahama.xyz',
+    notice:false,
     finish:false,
     isChangeInfo:false,
     session_key:'',
     userInfo: null,
+    status:"普通用户",
+    pushCount:0,//推送信息，
+    informCount:0,//系统通知数
+    name:"请在首页填写",
+    perosninfo:null,
     userinfo:null,
     openid:null,
     power:null,
@@ -108,7 +121,7 @@ App({
     category:[],//物品显示类型
     header:{
       'token':null,
-      'sessionId':'',
+      'openid':null,
       "content-type": "application/json",
     }
   },

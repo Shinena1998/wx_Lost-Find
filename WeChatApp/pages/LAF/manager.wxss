@@ -116,3 +116,12 @@ page{
   width: 100%;
   text-align: center
 }
+.upload {
+  width: 80rpx;
+  height: 80rpx;
+  position: fixed;
+  bottom: 20rpx;
+  right: 20rpx;
+  z-index:1;
+  border-radius:41rpx;
+}

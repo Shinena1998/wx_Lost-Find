@@ -15,6 +15,10 @@ Page({
     count:0,
     confirm:false,
     comment:[],
+    id:[],
+    systemInfo:[],
+    count:0,
+    formId:'',
   },
   /**
   * 查看失物详细信息
@@ -22,6 +26,27 @@ Page({
   comein: function (e) {
     // console.log(e)
     // console.log(this.data.category[e.currentTarget.dataset.index])
+    var that = this
+    if (wx.getStorageSync('index') == 9) {
+      var id = this.data.id[e.currentTarget.dataset.index]
+      console.log(this.data.category)
+      console.log(id)
+      wx.request({
+        url: app.globalData.domain + "/writePush",
+        method: 'POST',
+        header: app.globalData.header,
+        data: {
+          id: id
+        },
+        success: function (res) {//连接成功运行
+          // that.data.category = that.data.category.splice(e.currentTarget.dataset.index,1)
+          // that.setData({
+          //   category:that.data.category
+          // })
+          that.getPushInfo()
+        }
+      })
+    }
     if (app.globalData.power) {
       wx.setStorageSync('infor', this.data.category[e.currentTarget.dataset.index])
       wx.navigateTo({
@@ -33,6 +58,7 @@ Page({
         icon: 'none',
       })
     }
+    
   },
   getInfo: function (res) {
     var that = this
@@ -117,6 +143,7 @@ Page({
       this.setData({
         showSystem: true,
       })
+      this.getSysteminfo()
       wx.setNavigationBarTitle({
         title: '系统通知',
       })
@@ -128,14 +155,269 @@ Page({
         title: '已过期信息',
       })
       this.getInfo("/timeout")
-    } else if (index == 8) {
+    }else if (index == 8) {
       this.setData({
         showLAF: true,
       })
       wx.setNavigationBarTitle({
         title: '失物招领',
       })
+    } else if (index == 9) {
+      this.setData({
+        showInfo: true,
+      })
+      wx.setNavigationBarTitle({
+        title: '推送信息',
+      })
+      this.getPushInfo()
+    } else if (index == 10) {
+      this.setData({
+        showInfo: true,
+      })
+      wx.setNavigationBarTitle({
+        title: '已收藏',
+      })
+      this.getCollectInfo()
+    } else if (index == 11) {
+      this.setData({
+        showPerson: true,
+      })
+      wx.setNavigationBarTitle({
+        title: '个人信息',
+      })
+      this.getPersonInfo()
     }
+  },
+  back:function(){
+    wx.navigateBack({
+      url: 'detail',
+    })
+  },
+  depart: function (e) {
+    if (e.detail.value != "") {
+      this.data.depart = e.detail.value
+    } else {
+      wx.showToast({
+        title: '院系不能为空',
+        icon: 'none'
+      })
+    }
+  },
+  classes: function (e) {
+    if (e.detail.value != "") {
+      this.data.classes = e.detail.value
+    } else {
+      wx.showToast({
+        title: '班级不能为空',
+        icon: 'none'
+      })
+    }
+  },
+  num: function (e) {
+    var num = /^\d{10}$/
+    if (num.test(e.detail.value)) {
+      this.data.num = e.detail.value
+    } else {
+      wx.showToast({
+        title: '请检查学号是否正确',
+        icon: 'none'
+      })
+    }
+  },
+  name: function (e) {
+    if (e.detail.value != "") {
+      this.data.name = e.detail.value
+    } else {
+      wx.showToast({
+        title: '姓名不能为空',
+        icon: 'none'
+      })
+    }
+  },
+  phone: function (e) {
+    var phone = /^1\d{10}$/
+    if (phone.test(e.detail.value)) {
+      this.data.phone = e.detail.value
+    } else {
+      wx.showToast({
+        title: '请检查电话是否正确',
+        icon: 'none'
+      })
+    }
+  },
+  submitInfo: function () {
+    this.setData({
+      depart: this.data.depart,
+      classes: this.data.classes,
+      num: this.data.num,
+      phone: this.data.phone,
+      name: this.data.name
+    })
+    var that = this
+    setTimeout(function () {
+      if (that.data.depart == "" || that.data.classes == "" ||
+        that.data.num == "" || that.data.name == "" ||
+        that.data.phone == "") {
+        wx.showToast({
+          title: '请填全信息',
+          icon: 'none'
+        })
+      } else {
+        wx.request({
+          url: app.globalData.domain + '/writePersonInfo',
+          method: 'POST',
+          header: app.globalData.header,
+          data: {
+            user: app.globalData.userinfo,
+            depart: that.data.depart,
+            classes: that.data.classes,
+            num: that.data.num,
+            phone: that.data.phone,
+            name: that.data.name
+          },
+          success: function (res) {
+            if (res.statusCode == 200) {
+              wx.showToast({
+                title: '填写成功',
+                success: function () {
+                  that.back();
+                }
+              })
+              app.globalData.name = that.data.name
+              app.globalData.school = true
+            }
+          }
+        })
+      }
+    }, 100)
+  },
+  getPersonInfo: function () {
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPersonInfo',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+      },
+      success: function (res) {
+        console.log("personInfo")
+        console.log(res)
+        if (res.data.name != null) {
+          that.setData({
+            PersonInfo: false,
+            depart: res.data.depart,
+            classes: res.data.classes,
+            num: res.data.num,
+            phone: res.data.phone,
+            name: res.data.name
+          })
+          app.globalData.name = res.data.name
+        }
+      }
+    })
+  },
+  personInfo: function (res) {
+    this.data.formId = this.data.formId + res.detail.formId + '+'
+    this.submitInfo()
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/writeFormId',
+      method: 'POST',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+        formId: this.data.formId
+      },
+      success: function (res) {
+      }
+    })
+  },
+  formSubmit1: function (res) {
+    this.data.count = this.data.count + 1;
+    if (this.data.count < 5) {
+      this.data.formId = this.data.formId + res.detail.formId + '+'
+    } else {
+      this.data.formId = res.detail.formId + '+';
+      this.data.count = 1
+    }
+    console.log(this.data.formId)
+  },
+  getSysteminfo:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getSystemInfo',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        id: app.globalData.userinfo.num,
+        reported:app.globalData.openid,
+      },
+      success: function (res) {
+        that.setData({
+          systemInfo:res.data
+        })
+        var mark = []
+        for (var i = 0; i < app.globalData.informCount ; i++){
+          mark.push(res.data[i].id)
+        }
+        if(mark.length > 0){
+          wx.request({
+            url: app.globalData.domain + '/hasLookInfo',
+            method: 'GET',
+            header: app.globalData.header,
+            data: {
+              mark: mark,
+            },
+            success: function (res) {
+            }
+          })
+        }
+      }
+    })
+   
+  },
+  getCollectInfo:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/collectInfos',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        num: app.globalData.userinfo.num,
+      },
+      success: function (res) {
+        console.log(res)
+        that.setData({
+          category: res.data
+        })
+      }
+    })
+  },
+  getPushInfo:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getPushInfo',
+      method: 'GET',
+      header: app.globalData.header,
+      data: {
+        name: app.globalData.name,
+        look: false
+      },
+      success: function (res) {
+        console.log("推送信息")
+        console.log(res)
+        that.data.id = []
+        that.data.category = []
+        for(var i = 0 ; i < res.data.length ; i ++){
+          that.data.id.push(res.data[i].id)
+          that.data.category.push(res.data[i].info)
+        }
+        that.setData({
+          category: that.data.category
+        })
+      }
+    })
   },
   showComment:function(index){
     if (index == 4) {
@@ -181,7 +463,7 @@ Page({
         header: app.globalData.header,
         method: "POST",
         data: {
-          nickName: app.globalData.userInfo.nickName,
+          nickName: app.globalData.userinfo.nickName,
           openId: app.globalData.openid,
           suggestion: res.detail.value.advice,
           contactWay: res.detail.value.contactWay,

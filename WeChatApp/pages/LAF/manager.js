@@ -14,7 +14,8 @@ Page({
     reportComment:[],
     showCheck:true,
     showReport:false,
-    shwoAdvice:false,
+    showAdvice:false,
+    showNews:false,
     //顶部tabar栏显示
     fontColor: ["#69c0ff", "rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)'],
     borderB: ['5rpx solid #69c0ff', '', '', ''],
@@ -38,7 +39,8 @@ Page({
       this.setData({
         showCheck: true,
         showReport:false,
-        showAdvice:false
+        showAdvice: false,
+        showNews: false
       })
     } else if (id == "1") {
       this.setData({
@@ -48,7 +50,8 @@ Page({
       this.setData({
         showCheck: false,
         showReport: true,
-        showAdvice: false
+        showAdvice: false,
+        showNews: false
       })
       this.report()
     } else if (id == "2") {
@@ -59,9 +62,104 @@ Page({
       this.setData({
         showCheck:false,
         showReport: false,
-        showAdvice: true
+        showAdvice: true,
+        showNews: false
       })
+    } else if (id == "3") {
+      this.setData({
+        fontColor: ["rgb(112, 110, 110)", 'rgb(112, 110, 110)', 'rgb(112, 110, 110)', "#69c0ff"],
+        borderB: ['', '','','5rpx solid #69c0ff']
+      })
+      this.setData({
+        showCheck: false,
+        showReport: false,
+        showAdvice: false,
+        showNews: true
+      })
+      this.getNews()
     }
+  },
+  getNews:function(){
+    var that = this
+    wx.request({
+      url: app.globalData.domain + '/getNews',
+      method: 'GET',
+      header: app.globalData.header,
+      success: function (res) {//连接成功运行
+        console.log(res.data)
+        that.setData({
+          news: res.data,
+        })
+      }
+    }) 
+  },
+  uploadNews:function(){
+    var that = this
+    wx.chooseImage({
+      count: 1,
+      sizeType: 'compressed',
+      success: function (res) {
+        console.log("a" + res)
+        wx.showLoading({
+          title: '正在发送',
+          mask: true,
+        })
+        that.data.filePath = res.tempFilePaths[0];
+        wx.getImageInfo({
+          src: res.tempFilePaths[0],
+          success: function (res) {
+            that.data.ImgHeight = res.height
+            that.data.ImgWidth = res.width
+            console.log(res)
+            that.writeInfo()
+          }, fail: function (e) {
+            console.log(e)
+          }
+        })
+        console.log(res.tempFilePaths[0])
+      }, fail: function (e) {
+        console.log(e)
+      }
+    })
+  },
+  writeInfo: function () {
+    var that = this;
+    var util = require('../../utils/util.js')
+    that.data.category = "news";
+    wx.uploadFile({
+      url: app.globalData.domain + '/uploadNews',
+      filePath: that.data.filePath,
+      name: 'file',
+      formData: {
+        height: that.data.ImgHeight,
+        width: that.data.ImgWidth,
+        category: that.data.category,
+        openid: app.globalData.openid,
+        time: util.formatTime(new Date),
+        name:app.globalData.name,
+        img: app.globalData.userinfo.avatarUrl
+      },
+      method: "POST",
+      header: app.globalData.header,
+      success: function (res) {
+        console.log(res)
+        wx.hideLoading()
+        wx.showToast({
+          title: '上传成功',
+          duration: 1000,
+        })
+
+        that.data.news.unshift(JSON.parse(res.data))
+        console.log(that.data.news)
+        that.setData({
+          news: that.data.news,
+        })
+      }, fail: function (res) {
+        wx.showToast({
+          title: '发布信息失败，请重试',
+        })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -158,6 +256,7 @@ Page({
   },
   //管理员决定举报评论
   commentReport: function (e) {
+    var util = require('../../utils/util.js')
     this.hideModal("close");
     var that = this
     var decide = this.data.code
@@ -168,7 +267,8 @@ Page({
       data: {
         decide: decide,
         id: commentid,
-        operator: app.globalData.userinfo.num
+        operator: app.globalData.userinfo.num,
+        time: util.formatTime(new Date),
       },
       header: app.globalData.header,
       success: function (res) {//连接成功运行
@@ -186,6 +286,38 @@ Page({
       },
       complete: function (res) {//都执行
       },
+    })
+  },
+
+  // ListTouch触摸开始
+  ListTouchStart(e) {
+    this.setData({
+      ListTouchStart: e.touches[0].pageX
+    })
+  },
+
+  // ListTouch计算方向
+  ListTouchMove(e) {
+    console.log(e)
+    this.setData({
+      ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
+    })
+  },
+
+  // ListTouch计算滚动
+  ListTouchEnd(e) {
+    console.log(e)
+    if (this.data.ListTouchDirection == 'left') {
+      this.setData({
+        modalName: e.currentTarget.dataset.target
+      })
+    } else {
+      this.setData({
+        modalName: null
+      })
+    }
+    this.setData({
+      ListTouchDirection: null
     })
   },
   showModal1(e) {

@@ -4,10 +4,12 @@ package com.example.lostandfind.service;
 import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.mysql.InfoMysql;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Service
 public class TimeSelectService {
 
     @Autowired

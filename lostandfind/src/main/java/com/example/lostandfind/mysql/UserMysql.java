@@ -42,6 +42,15 @@ public class UserMysql{
 
     private String unionId = null;
 
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 
     @JsonIgnore
     @OneToMany(mappedBy = "user",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
@@ -58,6 +67,19 @@ public class UserMysql{
     @JsonIgnore
     @ManyToMany(mappedBy = "users",fetch = FetchType.LAZY)
     private List<ReportCommentMysql> reportCommentMysqls;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="user_info",joinColumns = @JoinColumn(name="user_num"),
+            inverseJoinColumns = @JoinColumn(name="info_mysql_id"))
+    private List<InfoMysql> infos;
+
+    public List<InfoMysql> getInfos() {
+        return infos;
+    }
+
+    public void setInfos(List<InfoMysql> infos) {
+        this.infos = infos;
+    }
 
     public List<ReportCommentMysql> getReportCommentMysqls() {
         return reportCommentMysqls;

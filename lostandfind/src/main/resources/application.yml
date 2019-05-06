@@ -46,3 +46,9 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+appId:
+  xautId: wxc8c90d2d684c76a0
+  yinghuo: wx7bc3d60d3ad76df5
+appSecret:
+  xautId: 7f24acb9cb4cf67e2fd57993032de4dc
+  yinghuo: 5568743ce27e6d0897425ba23e568ef1

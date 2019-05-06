@@ -12,6 +12,15 @@ public class ManagerMysql {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String openId;
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 
     public Long getId() {
         return Id;

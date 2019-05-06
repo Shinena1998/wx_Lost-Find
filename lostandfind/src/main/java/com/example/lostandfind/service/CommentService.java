@@ -8,16 +8,21 @@ import com.example.lostandfind.mysql.InfoMysql;
 import com.example.lostandfind.repository.CommentRespository;
 import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.utils.ResultUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class CommentService {
     //获得某条信息下的评论
+    @Autowired
+    private CommentRespository commentRespository;
     @Transactional
-    public JSONArray getComments(int id, CommentRespository commentRespository){
+    public JSONArray getComments(int id){
 //        String[] idString = ids.split(",");
 //        List<Integer> idi = new ArrayList<Integer>();
 //        for (int i = 0; i < idString.length ; i++) {
@@ -30,7 +35,7 @@ public class CommentService {
     }
     //获得某个用户的评论
     @Transactional
-    public JSONObject getPersonComments(String openid,CommentRespository commentRespository){
+    public JSONObject getPersonComments(String openid){
         //得到发布下信息下所有回复
         System.out.println(openid);
         List<CommentMysql> comments = commentRespository.findByIdentityOrderByIdDesc(openid);
@@ -48,7 +53,10 @@ public class CommentService {
                 break;
             }
         }
-        JSONArray commentJa = getLazyData(comments,true);
+        JSONArray commentJa = new JSONArray();
+        if(comments.size()>0){
+            commentJa = getLazyData(comments,true);
+        }
         //回复评论
         List<CommentMysql> reply = commentRespository.findByToUidOrderByIdDesc(openid);
         for (int i = reply.size()-1; i >= 0; i--) {
@@ -58,7 +66,10 @@ public class CommentService {
                 break;
             }
         }
-        JSONArray replyJz = getLazyData(reply,true);
+        JSONArray replyJz = new JSONArray();
+        if(reply.size()>0){
+            replyJz = getLazyData(reply,true);
+        }
         JSONObject jsonObject  = new JSONObject();
         jsonObject.put("info",commentJa);
         jsonObject.put("infoNum",view);
@@ -84,7 +95,7 @@ public class CommentService {
         return jsonArray;
     }
     @Transactional
-    public Result changeRead(int kind , int num , String openid, CommentRespository commentRespository){
+    public Result changeRead(int kind , int num , String openid){
         if(kind == 0) {
             List<CommentMysql> reply = commentRespository.findByToUidAndToViewOrderByIdDesc(openid,false);
             for (int i = 0; i < reply.size() ; i++) {

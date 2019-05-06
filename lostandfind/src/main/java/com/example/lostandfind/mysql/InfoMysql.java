@@ -69,6 +69,7 @@ public class InfoMysql{
 
     private String infomation;
 
+
     //时间戳
     private long timestamps;
     /**
@@ -96,6 +97,17 @@ public class InfoMysql{
 
     @OneToMany(mappedBy = "info",cascade = {CascadeType.ALL},fetch = FetchType.LAZY)
     private List<CommentMysql> commentMysqlList;
+
+    @ManyToMany(mappedBy = "infos",fetch = FetchType.LAZY)
+    private List<UserMysql> users ;//收藏人数
+
+    public List<UserMysql> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserMysql> users) {
+        this.users = users;
+    }
 
     public int getCount() {
         return count;

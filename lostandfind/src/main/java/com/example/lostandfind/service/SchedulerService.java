@@ -1,10 +1,12 @@
 package com.example.lostandfind.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.lostandfind.mysql.ManagerMysql;
 import com.example.lostandfind.repository.FinishRespository;
 import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.mysql.FinishMysql;
 import com.example.lostandfind.mysql.InfoMysql;
+import com.example.lostandfind.repository.ManageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +27,8 @@ public class SchedulerService {
     private RestTemplate restTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private ManageRepository manageRepository;
     private final String IMGFOLDER = "/root/html/img/";//服务器图片存储绝对路径
     private final String PATHPREFIX = "https://yuigahama.xyz/img/";//数据库存储图片域名路径，
 
@@ -73,8 +77,7 @@ public class SchedulerService {
     }
     /**
      * 用户上传图片成功但写入信息失败时，此方法用于删除没有对应信息的图片
-     * 每天0点核对一次
-     */
+g     */
     @Scheduled(cron = "0 0 0 * * ?")
     public void checkImg(){
         File file = new File(IMGFOLDER);
@@ -185,4 +188,13 @@ public class SchedulerService {
 //        }
 //        System.out.println(sb.toString());
 //    }
+    @Autowired
+    private Template templateService;
+    //通知管理员审核信息
+    @Scheduled(fixedDelay = 1800000)
+    public void informMagager(){
+        templateService.pushInfo();
+        templateService.pushReport();
+    }
+
 }

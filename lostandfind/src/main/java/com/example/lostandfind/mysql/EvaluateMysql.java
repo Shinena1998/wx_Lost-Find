@@ -13,7 +13,7 @@ public class EvaluateMysql {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String openid;
+    private int openid;
     private Integer uiL;
     private Integer useL;
     private Integer feelL;
@@ -27,11 +27,11 @@ public class EvaluateMysql {
         this.id = id;
     }
 
-    public String getOpenid() {
+    public int getOpenid() {
         return openid;
     }
 
-    public void setOpenid(String openid) {
+    public void setOpenid(int openid) {
         this.openid = openid;
     }
 

@@ -1,0 +1,22 @@
+/* pages/LAF/news.wxss */
+.upload {
+  position: fixed;
+  top: 36rpx;
+  left: 10rpx;
+  z-index:1;
+  font-size:60rpx;
+}
+.left {
+  position: fixed;
+  bottom: 70rpx;
+  left: 200rpx;
+  z-index:1;
+  font-size:50rpx;
+}
+.right {
+  position: fixed;
+  bottom: 70rpx;
+  right: 200rpx;
+  z-index:1;
+  font-size:50rpx;
+}

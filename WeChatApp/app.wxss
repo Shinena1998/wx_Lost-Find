@@ -1,4 +1,5 @@
 @import "icon.wxss";
+@import "icon2.wxss";
 @import "colorui.wxss";
 ::-webkit-scrollbar {
   width: 0;

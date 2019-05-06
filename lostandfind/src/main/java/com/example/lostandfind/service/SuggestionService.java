@@ -5,12 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.mysql.SuggestMysql;
 import com.example.lostandfind.repository.SuggestRepository;
 import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SuggestionService {
-    public JSONArray getSuggestion(SuggestRepository suggestRepository){
+    @Autowired
+    private SuggestRepository suggestRepository;
+
+    public JSONArray getSuggestion(){
         List<SuggestMysql> suggests = suggestRepository.findAll(new Sort(Sort.Direction.DESC,"id"));
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < suggests.size(); i++) {

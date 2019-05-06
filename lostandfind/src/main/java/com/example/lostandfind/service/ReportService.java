@@ -4,17 +4,36 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.mysql.InfoMysql;
 import com.example.lostandfind.mysql.ReportInfoMysql;
+import com.example.lostandfind.mysql.SystemInformMysql;
 import com.example.lostandfind.mysql.UserMysql;
 import com.example.lostandfind.repository.InfoRepository;
 import com.example.lostandfind.repository.ReportRepository;
+import com.example.lostandfind.repository.SystemInformRepository;
+import com.example.lostandfind.worker.Channel;
+import com.example.lostandfind.worker.CommentThread;
+import com.example.lostandfind.worker.IllegalComment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+@Service
 public class ReportService {
-    public String writeReport(JSONObject jsonObject, ReportRepository reportRepository){
+    @Autowired
+    private ReportRepository reportRepository;
+
+    @Autowired
+    private InfoRepository infoRepository;
+
+    @Autowired
+    private  SystemInformRepository sir;
+    public String writeReport(JSONObject jsonObject){
         int id = jsonObject.getInteger("reportid");
         int userid = jsonObject.getInteger("userid");//举报用户
+        String reason = jsonObject.getString("reason");
         UserMysql userMysql = new UserMysql();
         userMysql.setNum(userid);
         ReportInfoMysql reportInfoMysql = reportRepository.findByReportId(id);
@@ -37,6 +56,8 @@ public class ReportService {
             reportInfoMysql.setUserMysqls(userMysqls);
             int count = reportInfoMysql.getCount();
             reportInfoMysql.setCount(++count);
+            String str = reportInfoMysql.getReason()+";"+reason;
+            reportInfoMysql.setReason(str);
             reportRepository.save(reportInfoMysql);
         }else{
             reportInfoMysql = new ReportInfoMysql();
@@ -44,6 +65,7 @@ public class ReportService {
             reportInfoMysql.setCount(1);
             reportInfoMysql.setProcess(false);
             reportInfoMysql.setOperator(0);
+            reportInfoMysql.setReason(reason);
             List<UserMysql> userMysqls = new ArrayList<UserMysql>();
             userMysqls.add(userMysql);
             reportInfoMysql.setUserMysqls(userMysqls);
@@ -51,29 +73,35 @@ public class ReportService {
         }
         return "举报成功";
     }
-    public JSONArray getReport(ReportRepository reportRepository,InfoRepository infoRepository){
+    public JSONArray getReport(){
         List<ReportInfoMysql> reports = reportRepository.findByProcessOrderByReportId(false);
         if (reports.size() == 0){
             return new JSONArray();
         }
         JSONArray jsonArray = new JSONArray();
-        List<Integer> ids = new ArrayList<Integer>();
+        Set<Integer> ids = new HashSet<Integer>();
         for (int i = 0; i < reports.size(); i++) {
             ids.add(reports.get(i).getReportId());
         }
         List<InfoMysql> infos  = infoRepository.findidIn(ids);
+        for (int i = 0; i < infos.size(); i++) {
+            infos.get(i).getId();
+        }
         jsonArray.add(reports);
         jsonArray.add(infos);
         return jsonArray;
     }
 
-    public String process(boolean decide,int id,int operator,ReportRepository reportRepository,InfoRepository infoRepository){
+    public String process(boolean decide, int id, int operator,String time, Channel channel){
         ReportInfoMysql reportInfoMysql = reportRepository.findByReportId(id);
         if(decide){
             reportInfoMysql.setProcess(true);
             reportInfoMysql.setOperator(operator);
             reportRepository.save(reportInfoMysql);
             InfoMysql infoMysql = infoRepository.findById(id).get();
+            SystemInformMysql sim = new SystemInformMysql();
+            new CommentThread("信息违规处理通知",infoMysql.getTheme(),2,
+                    infoMysql.getUser().getOpenId(),reportInfoMysql.getReason(),id,sir,time,channel).putRequest();
             infoRepository.delete(infoMysql);
             return "删除成功";
         }else{
