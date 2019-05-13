@@ -1,0 +1,301 @@
+/* pages/LAF/search.wxss */
+page{
+  height:100%;
+  width: 100%;
+  /* background-color: white; */
+  /* border: 1px solid red; */
+}
+.top_middle::after{
+border: none;
+}
+.top{
+  height: 5%;
+  width: 100%;
+  display: flex;
+  padding-top: 3%;
+  justify-content: space-between;
+  background-color: #69c0ff;
+  /* border: 1px solid red */
+}
+.top_search{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  /* border: 1px solid;
+  border-color: green */
+} 
+.top_search_button{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.top_left{
+  height: 97%;
+  width: 10%;
+}
+.top_middle{
+  height: 97%;
+  width: 50%;
+  color: rgb(0, 0, 0);
+  font-size: 80%;
+  background-color: white;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: -1%;
+  margin-right: -2%;
+}
+.top_right{
+  width: 10%;
+  height: 98%;
+}
+.top_searchText{
+  width: 80%;
+  height: 100%;
+  background-color: white;
+  /* border: 1px solid;
+  border-color: red */
+}
+.top_searchTextPlaceholder{
+  font-size: 70%;
+}
+.top_sh_left{
+  height: 100%;
+  width: 10%;
+  margin-left: 3%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: white
+}
+.top_sh_right{
+  width: 10%;
+  height: 100%;
+  background-color: white;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.time{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.timeStart{
+  height: 100%;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.timeStartView{
+  height: 100%;
+  width: 100%;
+  font-size:75%;
+}
+.time_left{
+  background-color: white;
+  height: 100%;
+  width: 10%;
+  margin-left: 3%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.time_right{
+  background-color: white;
+  width: 10%;
+  height: 100%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.searchType{
+  width: 100%;
+  height: 8%;
+  background-color: #69c0ff;
+  padding-top: 1%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom-left-radius: 15%;
+  border-bottom-right-radius:15%; 
+}
+.stringType{
+  width:10%;
+  height: 70%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+.timeType{
+  width:10%;
+  height: 70%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+}
+.eyes{
+  width: 7%;
+  height: 80%;
+  margin-left: 1%;
+  margin-top: 1%;
+}
+.else{
+  height: 80%;
+  margin-top: 3%;
+  width: 94%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.labelView{
+  width: 100%;
+  /* border: 1px solid red;  */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
+.labelFor{
+  height: 15%;
+  text-align: center;
+  margin-top: 3%;
+  margin-right: 3%;
+}
+.label_left{
+  width: 40rpx;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: white;
+}
+.label_middle{
+  background-color: white;
+  font-size: 80%;
+  color: #595959;
+}
+.label_right{
+  width: 40rpx;
+  background-color: white;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+.label_css{
+  display: flex;
+  width: 100%;
+  height: 100%
+}
+.historyView{
+  width: 100%;
+  height: 4%;
+  margin-top: 5%;
+  font-size: 80%;
+  color: black;
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+}
+.history_deleteImg{
+  margin-top: 0.5%;
+  margin-right: 1%;
+  width: 5%;
+  height: 80%;
+}
+.infoAll{
+  width: 94%;
+  height: 81%;
+  margin-top: 3%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.infoView{
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 25%;
+  margin-top: 1%;
+  /* border:1rpx ridge;
+  border-color: rgb(220, 230, 223);
+  border-radius: 5%; */
+}
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border: 1px solid;
+  border-color: white;
+  background-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%;
+  background-size: 60%;
+  /*图片不填充背景*/
+  background-repeat:no-repeat;
+  /*图片位置偏移量*/
+  background-position: 100% 0%;
+  /* transform: rotate(30deg); 旋转 */
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  color: red;
+  /* border: 1px solid red; */
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.infoPlace{
+  height: 44%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.infoTime{
+  height: 14%;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 50%;
+}

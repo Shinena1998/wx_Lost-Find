@@ -1,0 +1,29 @@
+/* pages/LAF/news.wxss */
+.upload {
+  position: fixed;
+  top: 36rpx;
+  left: 10rpx;
+  z-index:1;
+  font-size:60rpx;
+}
+.barview{
+  position: fixed;
+  width:450rpx; 
+  bottom: 70rpx;
+  left: 150rpx;
+  right: 150rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+}
+.left {
+  font-size:50rpx;
+}
+.mid {
+  color:white;
+  font-size:25rpx;
+}
+.right {
+  font-size:50rpx;
+}

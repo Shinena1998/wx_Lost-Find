@@ -1,0 +1,14 @@
+/* pages/LAF/thanks.wxss */
+.upload {
+  width: 80rpx;
+  height: 80rpx;
+  position: fixed;
+  bottom: 20rpx;
+  right: 20rpx;
+  z-index:1;
+  border-radius:41rpx;
+}
+.infoAll{
+  height: 100%;
+  width: 100%;
+}

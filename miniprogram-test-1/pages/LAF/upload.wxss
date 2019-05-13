@@ -1,0 +1,134 @@
+/* pages/weishi/operate.wxss */
+/* pages/weishi/index.wxss */
+ page{
+  height: 100%;
+  width: 100%;
+  font-size: 80%;
+} 
+.radio-group_kind{
+  width: 100%;
+  height: 8%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom:2rpx solid;
+  border-color: wheat;
+  background-color: #69c0ff;
+}
+.infoAll{
+  height:92%;
+}
+.lose{
+  height:80%;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.cu-form-group {
+  background: #fff;
+  padding: 1rpx 30rpx;
+  display: flex;
+  align-items: center;
+  min-height: 100rpx;
+  justify-content: space-between;
+}
+
+.cu-form-group+.cu-form-group {
+  border-top: 1rpx solid #eee;
+}
+
+.cu-form-group .title {
+  text-align: justify;
+  padding-right: 30rpx;
+  font-size: 30rpx;
+  position: relative;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+.cu-form-group.top {
+  align-items: baseline;
+}
+
+.cu-form-group input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #555;
+  padding-right: 20rpx;
+}
+
+.cu-form-group>text[class*="icon"] {
+  font-size: 36rpx;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cu-form-group textarea, .cu-form-group textarea textarea {
+  margin: 32rpx 0 30rpx;
+  height: 4.8em;
+  width: 100%;
+  line-height: 1.2em;
+  flex: 1;
+  font-size: 28rpx;
+  padding: 0;
+  box-sizing: content-box;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.cu-form-group textarea::after {
+  content: "测试文字";
+  opacity: 0;
+}
+
+.cu-form-group .grid-square {
+  margin: 20rpx 0 0;
+}
+
+.cu-form-group picker {
+  flex: 1;
+  padding-right: 40rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.cu-form-group picker .picker {
+  line-height: 100rpx;
+  font-size: 28rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: right;
+}
+
+.cu-form-group picker::after {
+  font-family: iconfont;
+  display: block;
+  content: "\e6a3";
+  position: absolute;
+  font-size: 34rpx;
+  color: #aaa;
+  line-height: 100rpx;
+  width: 60rpx;
+  text-align: center;
+  top: 0;
+  bottom: 0;
+  right: -20rpx;
+  margin: auto;
+}
+
+.cu-form-group textarea[disabled],
+.cu-form-group textarea[disabled] .placeholder {
+  color: transparent;
+}
+
+
+.radioWord{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

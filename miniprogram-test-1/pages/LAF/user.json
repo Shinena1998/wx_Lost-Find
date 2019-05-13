@@ -1,0 +1,8 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#69c0ff",
+  "navigationBarTitleText": "个人主页",
+  "navigationBarTextStyle": "white",
+  "disableScroll": true,
+  "navigationStyle": "custom"
+}

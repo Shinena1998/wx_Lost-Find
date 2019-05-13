@@ -1,0 +1,52 @@
+ {
+  "pages":[
+    "pages/LAF/service",
+    "pages/LAF/index",
+    "pages/LAF/user",
+    "pages/LAF/showInfo",
+    "pages/LAF/upload",
+    "pages/LAF/detail",
+    "pages/LAF/manager",
+    "pages/LAF/search",
+    "pages/LAF/managerInfo",
+    "pages/LAF/thanks",
+    "pages/LAF/test",
+    "pages/LAF/news"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#69c0ff",
+    "navigationBarTitleText": "失物招领",
+    "navigationBarTextStyle":"white"
+  },
+  "networkTimeout": {
+    "request": 3000
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#69c0ff",
+    "position":"bottom",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/LAF/index",
+        "text": "权益周报",
+        "iconPath":"/pages/img/news.png",
+        "selectedIconPath":"/pages/img/newsing.png"
+      },
+      {
+        "pagePath": "pages/LAF/service",
+        "text": "信息圈",
+        "iconPath": "/pages/img/info.png",
+        "selectedIconPath": "/pages/img/infoing.png"
+      },
+      {
+        "pagePath": "pages/LAF/user",
+        "text": "个人主页",
+        "iconPath": "/pages/img/person.png",
+        "selectedIconPath": "/pages/img/personing.png"
+      }
+    ]
+  },
+  "resizable": true
+}

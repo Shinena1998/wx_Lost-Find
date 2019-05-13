@@ -1,0 +1,5 @@
+/* pages/LAF/managerInfo.wxss */
+
+.infoAll{
+  height:100%;
+}

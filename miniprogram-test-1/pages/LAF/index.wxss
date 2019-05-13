@@ -1,0 +1,504 @@
+/**index.wxss**/
+page{
+  height: 100%;
+  width: 100%;
+  margin-bottom: 20%;
+}
+.ying{
+  height: 50%;
+  width: 100%;
+  z-index:9201;
+  position: fixed;
+}
+.userinfo {
+  width: 96%;
+  padding-left: 2%;
+  padding-right: 2%;
+  background-color: #69c0ff;
+  display: flex;
+  height: 100rpx;
+  flex-direction: row;
+  /* border: 1rpx solid;
+  border-color: red; */
+  background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;
+}
+.avatarView{
+  height:100rpx;
+  width:120rpx;
+  display:flex;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.notice{
+  height:20rpx;
+  width:20rpx;
+  background-color:rgb(255, 35, 71);
+  border-radius: 50%;
+}
+.Write_userinfo{
+  width: 100%;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  font-size: 60%;
+  color: black;
+}
+.userinfo_view{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 2%;
+  width:40%;
+  height: 100%;
+}
+.userinfo-nickname {
+  font-size: 80%;
+}
+.userinfo_right{
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.userinfo_right_column{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.userinfo_level{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 70%;
+  color: green;
+}
+.userinfo_time{
+  font-size: 70%;
+}
+.infoImage{
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid red; */
+}
+.thingInfo{
+  width: 100%;
+  height: 30%;
+  background-color: white;
+  /* border: 1px solid red; */
+}
+.remind{
+  background-color: #fffbe6;
+  height: 7.5%;
+  color: white;
+  width: 96%;
+  display: flex;
+  padding-left: 2%;
+  padding-right: 2%;
+  justify-content: space-between;
+  /* position: fixed;
+  top:0px;
+  left: 0px; */
+  z-index: 1000;
+}
+.top{
+  height: 8%;
+  width: 96%;
+  padding-left: 2%;
+  padding-right: 2%;
+  display: flex;
+  margin-top: 3%;
+  justify-content: space-between;
+  /* border: 1px solid red */
+}
+.top_search{
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  /* border: 1px solid;
+  border-color: green */
+} 
+.top_searchText{
+  width: 80%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+.top_searchTextPlaceholder{
+  font-size: 90%;
+  padding-left: 2%;
+}
+.top_sh_left{
+  height: 100%;
+  width: 10%;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid #000; */
+}
+.top_sh_right{
+  width: 10%;
+  background-color: white;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+   /* border: 1px solid #000; */
+}
+
+.logoLeft{
+  width:8%;
+  height:62%; 
+}
+.logoRight{
+  font-size: 75%;
+  width: 92%;
+  margin-left: 2%;
+  color: rgb(29, 29, 29); 
+}
+.userSugges{
+  height: 100%;
+  width: 5%;
+  text-align: right;
+}
+.info{
+  width: 100%;
+  height: 41%;
+  display: flex;
+  flex-direction: column;
+  margin-top:3rpx;
+  /* border: 1px solid #000; */
+}
+   
+.evaluateInfo{
+  height:18%;
+  width:89%;
+  display:flex;
+  align-items: center;
+  padding-left: 11%;
+  font-size: 80%;
+  background-color: white;
+  /* border: 1px solid red; */
+}
+.evaluate{
+  height:20%;
+  padding:0 35rpx;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+.evaluateView{
+  height: 100%;
+  width: 30%;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  /* border: 1px solid red; */
+} 
+.evaluateImage{
+  height:40rpx;
+  width:40rpx;
+  margin-right: 11rpx;
+  /* border: 1px solid red; */
+} 
+.evaluate_word{
+  width: 50%;
+  font-size: 28rpx;
+  /* border: 1px solid red; */
+}
+.close_image{
+  height: 90%;
+  width: 25%;
+}
+.evaluate_remind{
+  height: 60%;
+  width: 7%;
+  /* border: 1px solid red; */
+}
+.evaluateLevel{
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.word{
+  width: 20%;
+  font-size: 24rpx;
+}
+.star{
+  width: 20%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.advice{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 60%;
+  background-color: white;
+  color: rgb(151, 151, 151);
+}
+.show-btn {
+  margin-top: 100rpx;
+  color: #22cc22;
+}
+.author{
+  width: 100%;
+  height: 5%;
+  margin-top: 2%;
+  /* border: 1px solid #000; */
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+.pingjiaView{
+  margin-top: 3%;
+  height:50%;
+  width: 100%;
+}
+.pingjia{
+  height:20%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-mask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.5;
+  overflow: hidden;
+  z-index: 9000;
+  color: #fff;
+}
+
+.modal-dialog {
+  width: 540rpx;
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  left: 0; 
+  z-index: 9100;
+  background: rgb(233, 241, 235);
+  margin: -180rpx 105rpx; 
+  border-radius: 16rpx;
+}
+
+.modal-title {
+  color: #030303;
+  text-align: center;
+}
+
+.modal-content {
+  padding: 50rpx 32rpx;
+  font-size: 80%
+}
+.modal-content1{
+  border-top: 1px solid #dedede;
+  padding: 20rpx 32rpx;
+  font-size: 80%
+}
+
+.modal-input {
+  display: flex;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+}
+
+
+
+
+input-holder {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  height: 86rpx;
+  border-top: 1px solid #dedede;
+  line-height: 86rpx;
+  font-size: 80%
+}
+.btn-cancel {
+  width: 50%;
+  color: #666;
+  text-align: center;
+  border-right: 1px solid #dedede;
+  border-radius: 10rpx;
+  font-size: 80%
+}
+.btn-confirm {
+  width: 50%;
+  border-radius:10rpx;
+  font-size: 80%
+}
+
+.modalDialog {
+  width: 80%;
+  height: 60%;
+  overflow: hidden;
+  position: fixed;
+  top: 10%;
+  left: 10%; 
+  z-index: 9100;
+  background: white;
+  border-radius: 16rpx;
+}
+.modalTitle {
+  margin-top: 3%;
+  height: 7%;
+  color: #030303;
+  text-align: center;
+}
+.comtentView{
+  height:75%;
+  width:100%;
+}
+.modalComtent{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
+  /* border: 1px solid red; */
+}
+.input {
+  height: 50%;
+  font-size: 60%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  color: #333;
+  border-radius: 16rpx;
+  border: 1px solid #999999;
+}
+.modalFooter{
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  width: 100%;
+  /* border: 1px solid red; */
+  border-top: 1px solid #dedede;
+  font-size: 80%
+}
+.btnCancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  color: rgb(5, 5, 5);
+  border-right: 1px solid #dedede;
+  font-size: 100%
+}
+
+
+
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border-radius: 5%;
+  border: 1px solid;
+  border-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%;
+  background-size: 60%;
+  /*图片不填充背景*/
+  background-repeat:no-repeat;
+  /*图片位置偏移量*/
+  background-position: 100% 0%;
+  /* transform: rotate(30deg); 旋转 */
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  color: red;
+  /* border: 1px solid red; */
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.infoPlace{
+  height: 44%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.infoTime{
+  height: 14%;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+}
+.infoRemind{
+  padding-top: 1%;
+  width: 5%;
+  height: 50%;
+}
+.shouzhang{
+  width: 100%;
+  height: 300%;
+}
+.container {height: 100%;display: flex;flex-direction: column;justify-content: space-between;box-sizing: border-box;}
+.scrolltxt{padding:0 20rpx;}
+.marquee_box {position:relative;color:#ff7a45;font-size:15px;height:90rpx;display:block;overflow:hidden;} 
+.marquee_text {white-space: nowrap;position:absolute;color:#ff7a45;top:0;font-size:15px;height:90rpx;line-height:90rpx;}
+
+
+.box view.cu-bar {
+  margin-top: 20rpx; 
+}
