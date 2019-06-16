@@ -2,16 +2,15 @@ package com.example.lostandfind.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.lostandfind.mysql.InfoMysql;
-import com.example.lostandfind.mysql.ReportInfoMysql;
-import com.example.lostandfind.mysql.SystemInformMysql;
-import com.example.lostandfind.mysql.UserMysql;
+import com.example.lostandfind.mysql.*;
 import com.example.lostandfind.repository.InfoRepository;
+import com.example.lostandfind.repository.ReportCommentRepository;
 import com.example.lostandfind.repository.ReportRepository;
 import com.example.lostandfind.repository.SystemInformRepository;
 import com.example.lostandfind.worker.Channel;
 import com.example.lostandfind.worker.CommentThread;
 import com.example.lostandfind.worker.IllegalComment;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,7 @@ public class ReportService {
             for (int i = 0; i < userMysqls.size(); i++) {
                 //同一人直接返回
                 if(userMysqls.get(i).getNum() == userid){
-                    return "你已对该信息进行举报，管理员正在处理。";
+                    return "请勿多次举报";
                 }
             }
             //不同人添加
@@ -85,12 +84,14 @@ public class ReportService {
         }
         List<InfoMysql> infos  = infoRepository.findidIn(ids);
         for (int i = 0; i < infos.size(); i++) {
-            infos.get(i).getId();
+            infos.get(i).getUser();
         }
         jsonArray.add(reports);
         jsonArray.add(infos);
         return jsonArray;
     }
+    @Autowired
+    private ReportCommentRepository reportCommentRepository;
 
     public String process(boolean decide, int id, int operator,String time, Channel channel){
         ReportInfoMysql reportInfoMysql = reportRepository.findByReportId(id);

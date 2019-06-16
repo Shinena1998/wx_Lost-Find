@@ -1,0 +1,244 @@
+/* pages/LAF/showInfo.wxss */
+page{
+  background-color:  whitesmoke;
+  height:100%;
+  width: 100%;
+  font-size: 85%;
+}
+.systemAll{
+  width:100%;
+  height:100%;
+}
+.infoAll{
+  width: 94%;
+  height: 97%;
+  margin-top: 3%;
+  margin-left:3%;
+  margin-right:3%; 
+}
+.infoView{
+  /* background-color: white; */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 25%;
+  margin-top: 1%;
+  /* border:1rpx ridge;
+  border-color: rgb(220, 230, 223);
+  border-radius: 5%; */
+}
+.OneInfo{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-shadow: 2rpx 2rpx 5rpx #bbb;
+  border: 1px solid;
+  border-color: white;
+  background-color: white;
+}
+.infoImgView{
+  height: 100%;
+  width: 40%;
+}
+.infoImg{
+  height: 100%;
+  width: 100%;
+  border-radius: 5%;
+}
+.infoText{
+  display: flex;
+  margin-left: 2%;
+  flex-direction: column;
+  height: 100%;
+  width: 58%;
+  background-size: 60%;
+  /*图片不填充背景*/
+  background-repeat:no-repeat;
+  /*图片位置偏移量*/
+  background-position: 100% 0%;
+  /* transform: rotate(30deg); 旋转 */
+}
+.infoThemeView{
+  display: flex;
+  flex-direction: column;
+  height: 40%;
+  width: 95%;
+}
+.infoThemeRemindView{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.infoKind{
+  height: 100%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  color: red;
+  /* border: 1px solid red; */
+}
+.infoTheme{
+  height: 50%;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.infoPlace{
+  height: 44%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-top: 2%;
+}
+.infoTime{
+  height: 14%;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  align-items: center;
+}
+.infoRemind{
+  padding-top: 1%;
+  width:15rpx;
+  height:15rpx;
+
+}
+
+.adviceView{
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column; 
+}
+.adviceImg{
+  height:50%;
+  width:100%;
+}
+.advice{
+  height:27%;
+  width:94%;
+  margin-left:3%;
+  margin-right:3%;
+  margin-top: 3%;
+  border-radius: 5%;
+  border: 5rpx solid white;
+}
+.content1{
+  margin-top:5%; 
+  height: 15%;
+  width:94%;
+  margin-left:3%;
+  margin-right:3%;
+  border-radius: 5%;
+  border: 5rpx solid white;
+}
+
+.aboutMeView{
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+.logoView{
+  width: 100%;
+  height: 20%;
+  padding-top:50rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+.logo{
+  width: 200rpx;
+  height: 200rpx
+}
+.logotitle{
+  margin-top: 20rpx;
+  font-size: 120%;
+  color: rgb(158, 0, 0)
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+  margin-left:3%;
+  margin-right:3%;
+  font-size: 90%;
+}
+.wx{
+  display: flex;
+  flex-direction: row;
+  align-items:flex-start;
+}
+.helpText{
+  margin-top: 2%;
+}
+.help{
+  display: flex;
+  flex-direction: column;
+  font-size: 90%;
+  margin-left: 3%;
+  margin-right: 3%;
+  background-color: white;
+}
+
+.commentImg{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+.commentView{
+  width: 94%;
+  margin-left:3%;
+  margin-right: 3%; 
+  display: flex;
+  flex-direction: row;
+  padding-top: 2%;
+  margin-bottom: 2%;
+}
+.commentNT{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2%;
+}
+.commentWord{
+  width: 87%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #b8b6b6;
+}
+.menuView{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.menuLeft{
+  height: 100%;
+  width: 15%;
+}
+.menuRight{
+  height: 100%;
+  width: 10%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.commentMenu{
+  width: 30%;
+  height: 40rpx;
+}
+.author{
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 20rpx;
+  color: rgb(94, 94, 94);
+}

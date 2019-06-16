@@ -1,9 +1,0 @@
-2019-04-10 00:08:00,746 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h47s776ms).
-2019-04-10 16:28:03,156 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool 758 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16h20m1s659ms).
-2019-04-10 16:28:29,266 [Thread-31] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext 993 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@399c4be1: startup date [Tue Apr 09 16:27:35 CST 2019]; root of context hierarchy
-2019-04-10 16:28:29,566 [Thread-31] INFO  o.s.c.s.DefaultLifecycleProcessor 366 - Stopping beans in phase 2147483647
-2019-04-10 16:28:29,752 [Thread-31] INFO  o.s.j.e.a.AnnotationMBeanExporter 451 - Unregistering JMX-exposed beans on shutdown
-2019-04-10 16:28:29,762 [Thread-31] INFO  o.s.j.e.a.AnnotationMBeanExporter 185 - Unregistering JMX-exposed beans
-2019-04-10 16:28:31,002 [Thread-31] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean 597 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2019-04-10 16:28:31,046 [Thread-31] INFO  com.zaxxer.hikari.HikariDataSource 381 - HikariPool-1 - Shutdown initiated...
-2019-04-10 16:28:31,070 [Thread-31] INFO  com.zaxxer.hikari.HikariDataSource 383 - HikariPool-1 - Shutdown completed.

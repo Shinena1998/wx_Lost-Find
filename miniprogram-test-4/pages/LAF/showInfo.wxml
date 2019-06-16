@@ -1,0 +1,91 @@
+
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation' wx:if="{{showInfo}}" >
+<view class="infoView" wx:for="{{category}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name" >
+<view class='OneInfo'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{goods.picPath}}"></image>
+</view>
+<view  class="infoText" 
+style="background-image: url({{imgList[index]}})">
+<view class = "infoThemeView" >
+<view class='infoThemeRemindView'>
+<view class='infoKind'><image style="height:80%;width:9%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{goods.kind}}</view>
+<image class="infoRemind"src='/pages/img/C329252B-4FC3-4677-9AAF-362E42B3D75D.png ' wx:if="{{goods.confirm}}"></image>
+</view>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{goods.theme}}</text></view>
+</view>
+<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
+<text style="width:100%">{{goods.place}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:2%;"src='/pages/img/time.png'></image><text>{{goods.time}}</text></view>
+</view>
+</view>
+</view>
+</scroll-view>
+
+
+<form bindsubmit="formSubmit" report-submit='true' wx:if='{{showAdvice}}' >
+<view class="adviceView" >
+<image class='adviceImg' src='/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png'></image>
+<textarea name="advice" class="advice" placeholder='请输入您的建议或意见...' placeholder-style='font-size:100%'confirm-type='done'></textarea>
+<textarea name="contactWay" class='content1' placeholder='有需要的话，请留下您的联系方式...' placeholder-style='font-size:100%'confirm-type='done'></textarea>
+</view>
+<button  style='width:60%;margin-top:3%;'formType="submit" type='primary'>提交</button>
+</form>
+
+<scroll-view scroll-y="true" class="aboutMeView" wx:if="{{showAboutMe}}" >
+  <view class='help'>
+  <text style='font-size:120%;margin-top:15rpx'>帮助如下：</text>
+    <text class='helpText'>1.进入小程序会申请用户授权，小程序只会拉取用户昵称，图像以及openid等非隐私信息，用户可放心授权。</text>
+    <text class='helpText'>2.已发布失物超时时间为一个月，超时后将不再显示。普通失物不用审核，用户直接可发布，贵重物品许管理员审核通过</text>
+    <text class='helpText'>3.如果您丢失了电脑，手机登贵重物品，可发布贵重物品，进入发布信息界面后，点击添加图片右边的红色叹号，即可标记为贵重物品，但须管理员审核通过，审核通过后贵重物品优先显示，并且无视分类，3天后自动降级为普通物品，审核不通过则直接降级为普通物品。</text>
+    <text class='helpText'>4.详细物品界面发布者看到自己发布的信息，下边显示结束信息，其他用户显示通知拾主。通知拾主（拾主也就是信息发布者）是用来失主找到失物后，提醒发布者结束信息。</text>
+    <text class='helpText'>5.用户需要填写私人信息，小程序会根据您的学号等信息向您主动推送关于您掉落的失物，比如一卡通，书本等。并且你可以进行发布信息，查看详细信息，评论信息，查询信息，举报信息等多种功能。</text>
+    <text class='helpText'>6.证件类型的失物需要填写证件卡号，此信息并不会显示出来，而是作用于向失主推送此失物信息。</text>
+    <text class='helpText'>7.招领启示的失物需要填写失主姓名（如果知道），此信息并不会显示出来，而是作用于向失主推送此失物信息。</text>
+    <text class='helpText'>8.发布一卡通信息，用户仅需上传照片即可获取发布信息所需要的所有信息。</text>
+  </view>
+</scroll-view>
+
+<view class="aboutMeView" wx:if="{{showLAF}}" >
+  <view class='logoView'>
+    <image class='logo' src='/pages/img/logo.png '></image>
+    <text class='logotitle'>西理工失物招领</text>
+  </view>
+<view class="info">
+  <view class='explain'>本项目基于微信小程序设计一个服务于大学生的智能失物招领平台。该小程序的制作完全依据现有校学生会的失物招领工作模式，并在此基础上进行改善，实现目前的人工失物招领模式，使失物招领工作更加高效、便捷，从而更好的服务于广大在校师生。</view>
+</view>
+  <view class="author">
+    <text >By:萤火工作室</text>
+  </view>
+</view>
+
+<scroll-view  scroll-y="true" style='background-color:white;height:95%;' wx:if="{{showComment}}" >
+  <view wx:for="{{comment}}" wx:for-item="comment" data-index='{{index}}' wx:key="*this" class='commentView' bindtap='comeIntoInfo' >
+    <image class='commentImg' src='{{comment.userInfo.avatarUrl}}'></image>
+    <view class="commentWord">
+      <view class="commentNT">
+        <text style='font-size:80%;color:#999999'>{{comment.userInfo.nickName}}</text>
+        <text style='font-size:80%;color:#999999'>{{comment.commentInfo.time}}</text>
+      </view>
+      <text style='margin-bottom:2%;display: flex;'>
+        <text style='color:rgb(143, 202, 54)'>{{comment.commentInfo.toName}}</text>
+        <text>{{comment.commentInfo.content}}</text>
+      </text>
+    </view>
+  </view>
+</scroll-view>
+
+
+<scroll-view  scroll-y="true" class="systemAll" enable-back-to-top='true' scroll-with-animation="true" wx:if="{{showSystem}}" >
+<view class="cu-timeline" wx:for="{{systemInfo}}" data-index='{{index}}'  wx:key wx:for-item="info" style='padding-left:15rpx'>
+  <view class="cu-time" style='width:298rpx;text-align:left'>{{info.time}}</view>
+  <view class="cu-item">
+    <view class="content">
+      <view class="cu-capsule radius">
+        <view class="cu-tag bg-cyan">{{info.title}}</view>
+      </view>
+      <view class='margin-top'>{{info.content}}</view>
+    </view>
+  </view>
+</view>
+</scroll-view>

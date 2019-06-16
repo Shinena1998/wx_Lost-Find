@@ -16,9 +16,9 @@ public class SystemInformMysql {
 
     private String reason;
 
-    private int informer;//举报人
+    private int informer;//举报人或贵重信息发布者
 
-    private String reported;//被举报人
+    private String reported;//被举报人或操作管理员
     @Column(columnDefinition = "tinyint")
     private boolean look;
 

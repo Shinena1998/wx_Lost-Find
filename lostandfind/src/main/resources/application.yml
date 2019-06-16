@@ -49,6 +49,11 @@ pagehelper:
 appId:
   xautId: wxc8c90d2d684c76a0
   yinghuo: wx7bc3d60d3ad76df5
+  xutLf: wx3fe9ac50a68a7f15
 appSecret:
   xautId: 7f24acb9cb4cf67e2fd57993032de4dc
   yinghuo: 5568743ce27e6d0897425ba23e568ef1
+  xutLf: 2424489995668c5a9f58258a5737c729
+formId:
+  remind: n4GHTiUAcbU4nUGAr0b1ihK61ZdIkQBOVB9hQGGHyr8
+  check: PGlo2C62QJGaj1EEIAN9tvkP52GzhwpsU2pb7Eabbnc

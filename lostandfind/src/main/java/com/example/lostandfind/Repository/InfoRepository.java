@@ -50,7 +50,7 @@ public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
     public List<InfoMysql> findByIsValuableAndABooleanOrderById(boolean b, boolean c);
 
     //获得举报信息数据
-    @Query(value = "select * from info_mysql where id in ?1",nativeQuery = true)
+    @Query(value = "select * from info_mysql where id in ?1 Order by id asc",nativeQuery = true)
     public List<InfoMysql> findidIn(Set<Integer> ids);
 
     //获得搜索数据
@@ -59,4 +59,7 @@ public interface InfoRepository extends JpaRepository<InfoMysql,Integer> {
 
     @Query(value = "select count(id) from  info_mysql where identity=?1",nativeQuery = true)
     int infoCount(String openid);
+
+    //通过证件卡号找信息
+    List<InfoMysql> findByCardId(String card);
 }

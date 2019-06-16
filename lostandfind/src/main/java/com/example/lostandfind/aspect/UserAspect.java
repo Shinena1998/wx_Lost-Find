@@ -29,6 +29,8 @@ public class UserAspect {
     public void doBefore(JoinPoint joinPoint){
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpServletResponse response = servletRequestAttributes.getResponse();
+
         timestamp = new Date().getTime();
     }
     @After("log()")

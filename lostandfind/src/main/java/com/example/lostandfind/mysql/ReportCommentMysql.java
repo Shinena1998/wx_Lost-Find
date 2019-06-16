@@ -19,6 +19,7 @@ public class ReportCommentMysql {
 
     private String reason;//举报理由
 
+    //评论要user是因为要级联用户信息，而头像不用是因为从reportId中拿去失物信息，然后从失物信息查找失主
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserMysql user;//发布信息的用户

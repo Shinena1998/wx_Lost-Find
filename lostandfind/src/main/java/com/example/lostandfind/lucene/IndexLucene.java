@@ -55,7 +55,7 @@ public class IndexLucene {
 
     //搜索
     public List<InfoMysql> search(String value,int page) throws Exception{
-
+        this.optimizeSearch(value);
         //索引库的存储目录
         Directory directory = FSDirectory.open(new File(pic));
         //读取索引库的存储目录
@@ -63,7 +63,7 @@ public class IndexLucene {
         //搜索类
         IndexSearcher indexSearcher = new IndexSearcher(directoryReader);
         //lucence查询解析器，用于指定查询的属性名和分词器
-        QueryParser parser = new QueryParser(Version.LUCENE_47,"information", analyzer);
+        QueryParser parser = new QueryParser(Version.LUCENE_47,"content", analyzer);
         //搜索
         Query query = parser.parse(value);
         //最终被分词后添加的前缀和后缀处理器，默认是粗体<B></B>
@@ -94,5 +94,12 @@ public class IndexLucene {
     }
     public List<InfoMysql> search(Set<Integer> ids){
         return infoRepository.findidIn(ids);
+    }
+    //优化查询，比如查询一卡通时也会查询
+    public String optimizeSearch(String search){
+        if(search.equals("一卡通")){
+            return "一卡卡通";
+        }
+        return search;
     }
 }

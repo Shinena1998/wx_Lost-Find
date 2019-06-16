@@ -1,6 +1,5 @@
 package com.example.lostandfind.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.lostandfind.lucene.CreateIndex;
@@ -9,35 +8,28 @@ import com.example.lostandfind.domain.Result;
 import com.example.lostandfind.mapper.InfoMapper;
 import com.example.lostandfind.mysql.*;
 import com.example.lostandfind.service.*;
-import com.example.lostandfind.sqlInterface.PushInterface;
 import com.example.lostandfind.utils.ChangeListUtil;
+import com.example.lostandfind.utils.DivideWord;
 import com.example.lostandfind.utils.ResultUtil;
 import com.example.lostandfind.service.Template;
 import com.example.lostandfind.worker.Channel;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.seg.Segment;
+import com.hankcs.hanlp.seg.common.Term;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -137,7 +129,8 @@ public class LafController{
     private NewsRepository newsRepository;
     @GetMapping(value = "/getThanks")
     public List<ThanksMysql> getThanks(){
-        return thanksRepository.findAll(new Sort(Sort.Direction.DESC,"id"));
+        return thanksRepository.findByTypeOrderByIdDesc(1);
+//        return thanksRepository.findAll(new Sort(Sort.Direction.DESC,"id"));
     }
 
     @GetMapping(value = "/User")
@@ -237,18 +230,6 @@ public class LafController{
     public boolean deleteInfo(@RequestBody JSONObject jsonObject){
         return infoService.deleteInfo(jsonObject.getInteger("id"));
     }
-    /**
-     * 查看数据信息
-     * @return
-     */
-    @GetMapping(value = "/msg")
-    public List<InfoMysql> msgList() {
-        int size = 5;
-        int page = 0;
-        Sort sort = new Sort(Sort.Direction.ASC,"id");
-        Pageable pageable = PageRequest.of(page,size,sort);
-        return infoRepository.findByIsValuableOrABooleanOrderByIdDesc(false,false,pageable);
-    }
 
     /**
      * 解码拾取人信息
@@ -279,20 +260,7 @@ public class LafController{
         return dataStr;
     }
 
-    /**
-     * 向本地上传图片
-     * @param file 图片的二进制字节流
-     * @return
-     * @throws Exception
-     */
-//    @PostMapping(value = "/uploadImage")
-//    public Object uploadPicture(@RequestParam("file") MultipartFile file,
-//                                @RequestParam("height") int height,
-//                                @RequestParam("width") int width,
-//                                @RequestParam("category") String category,
-//                                @RequestParam("openid") String openid) throws Exception {
-//        return infoService.uploadPic(file,height,width,category,openid);
-//    }
+
     @PostMapping(value = "/uploadNews")
     public NewsMysql uploadNews(@RequestParam("file") MultipartFile file,
                                 @RequestParam("height") int height,
@@ -310,6 +278,7 @@ public class LafController{
     }
     /**
      * 向服务器端传图片
+     * @param file 图片的二进制字节流
      */
     @PostMapping(value = "/uploadImage")
     public Object uploadPicture(@RequestParam("file") MultipartFile file,
@@ -318,52 +287,33 @@ public class LafController{
                                 @RequestParam("category") String category,
                                 @RequestParam("openid") String openid) throws Exception {
         //获取文件需要上传到的路径
-//        return infoService.uploadPicS(file,height,width,category,openid);
-        return infoService.uploadPic(file,height,width,category,openid);
-
-//        if(file.isEmpty()==true){
-//            return "error";
-//        }else {
-//            String imgType = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1];
-//            String imgName = "+" + height + "+" + width + "+" + new Date().getTime() + openid +'.'+imgType;
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("/root/html/img/"+ imgName);
-//            Files.write(path,bytes);
-//            JSONObject jsonObject1 = new JSONObject();
-//            jsonObject1.put("imgPath","https://yuigahama.xyz/img/"+imgName);
-//
-//            if(category.equals("证件")){
-//                HttpEntity<MultiValueMap<String, String>> r = new Template().getOcrInfo(imgName);
-//                System.out.println("access_token:"+template.opsForValue().get("OcrToken"));
-//                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token="+template.opsForValue().get("OcrToken");
-////                String url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=24.84aa7d8c9edccf297cc361f731e4cd99.2592000.1555730017.282335-14936363";
-//                JSONObject jsonObject = restTemplate.postForObject(url, r, JSONObject.class);
-//                jsonObject1.put("imgInfo",new Template().processCroInfo(jsonObject));
-//            }else{
-//                jsonObject1.put("imgInfo","无");
-//            }
-//            return jsonObject1;
-//        }
+//        return infoService.uploadPicS(file,height,width,category,openid,"img/");
+        return infoService.uploadPic(file,height,width,category,openid,"img/");
     }
 
-    @ResponseBody
-    @PutMapping(value = "/confirm/{id}")
+    @PostMapping(value = "/confirm/{id}/{confirm}")
     public InfoMysql doConfirm(@PathVariable("id") Integer id,
-                               @RequestBody ConfirmService confirm){
+                               @PathVariable("confirm") boolean confirm){
         InfoMysql infoMysql = infoRepository.findById(id).get();
-        infoMysql.setConfirm(confirm.isConfirm());
+        infoMysql.setConfirm(confirm);
         return infoRepository.save(infoMysql);
     }
     /**
      * 管理员
      */
     @PostMapping(value ="/manager/{openid}")
-    public Boolean doManager(@PathVariable("openid") String openid){
-        if(manageRepository.findByOpenId(openid) != null){
-            return true;
+    public String doManager(@PathVariable("openid") String openid){
+        ManagerMysql managerMysql = manageRepository.findByOpenId(openid);
+        if(managerMysql != null){
+            return managerMysql.getFormId();
         }else {
-            return false;
+            return "no";
         }
+    }
+    @PostMapping(value = "/addManagerFormId")
+    public Result addManagerFormId(@RequestBody JSONObject jsonObject){
+        infoService.updateFormId(jsonObject.getString("openid"),jsonObject.getString("formId"));
+        return ResultUtil.success();
     }
     /**
      *是否同意审核
@@ -373,31 +323,23 @@ public class LafController{
      *
      * 还要改变
      */
-    @PutMapping(value="/check/{id}/{confirm}")
+    @PutMapping(value="/check/{id}/{confirm}/{formId}/{openId}/{num}")
     public Result doCheck(@PathVariable("id") Integer id,
-                          @PathVariable("confirm") boolean confirm){
-       return infoService.passValuable(id,confirm);
+                          @PathVariable("confirm") boolean confirm,
+                          @PathVariable("formId") String formId,
+                          @PathVariable("openId") String openId,
+                          @PathVariable("num") int num){
+        return infoService.passValuable(id,confirm,formId,openId,num);
     }
+    @Autowired
+    private SchedulerService schedulerService;
     /**
      * 结束事件
      */
     @DeleteMapping(value="/finish/{id}")
     public String doFinish(@PathVariable("id") Integer id){
         InfoMysql infoMysql =  infoRepository.findById(id).get();
-        infoRepository.deleteById(id);
-        FinishMysql finishMysql = new FinishMysql();
-        finishMysql.setCategory(infoMysql.getCategory());
-        finishMysql.setContactWay(infoMysql.getContactWay());
-        finishMysql.setIdentity(infoMysql.getIdentity());
-        finishMysql.setInfomation(infoMysql.getInfomation());
-        finishMysql.setKind(infoMysql.getKind());
-        finishMysql.setPicPath(infoMysql.getPicPath());
-        finishMysql.setTheme(infoMysql.getTheme());
-        finishMysql.setTime(infoMysql.getTime());
-        finishMysql.setPlace(infoMysql.getPlace());
-        finishMysql.setCurrent(infoMysql.getCurrent());
-        finishMysql.setTimeOut(false);
-        finishRespository.save(finishMysql);
+        schedulerService.saveFinishInfo(infoMysql,false);
         return "success";
     }
     /**
@@ -483,24 +425,6 @@ public class LafController{
         return historyRepository.save(historyMysql);
     }
     /**
-     * 生成token
-     */
-    @ResponseBody
-    @GetMapping(value = "/token")
-    public JSONObject makeToken(@RequestParam("openid") String openid){
-        return tokenService.makeToken(openid);
-    }
-//    public TokenService makeToken(HttpServletRequest request){
-//        HttpSession session = request.getSession();
-//        TokenService tokenService = new TokenService();
-//        String token = tokenService.makeToken();
-//        session.setAttribute("token",token);
-//        tokenService.setToken(token);
-//        tokenService.setSession(session.getId());
-//        return tokenService;
-//    }
-
-    /**
      * 写入用户建议
      */
     @ResponseBody
@@ -520,15 +444,11 @@ public class LafController{
     /**
      * 为了安全，腾讯相关的api不能在前端调用，只能在服务端调用
      * 获取用户openid以及session_id,session_id用来解码用户信息，得到用户unionid
+     * 并且获取token
      */
-    @Value("${appId.yinghuo}")
-    private String appId;
-    @Value("${appSecret.yinghuo}")
-    private String secret;
     @GetMapping(value = "/getUserInfo")
     public Object getUserInfo(@RequestParam("code") String code){
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+appId+"&secret="+secret+"&js_code=" + code + "&grant_type=authorization_code";
-        return restTemplate.exchange(url, HttpMethod.GET,null,String.class).getBody();
+        return tokenService.getUserInfo(code);
     }
 
     /**
@@ -597,21 +517,12 @@ public class LafController{
      */
     @GetMapping(value = "/Card")
     public InfoMysql getCardInfo(@RequestParam("card") String card) {
-        List<InfoMysql> infoMysqls = infoRepository.findByCategory("证件");
-        List<String> cardnum = new LinkedList<String>();
-        for (int i = 0; i < infoMysqls.size(); i++) {
-            String info = infoMysqls.get(i).getInfomation();
-            int label = info.lastIndexOf("+");//得到"+"标记的位置
-            if(label == -1){
-                continue;
-            }
-            info = info.substring(label+1);//截取"+"以后的证件卡号
-            System.out.println(info + " " + card);
-            if(info.equals(card)){
-                return infoMysqls.get(i);
-            }
+        List<InfoMysql> infoMysqls = infoRepository.findByCardId(card);
+        if (infoMysqls.size() > 0){
+            return infoMysqls.get(0);
+        }else{
+            return null;
         }
-        return null;
     }
 
     //填写个人信息
@@ -680,10 +591,14 @@ public class LafController{
     public   JSONObject getPersonComment(@RequestParam("openid") String openid) {
         return commentService.getPersonComments(openid);
     }
+//    @PostMapping("/deletePersonInfo")
+//    public Result writePersonInfo(@RequestParam("id") int id){
+//        personInfoRespository.deleteById(id);
+//        return ResultUtil.success();
+//    }
     //写入评论
     @PostMapping("/writeComment/{user_id}/{info_id}")
-    public CommentMysql writeComment(@PathVariable("info_id") Integer info,
-                                     @PathVariable("user_id") Integer user,
+    public CommentMysql writeComment(@PathVariable("info_id") Integer info, @PathVariable("user_id") Integer user,
                                      @RequestBody CommentMysql commentMysql){
         UserMysql userMysql = new UserMysql();
         userMysql.setNum(user);
@@ -751,9 +666,9 @@ public class LafController{
         return pushRepository.name(name,look);
     }
     @GetMapping("/getPushInfo")
-    public List<PushInterface> getPushInfo(@RequestParam("name") String name,
+    public List<PushMysql> getPushInfo(@RequestParam("name") String name,
                                            @RequestParam("look") boolean look){
-        return pushRepository.findByNameAndLookOrderByIdDesc(name,look);
+        return pushRepository.findByNameOrderByIdDesc(name);
     }
 
     //标记已经查看
@@ -772,9 +687,9 @@ public class LafController{
     }
 
     @GetMapping("/getSystemCount")
-    public int getSystemCount(@RequestParam("id") int id,
+    public int getSystemCount(@RequestParam("id") int id,//id没用
                      @RequestParam("reported") String reported){
-        return systemInform.informCount(id,reported);
+        return systemInform.informCount(reported);
     }
     @GetMapping("/getSystemInfo")
     public List<SystemInformMysql> getSystemInfo(@RequestParam("id") int id,
@@ -825,9 +740,53 @@ public class LafController{
         return createIndex.getInfo(keyWord,page);
     }
     @DeleteMapping("/deleteNews")
-    public Result deleteNews(@RequestBody NewsMysql newsMysql){
-        newsRepository.delete(newsMysql);
+    public Result deleteNews(@RequestBody JSONObject news){
+        NewsMysql newInfo = news.getObject("news",NewsMysql.class);
+        newsRepository.delete(newInfo);
         return ResultUtil.success();
+    }
+    @PostMapping("/writeThanks")
+    public ThanksMysql writeThanks(@RequestBody ThanksMysql thanksMysql){
+        return thanksRepository.save(thanksMysql);
+    }
+
+    @GetMapping("/getVersion")
+    public double getVersion(){
+        return 1.9;
+    }
+    @GetMapping("/testname")
+    public void testname(@RequestParam("name") String name){
+        Segment segment = HanLP.newSegment().enableNameRecognize(true);
+        List<Term> termList = segment.seg(name);
+        String name1 = "noName+";
+        String number = "noNumber+";
+        for (int i = 0; i < termList.size(); i++) {
+            //nr表示人名
+            System.out.println(termList.get(i).word + " " + termList.get(i).nature.toString());
+            if(termList.get(i).nature.toString().equals("nr")){
+                name1 = termList.get(i).word + "+";
+                // /m表示一串数字，数字长度大于无才会被记录
+            } else if(termList.get(i).nature.toString().equals("m") && termList.get(i).word.length() > 5){
+                number = termList.get(i).word;
+                if(number.length() == 17 && termList.get(i+1).word.equals("x")){
+                    number = number + "x+身份证";
+                }
+            }
+        }
+        System.out.println(name1+number);
+    }
+    @GetMapping(value = "/testHTML")
+    public JSONObject testHTML(){
+        JSONObject asd = new JSONObject();
+        asd.put("asd","asdasd");
+        return asd;
+    }
+    @Autowired
+    private DivideWord divideWord;
+
+    @GetMapping(value = "/testDivide")
+    public List<String> divide() throws Exception{
+        return divideWord.getAllKey();
     }
 
 }

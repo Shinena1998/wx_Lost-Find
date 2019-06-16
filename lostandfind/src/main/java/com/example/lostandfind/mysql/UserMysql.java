@@ -44,6 +44,16 @@ public class UserMysql{
 
     private String formId;
 
+    private String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
     public String getFormId() {
         return formId;
     }

@@ -18,11 +18,13 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.time.Duration;
+import java.util.Date;
+
 @Component
 public class CheckLoginInterceptor implements HandlerInterceptor {
     private final String url = "/token";
@@ -33,7 +35,9 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     //在before前
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        response.setContentType("text/html;charset=utf-8");
+        System.out.println("进入了拦截器");
+        response.setContentType("text/html;charset=utf-8");
+        return true;
 //        String key = request.getHeader("openid");
 //        String token = request.getHeader("token");
 //        if(key == null){
@@ -41,11 +45,12 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
 //            return false;
 //        }else if(token.equals(stringRedisTemplate.opsForValue().get(key))){
 //            return true;
+//        }else if(request.getRequestURI().split("/")[1].equals("manager")){
+//            return true;
 //        }else {
 //            response.getWriter().print("你就是构造了token也没用啊");
 //            return false;
 //        }
-        return true;
     }
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
@@ -57,6 +62,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
         //logger.info("afterCompletion");
     }
+
     public CheckLoginInterceptor(){
         logger.info("这是拦截器");
     }

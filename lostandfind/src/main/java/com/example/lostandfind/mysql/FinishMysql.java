@@ -4,10 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Repository
@@ -27,12 +24,15 @@ public class FinishMysql {
     private String theme;
 
     private String identity;
-
-    private String Time;
+    @Column(columnDefinition = "date")
+    private String Time;//物品丢失时间
+    @Column(columnDefinition = "date")
+    private String push;//信息发布时间
 
     private String category;
 
-    private String current;
+    @Column(columnDefinition = "date")
+    private String current;//信息找回时间
 
     private String picPath;
 
@@ -41,6 +41,7 @@ public class FinishMysql {
     private String place;
 
     private String infomation;
+
 
     private Boolean timeOut;
 
@@ -106,6 +107,14 @@ public class FinishMysql {
 
     public void setPicPath(String picPath) {
         this.picPath = picPath;
+    }
+
+    public String getPush() {
+        return push;
+    }
+
+    public void setPush(String push) {
+        this.push = push;
     }
 
     public String getContactWay() {

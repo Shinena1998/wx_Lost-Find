@@ -16,10 +16,10 @@ public interface SystemInformRepository extends JpaRepository<SystemInformMysql,
     @Query(value = "SELECT user_id from comment_user where reportcomment_report_id=?1",nativeQuery = true)
     List<JSONObject> selectCommentInformer(int id);
 
-    @Query(value = "SELECT count(reported) from inform where (informer=?1 or reported=?2) and look=false",nativeQuery = true)
-    int informCount(int id,String reported);
+    @Query(value = "SELECT count(reported) from inform where reported=?1 and look=false",nativeQuery = true)
+    int informCount(String reported);
 
-    List<SystemInformMysql> findByInformerOrReportedOrderByIdDesc(int id ,String openid);
+    List<SystemInformMysql> findByReportedOrderByIdDesc(String openid);
 
     @Modifying
     @Query(value = "update inform set look=true where id in ?1",nativeQuery = true)

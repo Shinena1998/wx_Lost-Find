@@ -10,7 +10,7 @@ public class PushMysql {
 
     @OneToOne
     @JoinColumn(name="info_mysql_id")
-    private InfoMysql info;
+    private InfoMysql pushInfo;
 
 
     private String name;
@@ -26,12 +26,12 @@ public class PushMysql {
         this.id = id;
     }
 
-    public InfoMysql getInfo() {
-        return info;
+    public InfoMysql getPushInfo() {
+        return pushInfo;
     }
 
-    public void setInfo(InfoMysql info) {
-        this.info = info;
+    public void setPushInfo(InfoMysql pushInfo) {
+        this.pushInfo = pushInfo;
     }
 
     public String getName() {

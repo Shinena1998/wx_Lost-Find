@@ -1,0 +1,244 @@
+<image src='/pages/img/bizhi.jpg' class="bizhi" wx:if="{{endload}}"></image>
+<view class="DrawerPage {{modalName=='viewModal'?'show':''}}" wx:if="{{indexView}}">
+  <view class="cu-custom" style="height:{{bar}}px;">
+    <view class="cu-bar tabbar bg-blue1 " style="height:{{bar}}px;align-items:flex-end;justify-content:flex-start;padding-right:{{CustomWidth}}px">
+    <!-- <view class="cu-bar tabbar bg-black fixed" style="height:{{CustomBar}}px;padding-top:{{StatusBar}}px;"> -->
+      <view class="cu-avatar round" style="background-image:url({{userInfo.avatarUrl}});margin-bottom:8px;width:30px;height:30px"   bindtap="showModal1" data-target="viewModal">
+      </view>
+      <view class='search-form round' style='margin-bottom:8px;height:30px' bindtap='search'>
+        <text class="icon-search"></text>
+        <input type="text" placeholder="输入搜索的关键词"  disabled='true' style='padding-right:0;font-size:24rpx'></input>
+      </view>
+      <view class="action" style='margin-bottom:8px;' bindtap='toManager'>
+          <view class='icon-cu-image'>
+            <image src='/pages/img/talk.png'></image>
+            <view class="cu-tag badge"  wx:if="{{notice}}"></view>
+          </view>
+        </view>
+    </view>
+  </view>
+  <view class="label">
+  <view id='0'  bindtap='category' class="label_c" style='color:{{fontColor[0]}};border-bottom:{{borderB[0]}}'>证件</view>
+<view id='1'  bindtap='category'class="label_c" style='color:{{fontColor[1]}};border-bottom:{{borderB[1]}}'>学习</view>
+<view id='2'  bindtap='category' class="label_c" style='color:{{fontColor[2]}};border-bottom:{{borderB[2]}}'>电子</view>
+<view id='3'  bindtap='category'class="label_c" style='color:{{fontColor[3]}};border-bottom:{{borderB[3]}}'>生活</view>
+</view>
+<scroll-view  scroll-y="true" class="infoAll" style='height:{{infoHeight}}%' enable-back-to-top='true' scroll-with-animation="true" 
+bindscrolltolower='addInformation' upper-threshold="20" scroll-top="{{weizhi}}" bindscrolltoupper="refresh" lower-threshold="20" scroll-into-view="{{moveid}}">
+<view class='refreshView' id="top" wx:if="{{initimg}}">
+  <image src='/pages/img/load.gif' style='width:40px;height:40px;background-color:white'></image>
+  <text style='color:#595959;font-size:16px;'>正在刷新</text>
+</view>
+
+<view  wx:for="{{category}}"  wx:for-item="goods" data-index='{{index}}' wx:key="name" id="id{{index}}" style='border-bottom: 1px solid #e9e5e5;'>
+<view class="cu-card dynamic no-card">
+  <view  class="cu-item shadow">
+    <view class="cu-list menu menu-avatar">
+      <view class="cu-item">
+        <view class="cu-avatar round lg" style="background-image:url({{goods.user.avatarUrl}});"></view>
+        <view class='content flex-sub'>
+          <view>{{goods.user.nickName}}</view>
+          <view class='text-gray text-sm flex justify-between'>
+            {{goods.time}}
+          </view>
+        </view>
+        <view bindtap='openMenu' id="{{index}}">
+           <image class='commentMenu' src='/pages/img/menu.png'></image>
+        </view>
+      </view>
+    </view>
+    <view class='text-content' style='margin-bottom:0' bindtap='comein' id="{{index}}">
+      <text style='margin-right:5%;color:#69c0ff'>#{{goods.kind}}#</text>
+      <!-- <text style='color:#f5222d;font-weight:900'>{{goods.theme}}</text> -->
+      <text style='font-weight:900'>{{goods.theme}}</text>
+    </view>
+    
+    <view class='text-content'style='margin-bottom:0;'  bindtap='comein' id="{{index}}">
+      <text class='text-content' style='color:#595959;' >{{goods.infomation}}</text>
+    </view>
+    <view wx:if="{{showImg[index]}}"  bindlongpress='previewImage' class="grid col-3 grid-square flex-sub padding" bindtap='comein' id="{{index}}">
+      <view  class="bg-img"  style="margin-bottom:0;background-image:url({{goods.picPath}});" >
+      </view>
+    </view>
+    <view wx:if="{{goods.keyWord.length > 0}}" class='padding-lr' bindtap='comein' style='margin-bottom:0' id="{{index}}">
+      <view class='text-blue text-df flex flex-wrap' >
+        <view  wx:for="{{goods.keyWord}}"  wx:for-item="words" wx:key="*this">
+          <view class='cu-btn round margin-rt' style='height:45rpx;padding:0 20rpx;'>
+            <view class="bg-blue keyWord">#</view>
+            <text style='width:{{words.length*28}}rpx' >{{words}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='text-gray  text-df flex justify-between padding-sm' bindtap='comein' id="{{index}}">
+      <view class='text-gray text-df flex  align-center'>
+      <image style="height:30rpx;width:30rpx;"src='/pages/img/place.png'></image>{{goods.place}}
+      </view>
+      <view class='text-gray  text-df text-right'>
+      <text class="icon-attentionfill "></text>{{goods.count>999?'999+':goods.count}}
+      <text class="icon-messagefill "> </text>{{goods.commentMysqlList.length}}
+      </view>
+    </view>
+  </view>
+</view>
+</view>
+<view class='refreshView' id="bottom" style='height:40px'  wx:if="{{initimg}}">
+  <image src='/pages/img/load.gif' style='width:40px;height:40px;background-color:white'></image>
+  <text style='color:#595959;font-size:16px;'>正在加载更多数据</text>
+</view>
+</scroll-view>
+</view>
+<view class="DrawerClose  {{modalName=='viewModal'?'show':''}} " bindtap='hideModal1'>
+  <text class='icon-pullright'></text>
+</view>
+<view class="DrawerWindow {{modalName=='viewModal'?'show':''}}">
+  <view class='text-center text-white'>
+    <image src='/pages/img/04659501-44ED-4F2E-B77D-295111F566A3.png ' class='response' mode='widthFix' style='width:100%;'></image>
+  </view>
+  <view class="cu-list menu card-menu shadow-lg margin-top">
+    <scroll-view  scroll-y="true" style='height:100%;width:100%' enable-back-to-top='true' scroll-with-animation="true" >
+  <view class="cu-form-group">
+    <view class='title'>学院</view>
+    <input bindblur='depart' placeholder='您所在的学院，不为空即可' value='{{depart}}' class='radius'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>班级</view>
+    <input bindblur='classes' placeholder='您的所在班级,不为空即可' value='{{classes}}' class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>学号</view>
+    <input bindblur='num'placeholder='10位数字即可' value='{{num}}' class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>电话</view>
+    <input bindblur='phone' placeholder='选填，1开头11位数字即可' value='{{phone}}'class='radius' name='theme'></input>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>姓名</view>
+    <input bindblur='name' placeholder='不为空即可' value='{{name}}' class='radius' name='theme'></input>
+  </view>
+  <form bindsubmit="personInfo" report-submit='true'>
+   <view class="padding flex flex-wrap  justify-around align-center bg-white" style='border-top:1px solid #8c8c8c'>
+      <button class='cu-btn round' bindtap='hideModal1'>返回</button>
+      <button class='cu-btn round' form-type="submit">提交</button>
+  </view>
+  </form>
+</scroll-view>
+  </view>
+</view>
+
+
+
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showMenu}}"  bindtap='closeMenu' id="{{upingMenu}}"></view>
+<view class='menuComtant' animation="{{deleteUp}}" >
+  <view class="deleteMenu" bindtap='deleteInfo' id="0">
+    <!-- <image style='height:60%;width:8%;' src='/pages/img/delete.png'></image> -->
+    <text style='font-size:120%;'>删除</text>
+  </view>
+  <view class="cancelMenu" id="0" bindtap='closeMenu'>
+    <text>取消</text>
+  </view>
+</view>
+<view class='menuComtant' animation="{{reportUp}}" >
+  <view class="deleteMenu" bindtap='showModal' id="1">
+    <!-- <image style='height:60%;width:8%;' src='/pages/img/report.png'></image> -->
+    <!-- <text style='font-size:120%;margin-left:2%'>举报</text> -->
+    <text style='font-size:120%;'>举报</text>
+  </view>
+  <view class="cancelMenu" id="1" bindtap='closeMenu'>
+    <text>取消</text>
+  </view>
+</view>
+
+<view class="cu-modal {{modalName=='report'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>举报理由</view>
+      <view class='action' bindtap='hideModal'>
+        <text class='icon-close text-red'></text>
+      </view>
+    </view>
+    <view class='padding-xl'>
+      <radio-group class="block" bindchange="reportReasonChange">
+        <view class='grid'>
+          <view class='padding-xs' wx:for="{{reportReason}}" data-index='{{index}}'  wx:key>
+            <label class='flex justify-between align-center flex-sub'>
+              <radio class='round' value='{{item}}' id="{{index}}" >{{item}}</radio>
+            </label>
+          </view>
+        </view>
+      </radio-group>
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class='action'>
+        <button class='cu-btn line-green text-green' bindtap='hideModal'>取消</button>
+        <button class='cu-btn bg-green margin-left' bindtap='reportInfo'>举报</button>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="cu-modal {{login=='login'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>微信登录</view>
+      <view class='action' bindtap='hideLogin'>
+        <text class='icon-close text-red'></text>
+      </view>
+    </view>
+    <view class='padding-xl'>
+      {{loginInfo}}
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class='action'>
+        <button class='cu-btn line-green text-green' bindtap='hideLogin'>取消</button>
+        <button class='cu-btn bg-green margin-left' open-type="getUserInfo" lang="zh_CN" withCredentials="true" bindgetuserinfo="getUserInfo" type="primary" plain='true'>登录</button>
+      </view>
+    </view>
+  </view>
+</view>
+<block wx:if="{{pass}}">
+<image src='/pages/img/upload.png'  class='upload bg-white' bindtap='toUpload'  style='transform:rotate({{rotate}}deg);-webkit-transform:rotate({{rotate}}deg);transition:width 1s, height 1s;-webkit-transition:width 1s, height 1s, -webkit-transform 1s;'></image>
+<view class="card upload" style='z-index:9900;transform:translateX(-{{r2}}rpx);transition:width 1s, height 1s;-webkit-transition:width 1s, height 1s, -webkit-transform 1s;' bindtap='acard'>
+  <text class='icon-vipcard;font-size:30rpx;text-blue'></text>
+  <text class='' style='font-size:16rpx;text-blue'>一卡通</text>
+</view>
+<view class="card upload" style='z-index:9900;transform:translateX(-{{r1}}rpx);transition:width 1s, height 1s;-webkit-transition:width 1s, height 1s, -webkit-transform 1s;' bindtap='other'>
+  <text class='icon-cascades;font-size:30rpx;text-blue'></text>
+  <text class='' style='font-size:16rpx;text-blue'>其他</text>
+</view>
+</block>
+<view class="cu-modal {{modalName=='person'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>请填写个人信息</view>
+      <view class='action' bindtap='hideModal'>
+        <text class='icon-close text-red'></text>
+      </view>
+    </view>
+    <view class='padding-xl text-gray flex flex-direction' style='text-align:left;font-size:26rpx'>
+        <text >请继续填写个人信息<text style='color:red'>（点击右上角图像）</text></text>
+        <text style='color: #f37b1d'>小程序会根据您的学号等信息向您主动推送关于您掉落的失物，比如一卡通，书本等。</text>
+        <text >你可以进行发布信息</text>
+        <text > 在此承诺，您的个人信息绝不会被他人知道。</text>
+    </view>
+  </view>
+</view>
+<view class="cu-modal {{modalName=='addFormid'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>添加模板号</view>
+    </view>
+    <view class='padding-xl text-gray flex flex-direction' style='text-align:left;font-size:26rpx'>
+        您的模板号已经消耗完，请点击下面确认键添加按钮
+    </view>
+    <view class="cu-bar bg-white justify-end" >
+      <view class='action'>
+        <form bindsubmit="getFormId" report-submit='true'>
+        <button class='cu-btn bg-green margin-left' form-type='submit'>确定</button>
+        </form>
+      </view>
+    </view>
+  </view>
+</view>

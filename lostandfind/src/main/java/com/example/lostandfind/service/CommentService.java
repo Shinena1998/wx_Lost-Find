@@ -38,17 +38,13 @@ public class CommentService {
     public JSONObject getPersonComments(String openid){
         //得到发布下信息下所有回复
         System.out.println(openid);
-        List<CommentMysql> comments = commentRespository.findByIdentityOrderByIdDesc(openid);
+        //这里拿我发布信息下的评论，但不是我发的，并且也不是@我的
+        List<CommentMysql> comments = commentRespository.findAbout(openid,openid,openid);
         int view = 0 , to_view = 0;
         for (int i = comments.size()-1; i >= 0; i--) {
             if(!comments.get(i).isView()){
                 //删除在发布者物品信息下回复发布者的消息，并且发布者还没看
-                if (comments.get(i).getIdentity().equals(comments.get(i).getToUid())
-                        && !comments.get(i).isToView()){
-                    comments.remove(i);
-                }else {
-                    view++;
-                }
+                view++;
             }else{
                 break;
             }
@@ -57,8 +53,8 @@ public class CommentService {
         if(comments.size()>0){
             commentJa = getLazyData(comments,true);
         }
-        //回复评论
-        List<CommentMysql> reply = commentRespository.findByToUidOrderByIdDesc(openid);
+        //回复评论，这里拿@我的评论，但不能是我发的。
+        List<CommentMysql> reply = commentRespository.findByToUidAndUidNot(openid,openid);
         for (int i = reply.size()-1; i >= 0; i--) {
             if (!reply.get(i).isToView()){
                 to_view++;

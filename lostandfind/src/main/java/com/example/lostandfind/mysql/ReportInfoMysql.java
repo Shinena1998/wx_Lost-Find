@@ -19,10 +19,13 @@ public class ReportInfoMysql {
 
     /**
      * 因为举报信息如果为失物信息，reportId查找info是会自动关联查出user。
+     * 评论要user是因为要级联用户信息，而失物不用是因为从reportId中拿去失物信息，然后从失物信息查找失主
      */
+
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "user_id")
 //    private UserMysql user;//发布信息的用户
+
     private int count;//该信息被举报次数；
 
     private int operator; //那位管理员操作
@@ -82,4 +85,5 @@ public class ReportInfoMysql {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
 }

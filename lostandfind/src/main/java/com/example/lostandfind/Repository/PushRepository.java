@@ -15,7 +15,9 @@ public interface PushRepository extends JpaRepository<PushMysql,Integer> {
     @Query(value = "select count(name) FROM push WHERE name=?1 and look=?2",nativeQuery = true)
     int name(String name,boolean look);
 
-    List<PushInterface> findByNameAndLookOrderByIdDesc(String name,boolean look);
+//    List<PushInterface> findByNameOrderByIdDesc(String name);
+
+    List<PushMysql> findByNameOrderByIdDesc(String name);
 
     //标记已读
     @Modifying
@@ -23,11 +25,11 @@ public interface PushRepository extends JpaRepository<PushMysql,Integer> {
     int hasLook(boolean look , int id);
 
     //测试关联部分查询
-    @Query(value = "select p.info.theme, p.name from push p where p.name=?1")
+    @Query(value = "select p.pushInfo.theme, p.name from push p where p.name=?1")
     List<PushMysql> test(String name);
 
     //测试关联部分查询
-    @Query(value = "select new map(p.info.theme as theme, p.name as name) from push p where p.name=?1")
+    @Query(value = "select new map(p.pushInfo.theme as theme, p.name as name) from push p where p.name=?1")
     List<Map<String, Object>> test2(String name);
     //测试部分查询
     @Query(value="select name,look from push where name=?1",nativeQuery = true)

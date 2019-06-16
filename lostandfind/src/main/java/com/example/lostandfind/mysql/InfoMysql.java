@@ -18,17 +18,6 @@ import java.util.List;
 
 @Repository
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@NamedQueries(value =
-        {@NamedQuery(name="InfoMysql.findByInfoTheme",
-                query = "select o from InfoMysql o"),
-        @NamedQuery(name="InfoMysql.findByInfoTime",
-                query = "select o from InfoMysql o"),
-                @NamedQuery(name="InfoMysql.findByInfoPlace",
-                        query = "select o from InfoMysql o"),
-                @NamedQuery(name="InfoMysql.findByInfoInfomation",
-                        query = "select o from InfoMysql o")
-        })
 @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
 @NamedEntityGraph(name="info.all",attributeNodes={@NamedAttributeNode("user"),@NamedAttributeNode("commentMysqlList")})
 public class InfoMysql{
@@ -55,8 +44,8 @@ public class InfoMysql{
     private String Time;
 
     private String category;
-    //更新表时自动生成时间
-    @CreatedDate
+
+
     private String current;
 
     private long loststamp;
@@ -69,7 +58,7 @@ public class InfoMysql{
 
     private String infomation;
 
-
+    private String keyWord;
     //时间戳
     private long timestamps;
     /**
@@ -87,10 +76,11 @@ public class InfoMysql{
     @LastModifiedDate
     private String finalTime;
 
+    private String cardId;
     //
     private String formId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_num")
     private UserMysql user;
 
@@ -100,6 +90,18 @@ public class InfoMysql{
 
     @ManyToMany(mappedBy = "infos",fetch = FetchType.LAZY)
     private List<UserMysql> users ;//收藏人数
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "pushInfo",cascade = {CascadeType.REMOVE},fetch = FetchType.LAZY)
+    private PushMysql pushMysql;
+
+    public PushMysql getPushMysql() {
+        return pushMysql;
+    }
+
+    public void setPushMysql(PushMysql pushMysql) {
+        this.pushMysql = pushMysql;
+    }
 
     public List<UserMysql> getUsers() {
         return users;
@@ -276,7 +278,23 @@ public class InfoMysql{
         this.loststamp = loststamp;
     }
 
-//    @Override
+    public String getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "{category:+"+this.category+"}";
 //    }

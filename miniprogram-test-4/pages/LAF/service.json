@@ -1,0 +1,9 @@
+{
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#69c0ff",
+    "navigationBarTitleText": "信息圈",
+    "navigationBarTextStyle": "white",
+    "usingComponents": {},
+    "navigationStyle": "custom",
+    "disableScroll": true
+}

@@ -22,6 +22,16 @@ public class ThanksMysql {
 
     private String openid;
 
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public String getOpenid() {
         return openid;
     }
@@ -72,11 +82,12 @@ public class ThanksMysql {
 
     public ThanksMysql(){}
 
-    public ThanksMysql(String openid, String current, String nickName,String message ,String img){
+    public ThanksMysql(String openid, String current, String nickName,String message ,String img,int type){
         this.name = nickName;
         this.openid = openid;
         this.img = img;
         this.time = current;
         this.content = message;
+        this.type = type;
     }
 }

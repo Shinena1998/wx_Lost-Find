@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<UserMysql,Integer> {
     public List<UserMysql> findByOpenId(String openId);
@@ -23,4 +24,7 @@ public interface UserRepository extends JpaRepository<UserMysql,Integer> {
     @Modifying
     @Query(value = "update user set form_id =?1 where num=?2",nativeQuery = true)
     int writeFormId(String formId, int num);
+
+    @Query(value = "select num from user where open_id in ?1", nativeQuery = true)
+    List<Integer> getManagerOpenId(Set<String> openId);
 }

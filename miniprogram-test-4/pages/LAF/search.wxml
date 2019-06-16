@@ -1,0 +1,105 @@
+
+<view class='top'>
+  <view class='top_search' wx:if="{{searchType}}">
+    <view style='width:80%;height:100%;display:flex;'>
+      <view class='top_sh_left'></view>
+      <input type="text" class="top_searchText" confirm-type='search' placeholder='请输入搜索信息' auto-focus='true' bindconfirm='search1' bindblur='searchSave' placeholder-class='top_searchTextPlaceholder'></input>
+      <view class='top_sh_right'></view>
+    </view>
+    <view class='top_search_button' bindtap='search2'>
+      <button class='cu-btn bg-gradual-white shadow-blur round'>搜索 </button>
+    </view>
+  </view>
+  <block wx:else class="time">
+    <view style='width:80%;height:100%;display:flex;'>
+      <view class='time_left'></view>
+      <picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeStartChange" class='timeStart' style='border-right:3rpx solid whitesmoke'>
+        <view class='timeStartView' style='color:{{timeStartColor}}'>
+          {{timeStart}}
+        </view>
+      </picker>
+      <picker mode="date" value="{{Time}}" start="2018-10-1" end="{{time}}" bindchange="bindTimeEndChange" class='timeStart'>
+        <view class="timeStartView" style='color:{{timeEndColor}}'>
+          {{timeEnd}}
+        </view>
+      </picker>
+      <view class='time_right'></view>
+    </view>
+    <view class='top_search_button' bindtap='searchTime'>
+    <button class='cu-btn bg-gradual-white shadow-blur round'>搜索 </button>
+    </view>
+  </block>
+</view>
+
+<view class="searchType">
+  <view class='stringType' id='0' bindtap='searchType' style='color:{{strColor}}; border-bottom:{{borderS}};'>信息</view>
+  <view class='timeType' id='1' bindtap="searchType" style='color:{{timeColor}}; border-bottom:{{borderT}}'>时间</view>
+</view>
+
+<view wx:if="{{show}}" class='else'>
+  <view class="historyView">
+    <text>推荐查询</text>
+    <image class="eyes" bindtap='changeEye' src='{{eye}}'></image>
+  </view>
+  <view class='labelView' wx:if="{{isShowFastSearch}}">
+    <view class="labelFor" wx:for="{{labelList}}" wx:for-item="goods" data-index='{{index}}' wx:key="name" bindtap='fastSearch'>
+      <view class='label_css'>
+        <view class='label_left'></view>
+        <view class='label_middle'>{{goods}}</view>
+        <view class='label_right'></view>
+      </view>
+    </view>
+  </view>
+  <block wx:else>
+    <text style='color:rgb(112, 110, 110);font-size:80%;margin-left:35%;'>推荐搜索已隐藏</text>
+  </block>
+
+  <view class="historyView">
+    <text>历史查询</text>
+    <image class="history_deleteImg" bindtap='deleteHistorySearch' src='/pages/img/31848B0B-9DEA-4847-B241-18125CB6D371.png '></image>
+  </view>
+  <view class='labelView' wx:if='{{isshowhistory}}'>
+    <view class="labelFor" wx:for="{{storyList}}" wx:for-item="goods" data-index='{{index}}' wx:key="name" bindlongpress='deleteHistorySearch' bindtap='historySearch'>
+      <view class='label_css'>
+        <view class='label_left'></view>
+        <view class='label_middle'>{{goods}}</view>
+        <view class='label_right'></view>
+      </view>
+    </view>
+  </view>
+  <block wx:else>
+    <text style='color:rgb(112, 110, 110);font-size:80%;margin-left:40%'>无历史记录</text>
+  </block>
+</view>
+
+<block wx:else>
+  <scroll-view scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" bindscrolltolower='addInformation'>
+    <view class="infoView" wx:for="{{infoList}}" bindtap='comein' wx:for-item="goods" data-index='{{index}}' wx:key="name">
+      <view class='OneInfo'>
+        <view class="infoImgView">
+          <image class="infoImg" src="{{goods.picPath}}"></image>
+        </view>
+        <view class="infoText" style="background-image: url({{imgList[index]}})">
+          <view class="infoThemeView">
+            <view class='infoThemeRemindView'>
+              <view class='infoKind'>
+                <image style="height:80%;width:9%;margin-right:2%;margin-left:1%;" src='/pages/img/kind.png'></image>{{goods.kind}}</view>
+            </view>
+            <view class='infoTheme'>
+              <image style="height:80%;width:8%;margin-left:1%;margin-right:2%" src='/pages/img/theme.png'></image>
+              <text style='color:green; '>{{goods.theme}}</text>
+            </view>
+          </view>
+          <view class="infoPlace">
+            <image style="height:50%;width:9%;margin-right:2%;" src='/pages/img/place.png'></image>
+            <text style="width:100%">{{goods.place}}</text>
+          </view>
+          <view class="infoTime">
+            <image style="height:110%;width:8%;margin-right:2%;" src='/pages/img/time.png'></image>
+            <text>{{goods.time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</block>

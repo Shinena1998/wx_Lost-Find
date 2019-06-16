@@ -10,11 +10,15 @@ import com.example.lostandfind.worker.Channel;
 import com.example.lostandfind.worker.CommentThread;
 import com.example.lostandfind.worker.IllegalComment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Service
 public class ReportCommentService {
     @Autowired
@@ -43,7 +47,7 @@ public class ReportCommentService {
             List<UserMysql> userMysqls = reportCommentMysql.getUsers();
             for (int i = 0; i < userMysqls.size(); i++) {
                 if(userMysqls.get(i).getNum() == userid){
-                    return "你已对该信息进行举报，管理员正在处理。";
+                    return "请勿多次举报";
                 }
             }
             userMysqls.add(userMysql);
@@ -76,13 +80,13 @@ public class ReportCommentService {
             return new JSONArray();
         }
         JSONArray jsonArray = new JSONArray();
-        List<Integer> ids = new ArrayList<Integer>();
+        Set<Integer> ids = new HashSet<>();
         for (int i = 0; i < reportComments.size(); i++) {
             ids.add(reportComments.get(i).getReportId());
         }
-        List<CommentMysql> commentMysqls  = commentRespository.findidIn(ids);
+        List<CommentMysql> infos  = commentRespository.findidIn(ids);
         jsonArray.add(reportComments);
-        jsonArray.add(commentMysqls);
+        jsonArray.add(infos);
         return jsonArray;
     }
 
@@ -90,13 +94,22 @@ public class ReportCommentService {
     @Transactional
     public String process(boolean decide, int id, int operator,String time, Channel channel){
         ReportCommentMysql reportCommentMysql = reportCommentRepository.findByReportId(id);
+        //如果在数据库找不到信息，就会返回一个很奇怪的commentMysql类型的数据，
+        // 使用instanceof也返回true说明是同一类型。
+        //但是所有值为null，使用get会发生异常
+        String a = null;
+        try {
+             a = commentRespository.getOne(id).getContent();
+        }catch (Exception e){
+            reportCommentRepository.deleteById(id);
+            return "该信息已被删除";
+        }
         if(decide){
-
             reportCommentMysql.setProcess(true);
             reportCommentMysql.setOperator(operator);
             reportCommentRepository.save(reportCommentMysql);
             CommentMysql commentMysql = commentRespository.findById(id).get();
-            SystemInformMysql sim = new SystemInformMysql();
+
 
             new CommentThread("评论违规处理通知",commentMysql.getContent(),3,
                     commentMysql.getUid(),reportCommentMysql.getReason(),id,sir,time,channel).putRequest();

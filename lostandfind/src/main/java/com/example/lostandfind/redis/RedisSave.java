@@ -68,7 +68,7 @@ public class RedisSave {
         if(redisTemplate.hasKey(openid)){
 
         }else{
-            redisTemplate.opsForValue().set(openid,token, Duration.ofHours(2));
+            redisTemplate.opsForValue().set(openid,token,Duration.ofHours(2).toHours());
         }
     }
     private static final Logger logger = LoggerFactory.getLogger(RedisSave.class);

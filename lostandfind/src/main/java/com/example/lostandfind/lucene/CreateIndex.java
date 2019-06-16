@@ -29,13 +29,12 @@ public class CreateIndex {
             //创建Document对象
             Document doc = new Document();
             //获取每列数据
-            Field id = new StringField("id",infos.get(i).getId().toString(), Field.Store.YES);//只存储，不分词
-            Field theme = new StringField("theme",infos.get(i).getTheme(), Field.Store.YES);//存储分词
-            TextField information = new TextField("information",infos.get(i).getInfomation(),Field.Store.YES);
+            String content = infos.get(i).getTheme() + infos.get(i).getInfomation();//将信息标题和内容分词
+            Field id = new StringField("id" , infos.get(i).getId().toString(),Field.Store.YES);
+            TextField theme = new TextField("content",content, Field.Store.YES);//存储分词
             //添加到Document中
             doc.add(id);
             doc.add(theme);
-            doc.add(information);
             //调用，创建索引库
             indexLucene.writeIndex(doc);
         }

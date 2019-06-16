@@ -30,7 +30,7 @@ public class Request {
                 System.out.println("开始填写失主信息");
                 PushMysql pushMysql = new PushMysql();
                 pushMysql.setLook(false);
-                pushMysql.setInfo(infoMysql);
+                pushMysql.setPushInfo(infoMysql);
                 pushMysql.setName(name);
                 pushRepository.save(pushMysql);
             }

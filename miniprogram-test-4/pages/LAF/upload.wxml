@@ -1,0 +1,107 @@
+<view class="radio-group_kind">
+<view class='lose' id='1' bindtap='selectKind' style='font-size:100%;color:{{loseBC}};border-bottom:{{borderL}}'>寻物启事</view>
+<view class='lose' id='2' bindtap='selectKind' style='font-size:100%;color:{{findBC}};border-bottom:{{borderF}}'>招领启事</view>
+</view>
+<scroll-view  scroll-y="true" class="infoAll" enable-back-to-top='true' scroll-with-animation="true" >
+<form bindsubmit="formSubmit" report-submit='true' bindreset="formReset">
+  <view class="cu-form-group">
+    <view class='title'>物品名称</view>
+    <input placeholder="请输入物品名称" class='radius' name='theme' value='{{title}}'></input>
+  </view>
+  <view class="cu-form-group top" wx:hide="{{modalName==null}}">
+    <view class='title'>详细信息</view>
+    <textarea placeholder="请详细描述信息" maxlength="-1"  placeholder-class='placeholder' name="info" value='{{detail}}'></textarea>
+  </view>
+
+  <radio-group class="block"  bindchange="radioChangeCategory">
+    <view class="cu-form-group margin-top">
+    <label class="radioWord" wx:for="{{items_category}}" data-index='{{index}}' wx:key="{{items_category}}">
+    <radio value="{{item.value}}" id="{{index}}" class="blue radio" checked="{{item.checked}}"></radio>
+    <text>{{item.name}}</text>
+    </label>
+    </view>
+  </radio-group>
+  <view class="cu-form-group ">
+    <view class="grid col-3 grid-square flex-sub flex flex-wrap  justify-around">
+      <image class=" padding-xs bg-img solids" bindtap='uploadImg' src="{{savedFilePath}}" style='height:185rpx;width:185rpx' ></image>
+    <view class="padding-xs  ">
+      贵重物品
+      <switch class='red sm' bindchange='valuable' ></switch>
+    </view>
+    <!-- <view wx:if="{{isValuable}}" class="padding-xs bg-img"  style="background-image:url(/pages/img/valuable.png);">
+      </view> -->
+  </view>
+  </view>
+  <view class="cu-form-group" wx:if="{{isCard}}">
+    <view class="title" >证件卡号</view>
+    <input placeholder="请输入证件卡号"  name="card"   style='text-align:right' bindinput='getCard' value='{{imgInfo}}' maxlength='18' placeholder='如果知道，请务必填写' ></input>
+  </view>
+  <view class="cu-form-group" wx:if="{{showName}}">
+    <view class="title" >失主姓名</view>
+    <input placeholder="请输入物品名称"   style='text-align:right' maxlength='18' placeholder='如果知道，请务必填写' name="fullname" value='{{fullname2}}'></input>
+  </view>
+  <view class="cu-form-group margin-top">
+    <view class='title'>日期选择</view>
+    <picker mode="date" value="{{Time}}" start="2015-09-01" end="" bindchange="bindTimeChange">
+      <view class="picker">
+        {{Time}}
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group ">
+    <view class='title'>校区选择</view>
+    <picker bindchange="PickerChange" value="{{num}}" range="{{picker}}">
+      <view class="picker">
+        {{num?picker[num]:'请选择校区'}}
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group">
+    <view class='title'>联系方式</view>
+    <input placeholder="请填写对应信息" class='radius' bindblur='contentCss' value="{{contact}}" disabled='{{write}}'></input>
+    <view class="cu-capsule radius">
+      <view class='cu-tag bg-blue '>
+        选择
+      </view>
+      <view class="cu-tag line-blue" style='padding-right:0px'>
+        <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+          <view class="picker">
+            {{array[index]}}
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="padding flex flex-wrap  justify-around align-center bg-white margin-top">
+    <button class='cu-btn round' bindtap='returnS'>返回</button>
+    <button class='cu-btn round' form-type="submit">提交</button>
+  </view>
+</form>
+</scroll-view>
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{hasCardInfo}}" bindtap='closeInfo'></view>
+<view class="modal-dialog" wx:if="{{hasCardInfo}}">
+
+<view class="infoAll1" bindtap='toDetail'>
+<view class="modal-title">
+  <text class="text-orange">可能对您有用的信息</text>
+</view>
+<view class='OneInfo'>
+<view class="infoImgView">
+<image class="infoImg" src = "{{detailInfo.picPath}}"></image>
+</view>
+<view  class="infoText" 
+style="background-image: url({{img}})">
+<view class = "infoThemeView" >
+<view class='infoThemeRemindView'>
+<view class='infoKind'><image style="height:80%;width:9%;margin-right:2%;margin-left:1%;"src='/pages/img/kind.png'></image>{{detailInfo.kind}}</view>
+</view>
+<view class='infoTheme'><image style="height:80%;width:8%;margin-left:1%;margin-right:2%"src='/pages/img/theme.png'></image><text style='color:green; '>{{detailInfo.theme}}</text></view>
+</view>
+<view class="infoPlace"><image style="height:50%;width:9%;margin-right:2%;"src='/pages/img/place.png'></image>
+<text style="width:100%">{{detailInfo.place}}</text></view>
+<view class="infoTime"><image style="height:110%;width:8%;margin-right:2%;"src='/pages/img/time.png'></image><text>{{detailInfo.time}}</text></view>
+</view>
+</view>
+</view>
+</view>
